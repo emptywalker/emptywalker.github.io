@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Questions of Jekyll on Github Page
-date: 2016-02-16 15:32:24.000000000 +09:00
+date: 2018-07-10 15:32:24.000000000 +09:00
 ---
 
 ## 描述
@@ -76,4 +76,7 @@ Configuration file: /Users/emptywalker/Documents/EmptyGitHub/github-site/_config
 
 
 
+
+### `GitHub Pages is temporarily down for maintenance.`
+在访问`GitHub Pages`上部署的网站时，出现暂时维护的状态，不清楚是配置有问题还是真的在维护，这个维护时间多久？都不确定
 
