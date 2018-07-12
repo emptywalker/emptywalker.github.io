@@ -4,7 +4,7 @@ title: Questions of Jekyll on Github Page
 date: 2018-07-10 15:32:24.000000000 +09:00
 ---
 
-## 描述
+### 1.build过程
 
 将[Vno-Jekyll](https://github.com/onevcat/vno-jekyll)下载后，copy到`<username>.github.io`的仓库 `root` 目录下, 执行 `bundle install`安装好当前`Jekyll`的依赖。效果如下
 
@@ -70,18 +70,29 @@ Configuration file: /Users/emptywalker/Documents/EmptyGitHub/github-site/_config
 
 至此，将当前的代码push到仓库里就可以使用`https://<username>.github.io`访问主页了
 
-### 问题描述
+ **问题描述**
+ 
 如果我直接在`_post`文件夹下添加`YYYY-MM-DD-name.md`文档，是需要执行`jekyll serve`，先生成对应的html，然后再push到master分支后，才能生效，如何在`github page`中自动生效
 
 
 
 ---
 
-### `GitHub Pages is temporarily down for maintenance.`
+### 2. `GitHub Pages is temporarily down for maintenance.`
 在访问`GitHub Pages`上部署的网站时，出现暂时维护的状态，不清楚是配置有问题还是真的在维护，这个维护时间多久？都不确定
 
 **答案：**整个过程大约持续了半小时，恢复访问
 
 
-### Swift 中Dictionary 无法根据特定value获取对应的key
+---
+
+
+### 3. 设置`Jekyll`的图片资源链接
+参考[官方文档](https://jekyllcn.com/docs/posts/),设置格式如下
+
+```
+![图片名称]({{site.url}}/path/image.jpg)
+```
+其中`site.url`是表示网站的域名。可以自己在根目录添加`assets/downloads`文件夹来存储图片资源和可下载资源
+
 
