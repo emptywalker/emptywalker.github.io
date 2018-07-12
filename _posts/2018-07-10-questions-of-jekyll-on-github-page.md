@@ -91,7 +91,7 @@ Configuration file: /Users/emptywalker/Documents/EmptyGitHub/github-site/_config
 参考[官方文档](https://jekyllcn.com/docs/posts/),设置格式如下
 
 ```
-![图片名称]({{site.url}}/path/image.jpg)
+![图片名称]({{  site.url  }}/path/image.jpg)
 ```
 其中`site.url`是表示网站的域名。可以自己在根目录添加`assets/downloads`文件夹来存储图片资源和可下载资源
 
