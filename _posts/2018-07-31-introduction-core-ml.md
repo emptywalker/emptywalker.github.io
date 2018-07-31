@@ -60,3 +60,148 @@ Core ML 是一个全新的机器学习框架，在今年的 WWDC 上和 iOS 11 �
 
 ![]({{  site.url  }}/assets/screenshot/introduction-coreml/p5.png)
 
+
+### 实现相机和相册功能
+
+现在我们已经设计好了UI，让我们继续实现。在这部分我们将会实现 library 和 camera 的功能。在 `ViewController.swift` 中，首先采用 `UIImagePickerController` 类所需要的 `UINavigationControllerDelegate` 协议。
+
+
+```
+
+class ViewController: UIViewController, UINavigationControllerDelegate
+
+```
+
+然后给 label 和 image view 添加两个新的 outlets。为了简单起见，我已经把 `UIImageView` 命名为 imageView ，把 `UILabel` 命名为 classifier 。你的代码看起来应该像这样：
+
+
+```
+
+import UIKit
+ 
+class ViewController: UIViewController, UINavigationControllerDelegate {
+    @IBOutlet weak var imageView: UIImageView!
+    @IBOutlet weak var classifier: UILabel!
+    
+     override func viewDidLoad() {
+        super.viewDidLoad()
+    }
+    
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+    }
+}
+
+
+```
+
+
+接下来，你要为来自于 bar button items 的点击事件创建各自的行为。现在在 `ViewController` 类中插入以下操作方法：
+
+
+```
+
+@IBAction func camera(_ sender: Any) {
+    
+    if !UIImagePickerController.isSourceTypeAvailable(.camera) {
+        return
+    }
+    
+    let cameraPicker = UIImagePickerController()
+    cameraPicker.delegate = self
+    cameraPicker.sourceType = .camera
+    cameraPicker.allowsEditing = false
+    
+    present(cameraPicker, animated: true)
+}
+ 
+@IBAction func openLibrary(_ sender: Any) {
+    let picker = UIImagePickerController()
+    picker.allowsEditing = false
+    picker.delegate = self
+    picker.sourceType = .photoLibrary
+    present(picker, animated: true)
+}
+
+
+```
+
+总结一下我们在每个行为中做的事情，我们创建了一个 `UIImagePickerController` 的常量，然后确保了用户不可以编辑选择的图片（不论是来自于相册还是相机）。然后我们将代理设置为它自己，最后我们向用户展示了 `UIImagePickerController` 。
+
+因为我们没有将 `UIImagePickerControllerDelegate` 类方法添加到 `ViewController.swift` 中，我们将会收到一个错误。我们将会使用一个扩展去采用代理方法：
+ 
+ 
+```
+
+extension ViewController: UIImagePickerControllerDelegate {
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        dismiss(animated: true, completion: nil)
+    }
+}
+
+
+```
+
+上面的一行代码将会处理用户取消图片选择的操作。他还会将 `UIImagePickerControllerDelegate` 的类方法分配给我们的 Swift 文件（译者注：触发取消图片处理的代理方法）。现在你的代码看来有点像这样。
+
+
+```
+
+import UIKit
+ 
+class ViewController: UIViewController, UINavigationControllerDelegate {
+    
+    @IBOutlet weak var imageView: UIImageView!
+    @IBOutlet weak var classifier: UILabel!
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        // Do any additional setup after loading the view, typically from a nib.
+    }
+ 
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        // Dispose of any resources that can be recreated.
+    }
+    
+    @IBAction func camera(_ sender: Any) {
+        
+        if !UIImagePickerController.isSourceTypeAvailable(.camera) {
+            return
+        }
+        
+        let cameraPicker = UIImagePickerController()
+        cameraPicker.delegate = self
+        cameraPicker.sourceType = .camera
+        cameraPicker.allowsEditing = false
+        
+        present(cameraPicker, animated: true)
+    }
+    
+    @IBAction func openLibrary(_ sender: Any) {
+        let picker = UIImagePickerController()
+        picker.allowsEditing = false
+        picker.delegate = self
+        picker.sourceType = .photoLibrary
+        present(picker, animated: true)
+    }
+ 
+}
+ 
+extension ViewController: UIImagePickerControllerDelegate {
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        dismiss(animated: true, completion: nil)
+    }
+}
+
+
+```
+
+确保你回到 storyboard 中，所有的 outlet 变量 和 操作方法都是连接着的。
+
+为了访问相册和相机，你还得做最后一件事情。进入 `Info.plist` 然后添加两个条目： Privacy – Camera Usage Description 和 Privacy – Photo Library Usage Description 。从 iOS 10 开始，你需要特别说明你的应用需要访问相机和相册的原因。
+
+![]({{  site.url  }}/assets/screenshot/introduction-coreml/p5.png)
+
+好的，就这样。你现在准备移到本教程的核心部分。再重复一遍，如果你不想从头创建演示应用，[在这里下载开始项目](https://github.com/appcoda/CoreMLDemo/raw/master/CoreMLDemoStarter.zip)。
+
