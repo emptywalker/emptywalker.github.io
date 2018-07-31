@@ -201,7 +201,61 @@ extension ViewController: UIImagePickerControllerDelegate {
 
 为了访问相册和相机，你还得做最后一件事情。进入 `Info.plist` 然后添加两个条目： Privacy – Camera Usage Description 和 Privacy – Photo Library Usage Description 。从 iOS 10 开始，你需要特别说明你的应用需要访问相机和相册的原因。
 
-![]({{  site.url  }}/assets/screenshot/introduction-coreml/p5.png)
+![]({{  site.url  }}/assets/screenshot/introduction-coreml/p6.png)
 
 好的，就这样。你现在准备移到本教程的核心部分。再重复一遍，如果你不想从头创建演示应用，[在这里下载开始项目](https://github.com/appcoda/CoreMLDemo/raw/master/CoreMLDemoStarter.zip)。
+
+### 集成 Core ML 数据模型
+
+现在，我们转换一下话题，集成 Core ML 数据模型到我们的应用中。之前提到过，我们需要一个提前训练好的模型来和 Core ML 一起工作。你可以创建自己的模型，但对于这个实例来说，我们将使用苹果开发者网站上已经训练好的模型。
+
+去苹果的[机器学习](https://developer.apple.com/machine-learning/)开发者网站，滚到页面底部，你将会发现4个提前训练好的模型。
+
+![]({{  site.url  }}/assets/screenshot/introduction-coreml/p7.png)
+
+本教程中，我们使用 *Inception v3* 模型，但你可以随意尝试另外三个。一旦就下载了 *Inception v3* 模型，就将它添加到 Xcode 项目中，并查看一下它的显示。
+
+![]({{  site.url  }}/assets/screenshot/introduction-coreml/p8.png)
+
+> **注意：** 请确保项目的 Target Membership 被选中，否则，你的应用将不能访问数据模型文件。
+
+
+在上面的截图中，你可以看到数据模型的类型，即神经网络分类器。另外一个需要注意的就是模型评估参数。它告诉你模型接受的输入和模型返回的输出。这里接受一个 299×299 的图片，返回给你一个最可能的类别，加上每个类别的概率。
+
+你还会注意到模型类。这是由机器学习模型生成的模型类( `Inceptionv3` )，我们可以直接在代码中使用它。如果你点击 `Inceptionv3` 边上的箭头，你将会看到这个类的源码。
+
+![]({{  site.url  }}/assets/screenshot/introduction-coreml/p9.png)
+
+现在，让我们在你的代码中添加模型。回到 `ViewController.swift` 文件中。首先，在开头导入 CoreML 框架：
+
+
+```
+
+import CoreML
+
+```
+
+然后，在类中为 `Inceptionv3` 模型声明一个 `model` 变量，并且在 `viewWillAppear()` 方法中初始化它。
+
+
+```
+
+var model: Inceptionv3!
+ 
+override func viewWillAppear(_ animated: Bool) {
+    model = Inceptionv3()
+}
+
+```
+
+我知道你可能正在思考。
+
+「那么，为什么我们不能早点初始化这个模型呢？」
+
+「把它规定在 `viewWillAppear` 方法中，有什么好处呢？」
+
+好吧，朋友们，关键是当你的应用试图识别你照片中的物体是什么时，它会快很多。
+
+现在，如果我们返回到 `Inceptionv3.mlmodel` ，我们会发现这个模型只接受一个图片规格为 299x299 的输入。因此，怎样把一个图片转成长合格规格呢？这就是我们接下来要解决的问题。
+
 
