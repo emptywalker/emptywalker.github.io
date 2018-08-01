@@ -259,3 +259,101 @@ override func viewWillAppear(_ animated: Bool) {
 现在，如果我们返回到 `Inceptionv3.mlmodel` ，我们会发现这个模型只接受一个图片规格为 299x299 的输入。因此，怎样把一个图片转成长合格规格呢？这就是我们接下来要解决的问题。
 
 
+### 图片转换
+
+在 `ViewController.swift` 的扩展中，更新代码如下。我们实现了 `imagePickerController(_:didFinishPickingMediaWithInfo)` 方法去处理选中的图片。
+
+
+```
+extension ViewController: UIImagePickerControllerDelegate {
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        dismiss(animated: true, completion: nil)
+    }
+
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+        picker.dismiss(animated: true)
+        classifier.text = "Analyzing Image..."
+        guard let image = info["UIImagePickerControllerOriginalImage"] as? UIImage else {
+            return
+        } 
+        
+        UIGraphicsBeginImageContextWithOptions(CGSize(width: 299, height: 299), true, 2.0)
+        image.draw(in: CGRect(x: 0, y: 0, width: 299, height: 299))
+        let newImage = UIGraphicsGetImageFromCurrentImageContext()!
+        UIGraphicsEndImageContext()
+        
+        let attrs = [kCVPixelBufferCGImageCompatibilityKey: kCFBooleanTrue, kCVPixelBufferCGBitmapContextCompatibilityKey: kCFBooleanTrue] as CFDictionary
+        var pixelBuffer : CVPixelBuffer?
+        let status = CVPixelBufferCreate(kCFAllocatorDefault, Int(newImage.size.width), Int(newImage.size.height), kCVPixelFormatType_32ARGB, attrs, &pixelBuffer)
+        guard (status == kCVReturnSuccess) else {
+            return
+        } 
+        
+        CVPixelBufferLockBaseAddress(pixelBuffer!, CVPixelBufferLockFlags(rawValue: 0))
+        let pixelData = CVPixelBufferGetBaseAddress(pixelBuffer!)
+        
+        let rgbColorSpace = CGColorSpaceCreateDeviceRGB()
+        let context = CGContext(data: pixelData, width: Int(newImage.size.width), height: Int(newImage.size.height), bitsPerComponent: 8, bytesPerRow: CVPixelBufferGetBytesPerRow(pixelBuffer!), space: rgbColorSpace, bitmapInfo: CGImageAlphaInfo.noneSkipFirst.rawValue) //3
+        
+        context?.translateBy(x: 0, y: newImage.size.height)
+        context?.scaleBy(x: 1.0, y: -1.0)
+        
+        UIGraphicsPushContext(context!)
+        newImage.draw(in: CGRect(x: 0, y: 0, width: newImage.size.width, height: newImage.size.height))
+        UIGraphicsPopContext()
+        CVPixelBufferUnlockBaseAddress(pixelBuffer!, CVPixelBufferLockFlags(rawValue: 0))
+        imageView.image = newImage
+    }
+}
+
+```
+
+高亮代码块做的事情：
+
+1. **#7-11 行：**在方法的前几行中，我们检索了从 `info` 字典中选中的图片（使用 `UIImagePickerControllerOriginalImage` 键）。一旦图片被选中我们就收起 `UIImagePickerController` 。
+2. **#13-16行：**由于我们的模型只接受 299x299 规格的图片，我们需要把图片转换成一个正方形。然后，我们将正方形的图片分配给常量 `newImage` 。
+3. **#18-23行：**现在，我们把 `newImage` 转换成一个 `CVPixelBuffer` 对象。对于那些不熟悉 `CVPixelBuffer` 的人来说，他就是一个将像素保存在主存中的基本图片缓冲区。
+4. **#31-32行：**我们将图片中所有的像素都转换成设备支持的 `RGB` 颜色空间。然后，通过这些数据创建一个 `CGContext` ，我们就可以在需要渲染（或修改）它的一些底层属性时轻松的调用 `context`。
+5. **#34-38行：**最后，我们将图形上下文设置为当前上下文，渲染图片，移除栈顶上下文，并把 `imageView.image` 设置为 `newImage` 。
+
+现在，如果你对上面的大部分代码不明白的话，不用担心。这是一些真正的 `Core Image` 高级代码，已经超出本教程的范围了。你只需要知道，我们把图片转成了数据模型可以接受的形式。我建议你多做点相关的联系，看看结果如何，以便于更好地理解。
+
+### 使用 Core ML
+
+不管怎样，让我们把焦点转到 Core ML 上。我们使用了 Inceptionv3 模型去执行物体识别。对于 Core ML，想做到这个，我们只需要几行代码就够了。将下面的代码片段复制到 `imageView.image = newImage` 这一行下面。
+
+
+```
+
+guard let prediction = try? model.prediction(image: pixelBuffer!) else {
+    return
+}
+ 
+classifier.text = "I think this is a \(prediction.classLabel)."
+
+```
+
+就这样！ `Inceptionv3` 类已经生成了一个叫做 `prediction(image:)` 的方法，用于预测给定图片中的事物。这里我们通过带有 `pixelBuffer` 变量的方法，该变量就是调整大小后的图片，一旦返回一个 `String` 类型的预测，我们就更新 `classifier` 标签的文本，设置为识别的结果。
+ 
+ 现在，是时候测试一下我们的应用了！构建然后在模拟器或者你的手机（安装了 iOS 11 beta 版）上跑起你的应用。从你的相册选择一张图片或者用相机拍摄一张，这个应用将会告诉你图片是关于什么的。
+ 
+ ![]({{  site.url  }}/assets/screenshot/introduction-coreml/p10.jpg)
+
+在测试这个应用的时候，你可能会注意到这个应用并不会正确的预测出你指的是什么。这不是你代码的问题，而是训练模型的问题。
+
+ ![]({{  site.url  }}/assets/screenshot/introduction-coreml/p11.jpg)
+ 
+### 结语
+我希望现在你明白怎么把 Core ML 集成到你的应用中。这只是一个入门的教程，如果你有兴趣把你训练好的 Caffe， Keras， 或者 SciKit 模型转换成 Core ML 模型，[继续关注](http://facebook.com/appcodamobile)我们 Core ML 系列的下一篇教程，我将会教你如何把一个模型转换为 Core ML 模型。
+
+对于这个 demo 应用，你可以这 GitHub 上查看[完整的项目](https://github.com/appcoda/CoreMLDemo)。
+ 
+ 对于 Core ML 的更多细节，你可以参考[ Core ML 官方文档](https://developer.apple.com/documentation/coreml)，你也可以参考苹果在2017年WWDC上关于 Core ML 的会议：
+ 
+ * [ Core ML 介绍](https://developer.apple.com/videos/play/wwdc2017/703/)
+ * [ Core ML 在深度学习领域](https://developer.apple.com/videos/play/wwdc2017/710/)
+
+ 
+ 你认为 Core ML 如何呢？请留下你的评论，让我们知道。
+ 
+
