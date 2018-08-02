@@ -32,5 +32,42 @@ date: 2018-08-01 10:26:24.000000000 +09:00
 
 我们使用**Core ML 工具**将其他数据模型转换成 Core ML 格式，我们将使用 Python 去下载这些工具并使用它们完成转换。
 
+### 安装 Python 并设置环境
+
+> 许多研究人员和工程师已经用各种结构和数据为不同任务制作了 Caffe 模型。这些模型被学习并应用到从简单的回归、到大规模视觉分类、图片相似性的 Siamese 网络、语言和机器人应用中。
+> 
+>  -- Caffe Model Zoo
+
+你可以在 GitHub 中发现不同的已经被训练好的 Caffe 模型。为了有效的共享模型， BAIR 引入了[模型动物园框架](http://caffe.berkeleyvision.org/model_zoo.html)，你可以在[这里](https://github.com/BVLC/caffe/wiki/Model-Zoo)找到一些可用的模型。在本文中，我使用[这个 Caffe 模型](https://gist.github.com/jimgoo/0179e52305ca768a601f)向你展示如何将它转换成 Core ML 格式，以及去实现花卉识别。
+
+首先，在这里下载[启动项目](https://www.dropbox.com/s/gtabr24p8iit22y/CoreMLDemoStarter.zip?dl=0)。如果你打开项目看一下代码，你就会发现需要访问相机和相册的代码以及被写好了。你可能回认出这就是从上一篇文章来的，只是缺少了 Core ML 模型。
+
+你应该也注意到了在项目 bundle 中多出来的三个文件： `oxford102.caffemodel` ， `deploy.prototxt` 和 `class_labels.txt` 。这就是 Caffe 模型和将要在 demo 中用到的文件。在后面会做详细介绍。
+
+为了使用 Core ML 工具，第一步就是在你的 Mac 中安装 Python。首先，[下载 Anaconda ](https://www.continuum.io/downloads)（选择 Python 2.7 版本）。 Anaconda 是一种超简单的方式，在你的 Mac 中跑 Python 而不会造成任何问题。一旦你的 Anaconda 安装好了，打开终端，输入以下指令：
 
 
+```
+conda install python=2.7.13
+conda update python
+```
+在这两行代码中，我们安装了我们想要的 Python 版本。在编写本文的时候， Python 2 的最新版是 2.7.13 。以防万一，一旦安装了 Python，输入第二行便可以升级到最新版的 Python 。
+
+下一步就是创建一个虚拟环境，在虚拟环境中，你可以使用不同版本的 Python 或包( packages )去编程。输入下面一行指令去创建一个新的虚拟环境。
+
+
+```
+conda create --name flowerrec
+```
+当终端给你以下提示时：
+
+```
+proceed ([y]/n)?
+```
+输入「 y 」表示 yes 。恭喜！你现在已经有一个叫做 `flowerrec` 名字的虚拟环境了。
+
+最后，输入下面的命令去安装 Core ML 工具：
+
+```
+pip install -U coremltools
+```
