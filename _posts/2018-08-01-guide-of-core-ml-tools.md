@@ -71,3 +71,53 @@ proceed ([y]/n)?
 ```
 pip install -U coremltools
 ```
+
+### 转换 Caffe 模型
+
+再次打开终端，输入下面的指令，进入虚拟环境：
+
+
+```
+source activate flowerrec
+```
+然后就切换到启动项目的目录下，就是包含了 `class_labels.txt` 、 `deploy.prototxt` 和 `oxford102.caffemodel` 这三个文件的项目。
+
+```
+cd <directory>
+```
+
+一旦你进入文件夹后，就可以初始化 python 了。只要输入 `python` 就可以在终端中打开一个 Python 界面。第一步就是导入 Core ML 工具，这就是我们要做的事情。
+
+```
+import  coremltools
+```
+下面一行非常重要，请特别注意。输入下面一行代码但不要按回车键。
+
+```python
+coreml_model = coremltools.converters.caffe.convert(('oxford102.caffemodel', 'deploy.prototxt'), image_input_names='data', class_labels='class_labels.txt')
+```
+现在只是很短的一行，这里还有很多。让我们解释一下这三个文件是什么。
+
+1. `deploy.prototxt` - 描述神经网络结构
+2. `oxford102.caffemodel` - 用 Caffe 格式训练的数据模型
+3. `class_labels.txt` - 包含了模型可能识别出的所有花卉的列表
+
+在上面的语句中，我们定义了一个模型名为 `coreml_model` 接受`coremltools.converters.caffe.convert` 函数的结果，该函数作为 Caffe 到 Core ML 的转换器。这一行最后两个参数是：
+1. `image_input_names='data'`
+2. `class_labels='class_labels.txt'`
+
+这两个参数定义了我们想 Core ML 接受的输入和输出。这么说吧：计算机只能理解数字，因此，如果我们不添加这两个参数，我们的 Core ML 模型只能接受数字作为输入和输出，而不是接受一个图片作为输入，字符串作为输出。
+
+现在，你可以按**回车**，然后休息一下。根据你机器的计算能力，转换器需要运行一段时间。当转换完成之后，你将会被一个简单的 `>>>` 欢迎。
+
+![]({{  site.url  }}/assets/screenshot/guide-of-core-ml-tools/p2.png)
+
+现在 Caffe 模型已经被转换好了，你需要把它保存下来。可以输入下面的代码完成保存：
+
+```
+coreml_model.save('Flowers.mlmodel')
+```
+`.mlmodel` 文件将会保存在当前文件/目录下。
+
+![]({{  site.url  }}/assets/screenshot/guide-of-core-ml-tools/p2.png)
+
