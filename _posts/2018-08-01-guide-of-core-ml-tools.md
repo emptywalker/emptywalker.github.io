@@ -22,7 +22,15 @@ date: 2018-08-01 10:26:24.000000000 +09:00
 
 除了 Caffe ，还有很多其它的框架，比如：[**Keras**](https://keras.io/)，[**TensorFlow**](https://www.tensorflow.org/) 和 [**Scikit-learn**](http://scikit-learn.org/) 。这些框架都有各自的优缺点，你可以在[这里](https://www.quora.com/Which-neural-network-framework-is-the-best-Keras-Torch-or-Caffe)了解。
 
-在机器学习中，一切都是从模型就开，就可以做出预测和识别系统。教计算机去从一个包含训练数据的机器学习算法中学习。
+在机器学习中，实现预测和识别系统都是从模型开始的。教计算机去从一个包含训练数据的机器学习算法中学习，训练产生的输出通常称为机器学习模型。解决同样问题（如：物体识别）的机器学习模型有不同的类型，但使用了不同的算法。[**神经网络**](https://en.wikipedia.org/wiki/Artificial_neural_network)、[ **Tree Ensembles** ](https://en.wikipedia.org/wiki/Ensemble_learning)、[ **SVMs** ](https://en.wikipedia.org/wiki/Support_vector_machine)就是这些机器算法中的一部分。
+
+> **作者提示:** 如果你想了解更多的关于机器学习模型知识，你可以看一个[这个](https://medium.com/safegraph/a-non-technical-introduction-to-machine-learning-b49fce202ae8)和[这篇文章](https://dzone.com/articles/introduction-6-machine)。
+
+在 Core ML 刚发布的时候，不支持将所有其它框架模型转换成 Core ML 模型。下面这张图由苹果提供，展示了 Core ML 支持的模型和第三方工具。
+
+![]({{  site.url  }}/assets/screenshot/guide-of-core-ml-tools/p2.png)
+
+我们使用**Core ML 工具**将其他数据模型转换成 Core ML 格式，我们将使用 Python 去下载这些工具并使用它们完成转换。
 
 
 
