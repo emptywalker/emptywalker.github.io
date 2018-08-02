@@ -10,7 +10,7 @@ date: 2018-08-01 10:26:24.000000000 +09:00
 
 欢迎来到 Core ML 教程系列的第二篇。在本篇教程中你将会学到如何设置 Python 虚拟环境，将会获取一个非 Core ML 格式的数据模型，并将该模型转换成 Core ML 模型，最后，将该模型集成到你的应用中。在继续开始本教程之前极力推荐你去阅读一下[前一篇教程](https://emptywalker.github.io/2018/07/introduction-core-ml/)。
 
-在本项目中，我们将会创建一个类似于下面的花卉识别应用。然后，我们主要聚焦在，向你展示对于一个 iOS 开发者如何将一个已经训练好的模型转换成一个 Core ML 格式。
+在本项目中，我们将会创建一个类似于下面的花朵识别应用。然后，我们主要聚焦在，向你展示对于一个 iOS 开发者如何将一个已经训练好的模型转换成一个 Core ML 格式。
 
 ![]({{  site.url  }}/assets/screenshot/guide-of-core-ml-tools/p1.png)
 
@@ -38,7 +38,7 @@ date: 2018-08-01 10:26:24.000000000 +09:00
 > 
 >  -- Caffe Model Zoo
 
-你可以在 GitHub 中发现不同的已经被训练好的 Caffe 模型。为了有效的共享模型， BAIR 引入了[模型动物园框架](http://caffe.berkeleyvision.org/model_zoo.html)，你可以在[这里](https://github.com/BVLC/caffe/wiki/Model-Zoo)找到一些可用的模型。在本文中，我使用[这个 Caffe 模型](https://gist.github.com/jimgoo/0179e52305ca768a601f)向你展示如何将它转换成 Core ML 格式，以及去实现花卉识别。
+你可以在 GitHub 中发现不同的已经被训练好的 Caffe 模型。为了有效的共享模型， BAIR 引入了[模型动物园框架](http://caffe.berkeleyvision.org/model_zoo.html)，你可以在[这里](https://github.com/BVLC/caffe/wiki/Model-Zoo)找到一些可用的模型。在本文中，我使用[这个 Caffe 模型](https://gist.github.com/jimgoo/0179e52305ca768a601f)向你展示如何将它转换成 Core ML 格式，以及去实现花朵识别。
 
 首先，在这里下载[启动项目](https://www.dropbox.com/s/gtabr24p8iit22y/CoreMLDemoStarter.zip?dl=0)。如果你打开项目看一下代码，你就会发现需要访问相机和相册的代码以及被写好了。你可能回认出这就是从上一篇文章来的，只是缺少了 Core ML 模型。
 
@@ -52,6 +52,8 @@ conda install python=2.7.13
 conda update python
 ```
 在这两行代码中，我们安装了我们想要的 Python 版本。在编写本文的时候， Python 2 的最新版是 2.7.13 。以防万一，一旦安装了 Python，输入第二行便可以升级到最新版的 Python 。
+
+![]({{  site.url  }}/assets/screenshot/guide-of-core-ml-tools/p3.png)
 
 下一步就是创建一个虚拟环境，在虚拟环境中，你可以使用不同版本的 Python 或包( packages )去编程。输入下面一行指令去创建一个新的虚拟环境。
 
@@ -100,7 +102,7 @@ coreml_model = coremltools.converters.caffe.convert(('oxford102.caffemodel', 'de
 
 1. `deploy.prototxt` - 描述神经网络结构
 2. `oxford102.caffemodel` - 用 Caffe 格式训练的数据模型
-3. `class_labels.txt` - 包含了模型可能识别出的所有花卉的列表
+3. `class_labels.txt` - 包含了模型可能识别出的所有花朵的列表
 
 在上面的语句中，我们定义了一个模型名为 `coreml_model` 接受`coremltools.converters.caffe.convert` 函数的结果，该函数作为 Caffe 到 Core ML 的转换器。这一行最后两个参数是：
 1. `image_input_names='data'`
@@ -110,7 +112,7 @@ coreml_model = coremltools.converters.caffe.convert(('oxford102.caffemodel', 'de
 
 现在，你可以按**回车**，然后休息一下。根据你机器的计算能力，转换器需要运行一段时间。当转换完成之后，你将会被一个简单的 `>>>` 欢迎。
 
-![]({{  site.url  }}/assets/screenshot/guide-of-core-ml-tools/p2.png)
+![]({{  site.url  }}/assets/screenshot/guide-of-core-ml-tools/p4.png)
 
 现在 Caffe 模型已经被转换好了，你需要把它保存下来。可以输入下面的代码完成保存：
 
@@ -119,5 +121,57 @@ coreml_model.save('Flowers.mlmodel')
 ```
 `.mlmodel` 文件将会保存在当前文件/目录下。
 
-![]({{  site.url  }}/assets/screenshot/guide-of-core-ml-tools/p2.png)
+![]({{  site.url  }}/assets/screenshot/guide-of-core-ml-tools/p5.png)
 
+### 集成模型到 Xcode
+现在我们来到了最后一步，把我们刚刚转换好的模型集成到 Xcode 的项目中。如果你读过[上一篇文章](https://emptywalker.github.io/2018/07/introduction-core-ml/)，那么你对这一部分会很熟悉。打开启动项目，基于到目前为止你所学习的，我给你一个挑战，将 Core ML 模型集成到你的应用中去。
+
+我希望你能够完成这个任务，至少试一试。如果你完不成，不用担心，接着往下走！
+
+第一步就是把 `Flowers.mlmodel` 拖拽到我们的 Xcode 项目中，确保  Target Membership 选项是被选中的。
+
+![]({{  site.url  }}/assets/screenshot/guide-of-core-ml-tools/p6.png)
+
+现在，我们打开 `ViewController.swift` ，然后定义一下代码：
+
+```
+var model: Flowers!
+ 
+override func viewWillAppear(_ animated: Bool) {
+    model = Flowers()
+}
+```
+在这两行代码中，我们定义了数据模型并在视图出现之前初始化好它。
+
+接下来，我们只需要定义一个常量 prediction 去接受模型的预测数据。在 `ViewController` 的扩展中，把下面的代码输入到 `imageView.image = newImage` 语句的后面。
+
+
+```
+guard let prediction = try? model.prediction(data: pixelBuffer!) else {
+    return
+}
+        
+classifier.text = "I think this is a \(prediction.classLabel)."
+```
+
+就这样，构建然后运行应用，你应该会看它和上一篇文章中的图片识别应用功能相似。唯一不同的地方在于，这个只适用于花朵，并且我们知道我们可以把一个 Caffe 模型转换成一个 Core ML 模型。
+
+### 结语
+现在你知道如何转换数字模型，你可能在思考在哪里可以获取这些模型。一个简单的 Google 搜索就可以给你很多结果。你几乎可以找到所有类别的数字模型，比如：不同类型的汽车、动物，甚至是一个可以告诉你最像哪个明星的模型。这里有几个地方可以让你开始！
+
+* [ **Caffe Model Zoo** ](https://github.com/BVLC/caffe/wiki/Model-Zoo)
+* [ **UCI Machine Learning Repository** ](https://archive.ics.uci.edu/ml/datasets.html)
+* [ **Deep Kearning Datasets** ](http://deeplearning.net/datasets/)
+
+如果你没有找到想要的模型，你可能会想知道能否创建一个自己的模型。这是可以的，但想要实现有点难，我建议你从 Scikit-Learn 或 TensorFlow 开始，可以通过浏览他们的主页学习。
+
+作为参考，你可以参考 GitHub 上[**完整的项目**](https://github.com/appcoda/CoreMLFlowerDemo)。
+
+关于 Core ML 模型转换更多的细节，你可以参考下面的资料：
+
+* [ **Apple Developer’s Article on Conversion of Models** ](https://developer.apple.com/documentation/coreml/converting_trained_models_to_core_ml)
+* [ **Python Documentation on Core ML** ](https://pypi.python.org/pypi/coremltools)
+* [ **Coremltools Package Documentation** ](https://pythonhosted.org/coremltools/)
+* [ **Coremltools Package Documentation on Different Converters** ](https://pythonhosted.org/coremltools/coremltools.converters.html)
+
+你认为这篇文字怎么样？如果你觉得它有用或者任何意见，请告诉我。
