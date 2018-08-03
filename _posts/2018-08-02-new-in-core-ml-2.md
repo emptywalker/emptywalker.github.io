@@ -180,3 +180,16 @@ modelOutputs = model.prediction(from: modelInputs, options: options)
 图片识别模型是使用一个卷积神经网络（ CNN ）创建的。CNNs 是有一系列高度优化的层组成的。当你把神经网络从一个格式转换成 Core ML 时，你需要转换每一层。然后，可能会发生一些罕见的场景， Core ML 仅仅是没有提供这一层的转换工具。在过去，遇到这样的情况你什么也做不了，但在 iOS 12 中，苹果工程师介绍了 `MLCustonLayer` 协议，允许开发用 Swift 去创建他们自己的层。有了 `MLCustomLayer` ，你可以自己在 Core ML 模型中去定义神经网络的层的行为。**然而，值得注意的是，自定义层只适用于神经网络模型**。
 
 如果你现在听着感觉非常复杂，不用担心，这通常需要熟练的数据科学家或者机器学习工程师才能理解神经网络的所有复杂之处，并有写出他们自己的模型的能力。这已经超出了本文的讨论范围，因此，我们不去深究它。
+
+### 结语
+
+以上就是 Core ML 2.0 新变化的总结。 Core ML 2.0 的目标是模型更小、更快、更多的可定制。我们已经看到了如何通过量化权重去减少 Core ML 模型的大小，通过新的批次 API 去提高模型的性能，并且示例了在哪里我们可能需要去写自定义的层。作为一个开发者，我预测（看看我做了什么）与其它两个技术（批次 API 和 自定义层）相比，你将会更多地使用权重量化。
+
+如果你有兴趣深入探索 Core ML 2.0，这里有一些超棒的资料供你参考！
+
+* [**What’s New in Core ML, Part 1 – WWDC 2018**](https://developer.apple.com/videos/play/wwdc2018/708)
+* [**What’s New in Core ML, Part 2 – WWDC 2018**](https://developer.apple.com/videos/play/wwdc2018/709)
+* [**Vision with Core ML – WWDC 2018**](https://developer.apple.com/videos/play/wwdc2018/717)
+* [**Introducing Natural Language Framework – WWDC 2018**](https://developer.apple.com/videos/play/wwdc2018/713)
+* [**Core ML Documentation**](https://developer.apple.com/documentation/coreml)
+* [**Apple’s Machine Learning Page**](https://developer.apple.com/machine-learning/)
