@@ -1,0 +1,585 @@
+---
+layout: post
+title: 搭建 SSR 服务器
+date: 2018-08-03 10:26:24.000000000 +09:00
+---
+
+登录服务器后，执行 `sudo -i` 获取 root 权限，然后执行
+
+```ssh
+wget -N --no-check-certificate https://softs.fun/Bash/ssr.sh && chmod +x ssr.sh && bash ssr.sh
+--2018-08-03 09:16:31--  https://softs.fun/Bash/ssr.sh
+```
+这是用来下载和安装ssr，在安装的过程中，会有几步的提示，比如：端口号、密码、加密方式、协议、混淆方式。下面的整体安装的步骤：
+
+
+```ssh
+[ec2-user@ip-172-31-11-113 ~]$ sudo -i
+[root@ip-172-31-11-113 ~]# wget -N --no-check-certificate https://softs.fun/Bash/ssr.sh && chmod +x ssr.sh && bash ssr.sh
+--2018-08-03 09:16:31--  https://softs.fun/Bash/ssr.sh
+Resolving softs.fun (softs.fun)... 168.235.104.198
+Connecting to softs.fun (softs.fun)|168.235.104.198|:443... connected.
+HTTP request sent, awaiting response... 304 Not Modified
+File 'ssr.sh' not modified on server. Omitting download.
+
+  ShadowsocksR 一键管理脚本 [v2.0.38]
+  ---- Toyo | doub.io/ss-jc42 ----
+
+  1. 安装 ShadowsocksR
+  2. 更新 ShadowsocksR
+  3. 卸载 ShadowsocksR
+  4. 安装 libsodium(chacha20)
+————————————
+  5. 查看 账号信息
+  6. 显示 连接信息
+  7. 设置 用户配置
+  8. 手动 修改配置
+  9. 切换 端口模式
+————————————
+ 10. 启动 ShadowsocksR
+ 11. 停止 ShadowsocksR
+ 12. 重启 ShadowsocksR
+ 13. 查看 ShadowsocksR 日志
+————————————
+ 14. 其他功能
+ 15. 升级脚本
+ 
+ 当前状态: 未安装
+
+请输入数字 [1-15]：1
+[信息] 开始设置 ShadowsocksR账号配置...
+请输入要设置的ShadowsocksR账号 端口
+(默认: 2333):
+
+——————————————————————————————
+	端口 : 2333
+——————————————————————————————
+
+请输入要设置的ShadowsocksR账号 密码
+(默认: doub.io):
+
+——————————————————————————————
+	密码 : doub.io
+——————————————————————————————
+
+请选择要设置的ShadowsocksR账号 加密方式
+	
+  1. none
+ [注意] 如果使用 auth_chain_a 协议，请加密方式选择 none，混淆随意(建议 plain)
+ 
+  2. rc4
+  3. rc4-md5
+  4. rc4-md5-6
+ 
+  5. aes-128-ctr
+  6. aes-192-ctr
+  7. aes-256-ctr
+ 
+  8. aes-128-cfb
+  9. aes-192-cfb
+ 10. aes-256-cfb
+ 
+ 11. aes-128-cfb8
+ 12. aes-192-cfb8
+ 13. aes-256-cfb8
+ 
+ 14. salsa20
+ 15. chacha20
+ 16. chacha20-ietf
+ [注意] salsa20/chacha20-*系列加密方式，需要额外安装依赖 libsodium ，否则会无法启动ShadowsocksR !
+
+(默认: 5. aes-128-ctr):3
+
+——————————————————————————————
+	加密 : rc4-md5
+——————————————————————————————
+
+请选择要设置的ShadowsocksR账号 协议插件
+	
+ 1. origin
+ 2. auth_sha1_v4
+ 3. auth_aes128_md5
+ 4. auth_aes128_sha1
+ 5. auth_chain_a
+ 6. auth_chain_b
+ [注意] 如果使用 auth_chain_a 协议，请加密方式选择 none，混淆随意(建议 plain)
+
+(默认: 2. auth_sha1_v4):3
+
+——————————————————————————————
+	协议 : auth_aes128_md5
+——————————————————————————————
+
+请选择要设置的ShadowsocksR账号 混淆插件
+	
+ 1. plain
+ 2. http_simple
+ 3. http_post
+ 4. random_head
+ 5. tls1.2_ticket_auth
+ [注意] 如果使用 ShadowsocksR 加速游戏，请选择 混淆兼容原版或 plain 混淆，然后客户端选择 plain，否则会增加延迟 !
+
+(默认: 5. tls1.2_ticket_auth):2
+
+——————————————————————————————
+	混淆 : http_simple
+——————————————————————————————
+
+是否设置 混淆插件兼容原版(_compatible)？[Y/n]y
+
+请输入要设置的ShadowsocksR账号 欲限制的设备数 ( auth_* 系列协议 不兼容原版才有效 )
+[注意] 设备数限制：每个端口同一时间能链接的客户端数量(多端口模式，每个端口都是独立计算)，建议最少 2个。
+(默认: 无限):
+
+请输入要设置的每个端口 单线程 限速上限(单位：KB/S)
+[注意] 单线程限速：每个端口 单线程的限速上限，多线程即无效。
+(默认: 无限):
+
+
+请输入要设置的每个端口 总速度 限速上限(单位：KB/S)
+[注意] 端口总限速：每个端口 总速度 限速上限，单个端口整体限速。
+(默认: 无限):
+
+[信息] 开始安装/配置 ShadowsocksR依赖...
+Failed to set locale, defaulting to C
+Loaded plugins: priorities, update-motd, upgrade-helper
+amzn-main                                                                                                       | 2.1 kB  00:00:00     
+amzn-updates                                                                                                    | 2.5 kB  00:00:00     
+Resolving Dependencies
+--> Running transaction check
+---> Package amazon-ssm-agent.x86_64 0:2.2.120.0-1.amzn1 will be updated
+---> Package amazon-ssm-agent.x86_64 0:2.2.800.0-1.amzn1 will be an update
+---> Package kernel.x86_64 0:4.14.55-62.37.amzn1 will be installed
+---> Package kernel-tools.x86_64 0:4.14.47-56.37.amzn1 will be updated
+---> Package kernel-tools.x86_64 0:4.14.55-62.37.amzn1 will be an update
+--> Finished Dependency Resolution
+
+Dependencies Resolved
+
+=======================================================================================================================================
+ Package                           Arch                    Version                                 Repository                     Size
+=======================================================================================================================================
+Installing:
+ kernel                            x86_64                  4.14.55-62.37.amzn1                     amzn-updates                   21 M
+Updating:
+ amazon-ssm-agent                  x86_64                  2.2.800.0-1.amzn1                       amzn-updates                   12 M
+ kernel-tools                      x86_64                  4.14.55-62.37.amzn1                     amzn-updates                  124 k
+
+Transaction Summary
+=======================================================================================================================================
+Install  1 Package
+Upgrade  2 Packages
+
+Total download size: 33 M
+Is this ok [y/d/N]: y
+Downloading packages:
+(1/3): amazon-ssm-agent-2.2.800.0-1.amzn1.x86_64.rpm                                                            |  12 MB  00:00:00     
+(2/3): kernel-tools-4.14.55-62.37.amzn1.x86_64.rpm                                                              | 124 kB  00:00:00     
+(3/3): kernel-4.14.55-62.37.amzn1.x86_64.rpm                                                                    |  21 MB  00:00:01     
+---------------------------------------------------------------------------------------------------------------------------------------
+Total                                                                                                   29 MB/s |  33 MB  00:00:01     
+Running transaction check
+Running transaction test
+Transaction test succeeded
+Running transaction
+  Installing : kernel-4.14.55-62.37.amzn1.x86_64                                                                                   1/5 
+  Updating   : kernel-tools-4.14.55-62.37.amzn1.x86_64                                                                             2/5 
+  Updating   : amazon-ssm-agent-2.2.800.0-1.amzn1.x86_64                                                                           3/5 
+  Cleanup    : kernel-tools-4.14.47-56.37.amzn1.x86_64                                                                             4/5 
+  Cleanup    : amazon-ssm-agent-2.2.120.0-1.amzn1.x86_64                                                                           5/5 
+  Verifying  : amazon-ssm-agent-2.2.800.0-1.amzn1.x86_64                                                                           1/5 
+  Verifying  : kernel-tools-4.14.55-62.37.amzn1.x86_64                                                                             2/5 
+  Verifying  : kernel-4.14.55-62.37.amzn1.x86_64                                                                                   3/5 
+  Verifying  : amazon-ssm-agent-2.2.120.0-1.amzn1.x86_64                                                                           4/5 
+  Verifying  : kernel-tools-4.14.47-56.37.amzn1.x86_64                                                                             5/5 
+
+Installed:
+  kernel.x86_64 0:4.14.55-62.37.amzn1                                                                                                  
+
+Updated:
+  amazon-ssm-agent.x86_64 0:2.2.800.0-1.amzn1                         kernel-tools.x86_64 0:4.14.55-62.37.amzn1                        
+
+Complete!
+cat: /etc/redhat-release: No such file or directory
+Failed to set locale, defaulting to C
+Loaded plugins: priorities, update-motd, upgrade-helper
+Existing lock /var/run/yum.pid: another copy is running as pid 8219.
+Another app is currently holding the yum lock; waiting for it to exit...
+  The other application is: yum
+    Memory :  36 M RSS (283 MB VSZ)
+    Started: Fri Aug  3 09:19:50 2018 - 00:01 ago
+    State  : Running, pid: 8219
+Package 2:vim-enhanced-8.0.0503-1.45.amzn1.x86_64 already installed and latest version
+Package unzip-6.0-4.10.amzn1.x86_64 already installed and latest version
+Nothing to do
+[信息] 开始下载/安装 ShadowsocksR文件...
+--2018-08-03 17:19:53--  https://github.com/ToyoDAdoubi/shadowsocksr/archive/manyuser.zip
+Resolving github.com (github.com)... 192.30.255.113, 192.30.255.112
+Connecting to github.com (github.com)|192.30.255.113|:443... connected.
+HTTP request sent, awaiting response... 302 Found
+Location: https://codeload.github.com/ToyoDAdoubi/shadowsocksr/zip/manyuser [following]
+--2018-08-03 17:19:53--  https://codeload.github.com/ToyoDAdoubi/shadowsocksr/zip/manyuser
+Resolving codeload.github.com (codeload.github.com)... 192.30.255.120, 192.30.255.121
+Connecting to codeload.github.com (codeload.github.com)|192.30.255.120|:443... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 2131310 (2.0M) [application/zip]
+Saving to: 'manyuser.zip'
+
+manyuser.zip                      100%[============================================================>]   2.03M  12.4MB/s    in 0.2s    
+
+Last-modified header missing -- time-stamps turned off.
+2018-08-03 17:19:54 (12.4 MB/s) - 'manyuser.zip' saved [2131310/2131310]
+
+Archive:  manyuser.zip
+c4507b7af1fe20a5a6adbb5e3b5a86da9d3a35e8
+   creating: shadowsocksr-manyuser/
+  inflating: shadowsocksr-manyuser/.gitignore  
+  inflating: shadowsocksr-manyuser/.travis.yml  
+  inflating: shadowsocksr-manyuser/CHANGES  
+  inflating: shadowsocksr-manyuser/CONTRIBUTING.md  
+  inflating: shadowsocksr-manyuser/Dockerfile  
+  inflating: shadowsocksr-manyuser/LICENSE  
+  inflating: shadowsocksr-manyuser/MANIFEST.in  
+  inflating: shadowsocksr-manyuser/README.md  
+  inflating: shadowsocksr-manyuser/README.rst  
+  inflating: shadowsocksr-manyuser/apiconfig.py  
+  inflating: shadowsocksr-manyuser/asyncmgr.py  
+  inflating: shadowsocksr-manyuser/config.json  
+  inflating: shadowsocksr-manyuser/configloader.py  
+  inflating: shadowsocksr-manyuser/db_transfer.py  
+   creating: shadowsocksr-manyuser/debian/
+  inflating: shadowsocksr-manyuser/debian/changelog  
+ extracting: shadowsocksr-manyuser/debian/compat  
+  inflating: shadowsocksr-manyuser/debian/config.json  
+  inflating: shadowsocksr-manyuser/debian/control  
+  inflating: shadowsocksr-manyuser/debian/copyright  
+  inflating: shadowsocksr-manyuser/debian/docs  
+  inflating: shadowsocksr-manyuser/debian/init.d  
+ extracting: shadowsocksr-manyuser/debian/install  
+  inflating: shadowsocksr-manyuser/debian/rules  
+  inflating: shadowsocksr-manyuser/debian/shadowsocks.default  
+  inflating: shadowsocksr-manyuser/debian/shadowsocks.manpages  
+   creating: shadowsocksr-manyuser/debian/source/
+ extracting: shadowsocksr-manyuser/debian/source/format  
+  inflating: shadowsocksr-manyuser/debian/sslocal.1  
+  inflating: shadowsocksr-manyuser/debian/ssserver.1  
+  inflating: shadowsocksr-manyuser/importloader.py  
+  inflating: shadowsocksr-manyuser/initcfg.bat  
+  inflating: shadowsocksr-manyuser/initcfg.sh  
+  inflating: shadowsocksr-manyuser/initmudbjson.sh  
+  inflating: shadowsocksr-manyuser/jq-linux32  
+  inflating: shadowsocksr-manyuser/jq-linux64  
+  inflating: shadowsocksr-manyuser/logrun.sh  
+ extracting: shadowsocksr-manyuser/mudb.json  
+  inflating: shadowsocksr-manyuser/mujson_mgr.py  
+  inflating: shadowsocksr-manyuser/mysql.json  
+  inflating: shadowsocksr-manyuser/run.sh  
+  inflating: shadowsocksr-manyuser/server.py  
+  inflating: shadowsocksr-manyuser/server_pool.py  
+  inflating: shadowsocksr-manyuser/setup.py  
+  inflating: shadowsocksr-manyuser/setup_cymysql.sh  
+   creating: shadowsocksr-manyuser/shadowsocks/
+  inflating: shadowsocksr-manyuser/shadowsocks/__init__.py  
+  inflating: shadowsocksr-manyuser/shadowsocks/asyncdns.py  
+  inflating: shadowsocksr-manyuser/shadowsocks/common.py  
+   creating: shadowsocksr-manyuser/shadowsocks/crypto/
+  inflating: shadowsocksr-manyuser/shadowsocks/crypto/__init__.py  
+  inflating: shadowsocksr-manyuser/shadowsocks/crypto/ctypes_libsodium.py  
+  inflating: shadowsocksr-manyuser/shadowsocks/crypto/ctypes_openssl.py  
+  inflating: shadowsocksr-manyuser/shadowsocks/crypto/openssl.py  
+  inflating: shadowsocksr-manyuser/shadowsocks/crypto/rc4_md5.py  
+  inflating: shadowsocksr-manyuser/shadowsocks/crypto/sodium.py  
+  inflating: shadowsocksr-manyuser/shadowsocks/crypto/table.py  
+  inflating: shadowsocksr-manyuser/shadowsocks/crypto/util.py  
+  inflating: shadowsocksr-manyuser/shadowsocks/daemon.py  
+  inflating: shadowsocksr-manyuser/shadowsocks/encrypt.py  
+  inflating: shadowsocksr-manyuser/shadowsocks/encrypt_test.py  
+  inflating: shadowsocksr-manyuser/shadowsocks/eventloop.py  
+  inflating: shadowsocksr-manyuser/shadowsocks/local.py  
+  inflating: shadowsocksr-manyuser/shadowsocks/logrun.sh  
+  inflating: shadowsocksr-manyuser/shadowsocks/lru_cache.py  
+  inflating: shadowsocksr-manyuser/shadowsocks/manager.py  
+  inflating: shadowsocksr-manyuser/shadowsocks/obfs.py  
+   creating: shadowsocksr-manyuser/shadowsocks/obfsplugin/
+  inflating: shadowsocksr-manyuser/shadowsocks/obfsplugin/__init__.py  
+  inflating: shadowsocksr-manyuser/shadowsocks/obfsplugin/auth.py  
+  inflating: shadowsocksr-manyuser/shadowsocks/obfsplugin/auth_chain.py  
+  inflating: shadowsocksr-manyuser/shadowsocks/obfsplugin/http_simple.py  
+  inflating: shadowsocksr-manyuser/shadowsocks/obfsplugin/obfs_tls.py  
+  inflating: shadowsocksr-manyuser/shadowsocks/obfsplugin/plain.py  
+  inflating: shadowsocksr-manyuser/shadowsocks/obfsplugin/verify.py  
+  inflating: shadowsocksr-manyuser/shadowsocks/ordereddict.py  
+  inflating: shadowsocksr-manyuser/shadowsocks/run.sh  
+  inflating: shadowsocksr-manyuser/shadowsocks/server.py  
+  inflating: shadowsocksr-manyuser/shadowsocks/shell.py  
+  inflating: shadowsocksr-manyuser/shadowsocks/stop.sh  
+ extracting: shadowsocksr-manyuser/shadowsocks/tail.sh  
+  inflating: shadowsocksr-manyuser/shadowsocks/tcprelay.py  
+  inflating: shadowsocksr-manyuser/shadowsocks/udprelay.py  
+  inflating: shadowsocksr-manyuser/shadowsocks/user.py  
+  inflating: shadowsocksr-manyuser/shadowsocks/version.py  
+  inflating: shadowsocksr-manyuser/stop.sh  
+  inflating: shadowsocksr-manyuser/switchrule.py  
+ extracting: shadowsocksr-manyuser/tail.sh  
+   creating: shadowsocksr-manyuser/tests/
+  inflating: shadowsocksr-manyuser/tests/aes-cfb1.json  
+  inflating: shadowsocksr-manyuser/tests/aes-cfb8.json  
+  inflating: shadowsocksr-manyuser/tests/aes-ctr.json  
+  inflating: shadowsocksr-manyuser/tests/aes.json  
+  inflating: shadowsocksr-manyuser/tests/assert.sh  
+  inflating: shadowsocksr-manyuser/tests/chacha20.json  
+  inflating: shadowsocksr-manyuser/tests/client-multi-server-ip.json  
+  inflating: shadowsocksr-manyuser/tests/coverage_server.py  
+  inflating: shadowsocksr-manyuser/tests/fastopen.json  
+  inflating: shadowsocksr-manyuser/tests/ipv6-client-side.json  
+  inflating: shadowsocksr-manyuser/tests/ipv6.json  
+  inflating: shadowsocksr-manyuser/tests/jenkins.sh  
+   creating: shadowsocksr-manyuser/tests/libsodium/
+  inflating: shadowsocksr-manyuser/tests/libsodium/install.sh  
+  inflating: shadowsocksr-manyuser/tests/nose_plugin.py  
+  inflating: shadowsocksr-manyuser/tests/rc4-md5.json  
+  inflating: shadowsocksr-manyuser/tests/salsa20-ctr.json  
+  inflating: shadowsocksr-manyuser/tests/salsa20.json  
+  inflating: shadowsocksr-manyuser/tests/server-multi-passwd-client-side.json  
+  inflating: shadowsocksr-manyuser/tests/server-multi-passwd-table.json  
+  inflating: shadowsocksr-manyuser/tests/server-multi-passwd.json  
+  inflating: shadowsocksr-manyuser/tests/server-multi-ports.json  
+  inflating: shadowsocksr-manyuser/tests/setup_tc.sh  
+   creating: shadowsocksr-manyuser/tests/socksify/
+  inflating: shadowsocksr-manyuser/tests/socksify/install.sh  
+  inflating: shadowsocksr-manyuser/tests/socksify/socks.conf  
+  inflating: shadowsocksr-manyuser/tests/table.json  
+  inflating: shadowsocksr-manyuser/tests/test.py  
+  inflating: shadowsocksr-manyuser/tests/test_command.sh  
+  inflating: shadowsocksr-manyuser/tests/test_daemon.sh  
+  inflating: shadowsocksr-manyuser/tests/test_large_file.sh  
+  inflating: shadowsocksr-manyuser/tests/test_udp_src.py  
+  inflating: shadowsocksr-manyuser/tests/test_udp_src.sh  
+  inflating: shadowsocksr-manyuser/tests/workers.json  
+   creating: shadowsocksr-manyuser/utils/
+  inflating: shadowsocksr-manyuser/utils/README.md  
+  inflating: shadowsocksr-manyuser/utils/autoban.py  
+   creating: shadowsocksr-manyuser/utils/fail2ban/
+  inflating: shadowsocksr-manyuser/utils/fail2ban/shadowsocks.conf  
+[信息] ShadowsocksR服务端 下载完成 !
+[信息] 开始下载/安装 ShadowsocksR服务脚本(init)...
+--2018-08-03 17:19:54--  https://raw.githubusercontent.com/ToyoDAdoubi/doubi/master/other/ssr_centos
+Resolving raw.githubusercontent.com (raw.githubusercontent.com)... 151.101.188.133
+Connecting to raw.githubusercontent.com (raw.githubusercontent.com)|151.101.188.133|:443... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 2444 (2.4K) [text/plain]
+Saving to: '/etc/init.d/ssr'
+
+/etc/init.d/ssr                   100%[============================================================>]   2.39K  --.-KB/s    in 0s      
+
+2018-08-03 17:19:54 (34.7 MB/s) - '/etc/init.d/ssr' saved [2444/2444]
+
+[信息] ShadowsocksR服务 管理脚本下载完成 !
+[信息] 开始下载/安装 JSNO解析器 JQ...
+[信息] JQ解析器 安装完成，继续...
+[信息] 开始写入 ShadowsocksR配置文件...
+[信息] 开始设置 iptables防火墙...
+[信息] 开始添加 iptables防火墙规则...
+[信息] 开始保存 iptables防火墙规则...
+iptables: Saving firewall rules to /etc/sysconfig/iptables:[  OK  ]
+ip6tables: Saving firewall rules to /etc/sysconfig/ip6table[  OK  ]
+[信息] 所有步骤 安装完毕，开始启动 ShadowsocksR服务端...
+[信息] ShadowsocksR 启动成功 !
+
+===================================================
+
+ ShadowsocksR账号 配置信息：
+
+ I  P	    : 13.xxx.xxx.xxx
+ 端口	    : 2333
+ 密码	    : doub.io
+ 加密	    : rc4-md5
+ 协议	    : auth_aes128_md5
+ 混淆	    : http_simple_compatible
+ 设备数限制 : 0(无限)
+ 单线程限速 : 0 KB/S
+ 端口总限速 : 0 KB/S
+
+ SSR   链接 : ssr://MTMuNTcuMjIyLjE0OjIzMzM6YXV0aF9hZXMC1tZDU6aHR0cF9zaW1wbGU6Wkc5MVlpNXBidw 
+ SSR 二维码 : http://doub.pw/qr/qr.php?text=ssr://MTMuNTcuMjIyLjE0OjIzMzM6YXV0aF9hU6aHR0cF9zaW1wbGU6Wkc5MVlpNXBidw 
+ 
+  提示: 
+ 在浏览器中，打开二维码链接，就可以看到二维码图片。
+ 协议和混淆后面的[ _compatible ]，指的是 兼容原版协议/混淆。
+
+===================================================
+```
+
+配置安装完成后，会生成一份配置信息，有一个二维码的链接，使用SSR客户端扫描二维码即可。
+
+最后还需要一步，去开通服务器对应的端口号。在 Linux 中，指令信息如下
+
+查看当前端口号状态：
+```ssh
+/sbin/iptables -L -n
+```
+执行结果如下：
+
+```ssh
+Chain INPUT (policy ACCEPT)
+target     prot opt source               destination         
+ACCEPT     udp  --  0.0.0.0/0            0.0.0.0/0            state NEW udp dpt:2333
+ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0            state NEW tcp dpt:2333
+
+Chain FORWARD (policy ACCEPT)
+target     prot opt source               destination         
+
+Chain OUTPUT (policy ACCEPT)
+```
+
+开通某个端口，如果需要开通多个端口号，就多执行几次：
+
+```ssh
+ /sbin/iptables -I INPUT -p tcp --dport 2333 -j ACCEPT
+```
+
+保存配置：
+
+```
+/etc/rc.d/init.d/iptables save
+```
+
+结果：
+
+```ssh
+iptables: Saving firewall rules to /etc/sysconfig/iptables:[  OK  ]
+```
+
+再次查看端口号状态，执行 `/sbin/iptables -L -n` 得到以下显示：
+
+```ssh
+Chain INPUT (policy ACCEPT)
+target     prot opt source               destination         
+ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0            tcp dpt:2338
+ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0            tcp dpt:2337
+ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0            tcp dpt:2336
+ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0            tcp dpt:2335
+ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0            tcp dpt:2334
+ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0            tcp dpt:2333
+ACCEPT     udp  --  0.0.0.0/0            0.0.0.0/0            state NEW udp dpt:2333
+ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0            state NEW tcp dpt:2333
+
+Chain FORWARD (policy ACCEPT)
+target     prot opt source               destination         
+
+Chain OUTPUT (policy ACCEPT)
+target     prot opt source               destination
+```
+
+
+
+**提示：** 如果想更改配置信息，只需从新执行 `bash ssr.sh` 就会得到管理脚本的指令，执行效果如下：
+
+
+```ssh
+  ShadowsocksR 一键管理脚本 [v2.0.38]
+  ---- Toyo | doub.io/ss-jc42 ----
+
+  1. 安装 ShadowsocksR
+  2. 更新 ShadowsocksR
+  3. 卸载 ShadowsocksR
+  4. 安装 libsodium(chacha20)
+————————————
+  5. 查看 账号信息
+  6. 显示 连接信息
+  7. 设置 用户配置
+  8. 手动 修改配置
+  9. 切换 端口模式
+————————————
+ 10. 启动 ShadowsocksR
+ 11. 停止 ShadowsocksR
+ 12. 重启 ShadowsocksR
+ 13. 查看 ShadowsocksR 日志
+————————————
+ 14. 其他功能
+ 15. 升级脚本
+ 
+ 当前状态: 已安装 并 已启动
+ 当前模式: 单端口
+```
+然后会让你输入数字：
+
+```
+请输入数字 [1-15]
+```
+我输入了 7：
+
+```
+当前模式: 单端口，你要做什么？
+ 1. 修改 用户端口
+ 2. 修改 用户密码
+ 3. 修改 加密方式
+ 4. 修改 协议插件
+ 5. 修改 混淆插件
+ 6. 修改 设备数限制
+ 7. 修改 单线程限速
+ 8. 修改 端口总限速
+ 9. 修改 全部配置
+
+(默认: 取消): // 在这里输入想要修改的配置  我想修改协议，输入了 4
+```
+得到结果：
+
+```ssh
+请选择要设置的ShadowsocksR账号 协议插件
+	
+ 1. origin
+ 2. auth_sha1_v4
+ 3. auth_aes128_md5
+ 4. auth_aes128_sha1
+ 5. auth_chain_a
+ 6. auth_chain_b
+ [注意] 如果使用 auth_chain_a 协议，请加密方式选择 none，混淆随意(建议 plain)
+(默认: 2. auth_sha1_v4): // 选择你要修改的协议  我输入了 2
+```
+得到：
+
+```ssh
+
+——————————————————————————————
+	协议 : auth_sha1_v4
+——————————————————————————————
+
+是否设置 协议插件兼容原版(_compatible)？[Y/n] // 输入 Y
+```
+得到新的配置信息，即完成了配置修改：
+
+```
+[信息] ShadowsocksR 停止成功 !
+[信息] ShadowsocksR 启动成功 !
+
+===================================================
+
+ ShadowsocksR账号 配置信息：
+
+ I  P	    : 13.xxx.xxx.14
+ 端口	    : 2333
+ 密码	    : doub.io
+ 加密	    : rc4-md5
+ 协议	    : auth_sha1_v4_compatible
+ 混淆	    : http_simple_compatible
+ 设备数限制 : 0(无限)
+ 单线程限速 : 0 KB/S
+ 端口总限速 : 0 KB/S
+ SS    链接 : ss://cmM0LW1kNTpkb3ViLmlvQDEzLjU3LjI SS  
+ 二维码 : http://doub.pw/qr/qr.php?text=ss://cmM0LW1kNTpkb3ViLmlvQDEzLjU3LjIyMi4
+ SSR   链接 : ssr://MTMuNTcYXV0aF9zaGExX3Y0OnJjNC1tZDU6aHR0cF9zaW1wbGU6Wkc5MVlpNXBidw 
+ SSR 二维码 : http://doub.pw/qr/qr.php?text=ssr://MTMuNTcuMjIyLjE0OjIzMzM6YXVtZDU6aHR0cF9zaW1wbGU6Wkc5MVlpNXBidw 
+ 
+  提示: 
+ 在浏览器中，打开二维码链接，就可以看到二维码图片。
+ 协议和混淆后面的[ _compatible ]，指的是 兼容原版协议/混淆。
+
+===================================================
+```
+
+**以上出现的二维码链接都是无效的**
+
+笔者是在 AMZ 上搭建的，在完成以上配置之后，需要为 AMZ 的实例开通 TCP 的安全组，不然由于防火墙的原因，无法访问。
+
+在 AMZ 的搭建教程可以[参考这里](https://www.jianshu.com/p/c314656ec993)。
