@@ -582,4 +582,5 @@ target     prot opt source               destination
 
 笔者是在 AMZ 上搭建的，在完成以上配置之后，需要为 AMZ 的实例开通 TCP 的安全组，不然由于防火墙的原因，无法访问。
 
+
 在 AMZ 的搭建教程可以[参考这里](https://www.jianshu.com/p/c314656ec993)。
