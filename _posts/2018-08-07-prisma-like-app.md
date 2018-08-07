@@ -76,3 +76,64 @@ python -m pip install jupyter
 ![]({{  site.url  }}/assets/screenshot/prisma-like-app/p4.jpg)
 
 首先，下载[**训练数据**](https://github.com/appcoda/CoreMLStyleTransfer/raw/master/trainingdata.zip)，并解压它。一个文件夹叫做 `content` ，另一个叫做 `style` 。如果你打开了 `content` ，你将会看到大概 70 张不同主题的图片。这个文件夹中包含了不同图片，因为我们的算法知道将应用到风格转换里的图片的类型。因为我们想转换所有图片，因此我得有多样的图片。
+
+另一方面， `style` 文件夹只包含了一张图片： *StarryNight.jpg* 。这个文件夹包含了我们想转换成这样艺术风格的图片。
+
+现在，让我们打开 Jupyter Notebook 开始编码会话，在终端中输入以下代码：
+
+```ssh
+jupyter notebook
+```
+这将会在 Safari 中想下面一样的页面：
+
+![]({{  site.url  }}/assets/screenshot/prisma-like-app/p5.png)
+
+选择 `New` 按钮，然后点击 Python 2 ！
+
+> **注意：**确保你使用的 jupyter notebook 是运行 Python 2 的，因为 Turi Create 不支持 Python 3 。
+
+一旦你点击了那个按钮，一个新的页面就会打开，这就是我们创建模型的地方。点击第一个单元格，然后开始导入 Turi Create 包：
+
+```python
+importi  turicreate as tc
+```
+按下 SHIFT+Enter 键运行这个单元格的代码，等一会儿，直到包被导入。接下来，让我们创建一个包含图片文件夹的引用，请确保你把参数修改成你自己的文件夹路径。
+
+```python
+style = tc.load_images('/Path/To/Folder/style')
+content = tc.load_images('/Path/To/Folder/content')
+```
+运行文本区域的代码，你可以收到像这样的输出：
+
+![]({{  site.url  }}/assets/screenshot/prisma-like-app/p6.png)
+
+不用太担心警告。接下来，我们将输入命令去创建风格转换模型。*强烈建议在一台有强大 GPU 的 Mac 上运行下面的代码！这就意味着大多数最新版的 MacBook Pros 和 iMacs 。如果你选择在 MacBook Air 上运行这个代码，比如，计算将会在 CPU 上运行，可能需要运行几天。*
+
+```python
+modelm  = tc.style_transfer.create(style, content)
+```
+运行代码。根据你运行代码的设备，这可能会花费很长的时间才能完成。在我的 MacBook Air 中，花了 3.5 天，因为计算跑在 CPU 上！如果不没有足够的时间，不用担心。你可以在[**这里**]()（ Core ML 模型的名字为「 StarryStyle 」）下载最终的 Core ML 模型。你可以总是让整个函数运行来感受它的样子！
+
+![]({{  site.url  }}/assets/screenshot/prisma-like-app/p7.png)
+
+你看到包含三列的表：*Iteration*、 *Loss* 和 *Elapsed Time* 。在机器学习中，会有一个来回运行多次的函数。当函数向前运行，叫做 **cost** 。当函数向后运行，叫做 **lose** 。函数每跑一次，目标就是调整参数减小 lose 。因此每次参数被改变，就会多添加一次迭代，目标是获得一个更小的 lose 值。当训练的时候，你可以看到 lose 会缓慢的减小。 Elapsed Time 指的是经过了多长时间。
+
+当模型完成训练后，剩下的事就是保存它！这只需要一行代码就能完成！
+
+```python
+modelm .export_coreml("StarryStyle.mlmodel")
+```
+
+![]({{  site.url  }}/assets/screenshot/prisma-like-app/p8.png)
+
+就这样！去你的库里查看最终的模型！
+
+![]({{  site.url  }}/assets/screenshot/prisma-like-app/p9.png)
+
+### Xcode 项目快览
+
+现在我们有了自己的模型，剩下的就是把它导入到我们的 Xcode 项目。打开 Xcode 9，看一下项目。
+
+![]({{  site.url  }}/assets/screenshot/prisma-like-app/p10.png)
+
+构建和运行项目，确保你可以编译成功。app 还不能立刻工作，当我们按钮 `Van Gogh!` 按钮时，什么也没有发生！这是由编写代码决定的。我们开始！
