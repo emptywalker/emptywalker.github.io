@@ -137,3 +137,119 @@ modelm .export_coreml("StarryStyle.mlmodel")
 ![]({{  site.url  }}/assets/screenshot/prisma-like-app/p10.png)
 
 构建和运行项目，确保你可以编译成功。app 还不能立刻工作，当我们按钮 `Van Gogh!` 按钮时，什么也没有发生！这是由编写代码决定的。我们开始！
+
+### 实现机器学习
+第一步就是把模型文件（例如 `StarryStyle.mlmodel` ）拖拽到项目中，确保 `Copy Items If Needed` 被选中，和 project target 是选中的。
+
+![]({{  site.url  }}/assets/screenshot/prisma-like-app/p11.png)
+
+接下来，我们得去 `ViewController.swift` 中添加代码去处理机器学习。大部分的代码都会写在我们的 `transformImage()` 方法中。让我们导入 Core ML 包，调用模型吧。
+
+```swift
+import CoreML
+...
+@IBAction func transformImage(_ sender: Any) {
+    // 这是 Style Transfer 
+    let model = StarryStyle()
+}
+```
+
+这样简单的一行代码，就把我们的 Core ML 模型分配给了常量 `model`。
+
+#### 转换图片
+接下来，我们得去转换用户从可读数据中选择的图片，如果你再看一下 `StarryStyle.mlmodel` 文件，你应该会发现它接受一个大小为 256×256 的图片，因此我们必须转换。在我们的 `transformImage()` 方法正下方，添加一个新的方法。
+
+```swift
+func pixelBuffer(from image: UIImage) -> CVPixelBuffer? {
+    // 1
+    UIGraphicsBeginImageContextWithOptions(CGSize(width: 256, height: 256), true, 2.0)
+    image.draw(in: CGRect(x: 0, y: 0, width: 256, height: 256))
+    let newImage = UIGraphicsGetImageFromCurrentImageContext()!
+    UIGraphicsEndImageContext()
+ 
+    // 2
+    let attrs = [kCVPixelBufferCGImageCompatibilityKey: kCFBooleanTrue, kCVPixelBufferCGBitmapContextCompatibilityKey: kCFBooleanTrue] as CFDictionary
+    var pixelBuffer : CVPixelBuffer?
+    let status = CVPixelBufferCreate(kCFAllocatorDefault, 256, 256, kCVPixelFormatType_32ARGB, attrs, &pixelBuffer)
+    guard (status == kCVReturnSuccess) else {
+        return nil
+    }
+       
+    // 3   
+    CVPixelBufferLockBaseAddress(pixelBuffer!, CVPixelBufferLockFlags(rawValue: 0))
+    let pixelData = CVPixelBufferGetBaseAddress(pixelBuffer!)
+       
+    // 4     
+    let rgbColorSpace = CGColorSpaceCreateDeviceRGB()
+    let context = CGContext(data: pixelData, width: 256, height: 256, bitsPerComponent: 8, bytesPerRow: CVPixelBufferGetBytesPerRow(pixelBuffer!), space: rgbColorSpace, bitmapInfo: CGImageAlphaInfo.noneSkipFirst.rawValue)
+       
+    // 5
+    context?.translateBy(x: 0, y: 256)
+    context?.scaleBy(x: 1.0, y: -1.0)
+    
+    // 6 
+    UIGraphicsPushContext(context!)
+    image.draw(in: CGRect(x: 0, y: 0, width: 256, height: 256))
+    UIGraphicsPopContext()
+    CVPixelBufferUnlockBaseAddress(pixelBuffer!, CVPixelBufferLockFlags(rawValue: 0))
+        
+    return pixelBuffer
+}
+```
+这是一个辅助函数，类似于[**早期 Core ML 教程**](https://emptywalker.github.io/2018/07/introduction-core-ml/)中使用的相同函数。万一你不记得了，不用担心。我们一步步来说明这个函数干了什么。
+1. 由于我们的模型只接受规格为 `256 x 256` 的图片，我们将图片转换为正方形。然后，我们把正方形图片分配给另一个变量 `newImage` 。
+2. 现在，我们把 `newImage` 转换成一个 `CVPixelBuffer` 。如果你对 `CVPixelBuffer` 不熟悉，它主要就是一个图片缓冲区，用于保存主存储器中的像素。你可以在[**这里**](https://developer.apple.com/documentation/corevideo/cvpixelbuffer-q2e)找到关于 `CVPixelBuffers` 的更多信息。
+3. 我们然后获取图片中存在的所有像素，并将它们转换为依赖于设备的 RGB 颜色空间。然后，通过将这些所有的数据创建成一个 `CGContext` ，每当我们需要渲染（或改变）它的一些底层属性时，我们都可以轻松的调用它。这是我们在下面两行代码中通过翻转和缩放图片来做的事情。
+4. 最后，我们将图形上下文放到当前上下文中，渲染图片，然后从栈顶中移除上下文。这些步骤都做了之后，我们将返回我们的像素缓冲区。
+
+这是真的高级 `Core Image` 代码，已经超出了本教程的范围。如果你去其中大部分都不理解话也不用担心。主要的就是，这个函数提取了一张图片的数据，把这些数据转换成了 Core ML 很容易读取的像素缓冲区。
+
+
+#### 将 Style Transfer 应用于图像
+现在这里我们有了 Core ML 的辅助函数，回到 `transformImage()` 函数并实现它。在我们声明 `model` 的下面一行，添加下面的代码：
+
+```swift
+let styleArray = try? MLMultiArray(shape: [1] as [NSNumber], dataType: .double)
+styleArray?[0] = 1.0
+```
+
+Turi Create 允许你在一个模型中打包多种「风格」。在本项目中，我们只有一种风格：*星夜*。然而，如果你想添加更多的风格，你可以在 `style` 文件夹中添加更多的图片。我们声明 `styleArray` 为 [**`MLMultiArray`**](https://developer.apple.com/documentation/coreml/mlmultiarray) 类型。这是 Core ML 模型用于输入或输出的一种数组类型，我们只有一个形状和一个数据元素。这就是为什么我们把 `styleArray` 的元素数量设为 1 的原因。
+
+![]({{  site.url  }}/assets/screenshot/prisma-like-app/p12.png)
+
+最后，剩下的就是把模型产生的预测设置到 `imageView` 中。
+
+```swift
+if let image = pixelBuffer(from: imageView.image!) {
+    do {
+        let predictionOutput = try model.prediction(image: image, index: styleArray!)
+                
+        let ciImage = CIImage(cvPixelBuffer: predictionOutput.stylizedImage)
+        let tempContext = CIContext(options: nil)
+        let tempImage = tempContext.createCGImage(ciImage, from: CGRect(x: 0, y: 0, width: CVPixelBufferGetWidth(predictionOutput.stylizedImage), height: CVPixelBufferGetHeight(predictionOutput.stylizedImage)))
+        imageView.image = UIImage(cgImage: tempImage!)
+    } catch let error as NSError {
+        print("CoreML Model Error: \(error)")
+    }
+}
+```
+这个方法首先会检查 `imageView` 中是否有图片了。在代码块中，定义了一个 `predictionOutput` 去存储模型输出的预测。我们调用模型的 `prediction` 方法，传入我们的图片和风格数组。预测的结果是一个像素缓冲区。然而，我们不能给 `UIImageView` 分配一个像素缓冲区，所以我们想出了一个创造性的方法来做这件事。
+
+首先，我们把 `predictionOutput.stylizedImage` 设置成一个 `CIImage` 类型的图片，然后我们创建一个 `CIContext` 实例变量 `tempContext` 。我们可以根据上下文的内置方法（比如：`createCGImage` ）从 `ciImage` 生成一个 `CGImage` 。最后，我们可以把 `imageView` 设置成 `tempImage` 。就这样，如果发生了错误，我们就根据打印的错误日志温和地处理它。
+
+构建和运行你的项目。从你的相册中选择一张图片，然后测试一下 app 的效果如何！
+
+![]({{  site.url  }}/assets/screenshot/prisma-like-app/p13.jpg)
+
+你可能会注意到模型看起来不太接近*星夜*风格，这是由于各种原因。也许我们需要更多的训练数据？又或者我们需要针对更高（或更低）的迭代次数来训练模型，我超级鼓励你重复上面的步骤去不断地调试，直到你得到一个满意的结果！
+
+### 结语
+总结一下本教程！我已经向你介绍了 Turi Create 并创建了一个你自己的 Style Transfer 模型，在 5 年前，一个人是不可能创造这样成绩的。你也学习了如果把这个 Core ML 模型导入到你的 iOS app 中，并使用它完成创造性的目的！
+
+然而， Style Transfer 只是一个开始。像我之前提到的那也，Turi Create 可以使用在各种各样的应用程序中。这是一些非常棒的资源，可供你下一步学习：
+
+* [**Apple’s Gitbook on Turi Create Applications**](https://apple.github.io/turicreate/docs/userguide/applications/)
+* [**A Guide to Turi Create – WWDC 2018**](https://developer.apple.com/videos/play/wwdc2018/712/)
+* [**Turi Create Repository**](https://github.com/apple/turicreate)
+
+想要完整的项目，你可以在 [**GitHub**](https://github.com/appcoda/CoreMLStyleTransfer) 上下载。如果你有任何评论和反馈，请在下面给我留言，分享你的想法。
