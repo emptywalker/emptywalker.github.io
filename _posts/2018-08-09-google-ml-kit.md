@@ -10,4 +10,24 @@ date: 2018-08-09 17:26:24.000000000 +09:00
 > 
 >   原文时间：2018-06-15
 
-就像 Apple 为她的开发者社区做了很多事情一样，另一家不遗余力的为她的开发者创造出色工具和服务的公司就是 Google 。
+就像 Apple 为她的开发者社区做了很多事情一样，另一家不遗余力的为她的开发者创造出色工具和服务的公司就是 Google 。最近几年， Google 已经发布和改进了它的多个服务，以便给 iOS 和 Android 开发者更多的功能，比如 Google Cloud 、Firebase 、 TensorFlow 等等。
+
+今年，在 Google I/O 2018 上， Google 向她的开发者们发布了一款叫做 [**ML Kit**](https://developers.google.com/ml-kit/) 的全新工具包。 Google 一直处于人工智能领域的最前沿，并且通过让开发者使用 ML Kit 模型，Google 已经赋能给了开发者。
+
+![]({{  site.url  }}/assets/screenshot/google-ml-kit/p1.png)
+
+使用 ML Kit ，你需要很少的代码就能够执行各种机器学习的任务。 CoreML 和 ML Kit 一个最主要的区别就是：使用 CoreML ，你必须添加自己的模型，但使用 ML Kit ，你可以依靠 Google 为你提供的模型或者使用你自己的模型。在本教程中，我们将依靠使用 Google 的模型，因为添加自己的 ML 模型需要 TensorFlow 和 非常了解 TensorFlow 。
+
+> **编辑提示：**随着 WWDC 18 的发布，你现在可以在 Xcode 10 的 Playgrounds 中使用 [**Create ML 去创建你自己 ML 模型**](https://emptywalker.github.io/2018/08/create-ml/)
+
+
+另一个不同点就是如果你的模型太大了，你可以把你的 ML 模型放到 Firebase 中，然后让你的 app 去调用服务器。在 CoreML 中，你只能在设备中跑机器学习模型。这有一个 ML Kit 的能力列表：
+
+* 扫描条形码
+* 脸部检测
+* 图片标签
+* 文本识别
+* 地表识别
+* 智能回复（还没发布，但快了）
+
+在本教程中，我将向你展示如何用 Firebase 创建一个项目，使用 Cocoapods 去下载依赖包和集成 ML Kit 到你的 app ！我们开始！
