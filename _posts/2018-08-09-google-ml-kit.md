@@ -31,3 +31,21 @@ date: 2018-08-09 17:26:24.000000000 +09:00
 * 智能回复（还没发布，但快了）
 
 在本教程中，我将向你展示如何用 Firebase 创建一个项目，使用 Cocoapods 去下载依赖包和集成 ML Kit 到你的 app ！我们开始！
+
+
+### 创建一个 Firebase 项目
+第一步就是去  [**Firebase 控制台**](https://www.appcoda.com/mlkit/console.firebase.google.com)。在这儿你将会被提示去登录你的 Google 账号。登录之后，你会看到一个欢迎页面，就像这样。
+
+![]({{  site.url  }}/assets/screenshot/google-ml-kit/p2.png)
+
+点击 *Add Project* 按钮，然后给你的项目命名，我们这个项目就叫 `ML Kit Introduction` 。保留 Project ID 并根据需求去修改 *国家/地区*，然后点击 *Create Project* 按钮，这可能会还一点时间。
+
+> **注意：** 在到达限额之前你只能创建一定数量的 Firebase 项目，谨慎创建你的项目。
+
+![]({{  site.url  }}/assets/screenshot/google-ml-kit/p3.png)
+
+当所有的事情都搞定了之后，你会看到这样的界面！
+
+![]({{  site.url  }}/assets/screenshot/google-ml-kit/p4.png)
+
+这是你的项目概览页面，并且你可以从这个控制台中操作各种各样的 Firebase 控件。恭喜！你刚刚创建了你第一个 Firebase 项目！保持这个项目不变，我们将切换到第二个来看看 iOS 项目。在[**这里**](https://github.com/appcoda/ML-Kit-Demo/raw/master/mlkit-starter.zip)下载启动项目.
