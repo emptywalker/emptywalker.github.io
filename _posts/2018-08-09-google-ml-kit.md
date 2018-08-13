@@ -441,3 +441,14 @@ textDetector?.detect(in: visionImage, completion: { (features, error) in
 ![]({{  site.url  }}/assets/screenshot/google-ml-kit/p24.png)
 
 然而，这已经超出本教程的范围了，如果你觉得你可以接受挑战，你可以在[**这里**](https://firebase.google.com/docs/ml-kit/ios/recognize-landmarks)找到文档并实现代码。最终的项目中也会包含这个代码。
+
+### 结语
+这真的是一个大教程，所以请随时向上回滚，复习一下你可能不理解的地方。如果仍然有问题无法解答，请在下方评论。使用 ML Kit ，你已经看到它是如此地简单，就能把在你的 app 中实现一个聪明的机器学习功能。可以创建的应用程序的范围很大，所以这里有一些想法供你试用：
+* 给视觉障碍者做一个识别文本并读给用户听的 app 。
+* 面容追踪的 app ，比如 [**Try Not to Smile by Roland Horvath**](https://itunes.apple.com/us/app/try-not-to-smile/id1307338693?mt=8)
+* 条码扫描
+* 基于标签搜索图片
+
+能性是无穷无尽的，它都基于你可以想象的以及你希望如何帮助你的用户。在[**这里**](https://emptywalker.github.io/2018/08/google-ml-kit/)可以下载最终的项目，通过查看他们的[**文档**](https://firebase.google.com/docs/ml-kit/)你可以更多关于 ML Kit 的 API 。希望你在本教程中学到了一些新的东西。在下面评论中，让我知道它是如何进行的。
+
+对于完整的项目，你可以在 [**GitHub**](https://github.com/appcoda/ML-Kit-Demo) 上查看。
