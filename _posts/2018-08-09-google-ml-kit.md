@@ -169,3 +169,68 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 ![]({{  site.url  }}/assets/screenshot/google-ml-kit/p17.png)
 
 恭喜！你已经完成了本教程中最富有挑战的部分，剩下的就是用 Swift 添加 ML Kit 代码。现在是休息的最佳时机，但从现在开始，它只是在我们熟悉的代码中平稳的运行！
+
+### 条码扫描
+
+第一个实现的将是条码扫描，这个添加到你的 app 中是真的很简单。前往 `BarcodeViewController` ，你将会看到 `Choose Image` 按钮被点击时要做的事情的代码。为了访问所有 ML Kit 的协议，我们不得不导入 Firebase 。
+
+```swift
+import UIKit
+import Firebase
+```
+接下来，我们定义一些将会在条码扫描函数中用到的变量。
+
+```swift
+let options = VisionBarcodeDetectorOptions(formats: .all)
+lazy var vision = Vision.vision()
+```
+
+`options` 变量告诉 `BarcodeDetector` 将要识别的条码类型。 ML Kit 可以识别大部分常见格式的条码，比如：Codabar 、39 码、93 码、UPC-A 、 UPC-E 、 Aztec 、 PDF417 、 二维码等等。 出于我们的目的，我们将要求检测器识别所有格式类型。 `vision` 变量返回了一个 Firebase Vision 服务的实例，通过这个变量，我们可以执行大部分的计算。
+
+![]({{  site.url  }}/assets/screenshot/google-ml-kit/p18.png)
+
+接下来，我们需要去处理识别逻辑，我们将会在 `imagePickerController:didFinishPickingMediaWithInfo` 函数中实现这些。当我们选择一张图片的时候这个函数会被调用。现在，这个函数只是把 `imageView` 设置成了我们选择的图片，在 `imageView.image = pickedImage` 下面一行添加一下代码。
+
+```swift
+// 1
+let barcodeDetector = vision.barcodeDetector(options: options)
+let visionImage = VisionImage(image: pickedImage)
+ 
+//2
+barcodeDetector.detect(in: visionImage) { (barcodes, error) in
+    //3
+    guard error == nil, let barcodes = barcodes, !barcodes.isEmpty else {
+        self.dismiss(animated: true, completion: nil)
+        self.resultView.text = "No Barcode Detected"
+        return
+    }
+    
+    //4
+    for barcode in barcodes {
+        let rawValue = barcode.rawValue!
+        let valueType = barcode.valueType
+        
+        //5
+        switch valueType {
+        case .URL:
+            self.resultView.text = "URL: \(rawValue)"
+        case .phone:
+            self.resultView.text = "Phone number: \(rawValue)"
+        default:
+            self.resultView.text = rawValue
+        }
+    }
+}
+```
+
+这里有一些关于所做事情的快速概述。这些看起来很多其实很简单，这将是我们为本教程剩余部分所做的事情的基本格式。
+
+1. 首先就是定义两个变量： `barcodeDetector` 是  Firebase Vision 服务的条码检测对象，我们把它设置成可以检测所有条码类型。然后，我们定义一个和我们选择的图片的类型相同的图片叫做 `visionImage` 。
+2. 我们调用 `barcodeDetector` 的 `detect` 方法，传入 `visionImage` 变量。我们定义了两个对象： `barcodes` 和 `error` 。
+3. 首先，我们处理错误。如果有一个错误或者没有条码被识别到，我们就弹回 Image Picker View Controller 并把 `resultView` 设置成「没检测到条码」。然后我们在函数中调用 `return` 因此函数中剩余的部分就不会被执行。
+4. 如果有一个条码被检测到了，我们使用 for 循环在每个识别到的条码中执行相同的代码。我们定义了两个常量： `rawValue` 和 `valueType` 。条码的原始值包含了它持有的数据，可能是文本、数字、图片等。条码的值类型表面它是什么类型的信息：邮件、联系方式、链接等。
+5. 现在，我们可以简单的打印原始值，但这不会有很好的用户体验。相反，我们将根据值类型提供自定义消息，我们检查它的类型，并根据它的类型在 `resultView` 上设置一些文本。比如，如果是 URL ，我们会在 `resultView` 上设置文本为 「URL:」 和 显示 URL 内容。
+
+编译和运行 app 。可能会非常地快！因为 `resultView` 是一个 UITextView 类型，因此你可以选择任何检测到的数据和它交互，比如数字、链接和邮件，这是非常的酷！
+
+![]({{  site.url  }}/assets/screenshot/google-ml-kit/p19.png)
