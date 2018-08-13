@@ -335,3 +335,49 @@ faceDetector.detect(in: visionImage) { (faces, error) in
 编译和运行 app ，看看它如何执行的！随意调试这些值并玩转他们！
 
 ![]({{  site.url  }}/assets/screenshot/google-ml-kit/p21.png)
+
+### 图像标签
+
+接下来，我们将开始图像标签。这比面容检测简单多了。实际上，你有图像标签和文本识别两个选项。你可以在设备上完成机器学习（这是 Apple 更喜欢的，因为所有数据都属于用户，可以离线运行，不需要调用 Firebase ），或者用 Google 的  Cloud Vision，这里的优势是模型将会被自动更新并且有更高的精确度，有一个更大的，精确的模型大小在云中比设备中更容易。然而，我们将继续到目前为止所做的一切，并只实现设备版本。
+
+看看你是否能自己实现它！它和前面两个场景非常相似。如果不行，也行！这就是我们应该做的！
+
+```swift
+import UIKit
+import Firebase
+...
+lazy var vision = Vision.vision()
+```
+不像之前，对于标签检测我们将使用默认设置，因此我们只需要定义一个常量。其它事情就和之前的一样，将在 `imagePickerController:didFinishPickingMediaWithInfo` 函数中， `imageView.image = pickedImage` 的下面添加几行代码：
+
+```swift
+//1
+let labelDetector = vision.labelDetector()
+let visionImage = VisionImage(image: pickedImage)
+self.resultView.text = ""
+ 
+//2
+labelDetector.detect(in: visionImage) { (labels, error) in
+    //3
+    guard error == nil, let labels = labels, !labels.isEmpty else {
+        self.resultView.text = "Could not label this image"
+        self.dismiss(animated: true, completion: nil)
+        return
+    }
+    
+    //4
+    for label in labels {
+        self.resultView.text = self.resultView.text + "\(label.label) - \(label.confidence * 100.0)%\n"
+    }
+}
+```
+这应该开始看起来很熟悉了。让我简要回顾一下：
+
+1. 我们定义了 `labelDetector` 告诉 ML Kit 的 Vision 服务去从图片中识别标签。我们定义了 `visionImage` 成为我们选择的图片，我们情空 `resultView` 防止多次调用这个函数。
+2. 我们在 `visionImage` 上调用 `detect` 函数去找出 `labels` 和 `errors` 。
+3. 如果有一个错误或者没能够标记图像，我们就退出函数告诉用户我们不能够标记图像。
+4. 如果一切都好了，我们设置 `resultView` 文本为图片的标签，以及 ML Kit 对那个图像的标签有多大的信心。
+
+很简单，对不对？编译并运行你的代码！看看标签有多准确（或者疯狂）呢？
+
+![]({{  site.url  }}/assets/screenshot/google-ml-kit/p22.png)
