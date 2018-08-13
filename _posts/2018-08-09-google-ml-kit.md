@@ -381,3 +381,55 @@ labelDetector.detect(in: visionImage) { (labels, error) in
 很简单，对不对？编译并运行你的代码！看看标签有多准确（或者疯狂）呢？
 
 ![]({{  site.url  }}/assets/screenshot/google-ml-kit/p22.png)
+
+### 文本识别
+我们几乎都做完了！光学字符识别，或者叫 ORC ，这两年就移动应用而言变得非常地流行。使用 ML Kit ，在你的 apps 中去实现这个会更简单。让我们看看如何实现吧！
+
+同样的，文本识别可以被连接到 Google 云，并可以像图像便签那样调用云中的模型，但我们现在将使用设备中的 API 。
+
+```swift
+import UIKit
+import Firebase
+...
+lazy var vision = Vision.vision()
+var textDetector: VisionTextDetector?
+```
+和之前一样，我们调用 Vision 服务并定义一个 `textDetector` 。在 `viewDidLoad` 方法中，我们可以把 `vision` 的文本检测器设置给 `textDetector` 变量。
+
+```swift
+override func viewDidLoad() {
+    super.viewDidLoad()
+    imagePicker.delegate = self
+    textDetector = vision.textDetector()
+}
+```
+接下来，我们只在 `imagePickerController:didFinishPickingMediaWithInfo` 中处理所有的事情。照常，我们将在 `imageView.image = pickedImage` 下面输入逻辑。
+
+```swift
+//1
+let visionImage = VisionImage(image: pickedImage)
+textDetector?.detect(in: visionImage, completion: { (features, error) in
+    //2
+    guard error == nil, let features = features, !features.isEmpty else {
+        self.resultView.text = "Could not recognize any text"
+        self.dismiss(animated: true, completion: nil)
+        return
+    }
+    
+    //3
+    self.resultView.text = "Detected Text Has \(features.count) Blocks:\n\n"
+    for block in features {
+        //4
+        self.resultView.text = self.resultView.text + "\(block.text)\n\n"
+    }
+})
+```
+
+1. 我们把 `visionImage` 设置成选择的图片，我们在这张图片上运行 `detect` 函数去查找 `features` 和 `errors` 。
+2. 如果有一个错误或没有文本，我们告诉用户「没有识别任何文本」并退出函数。
+3. 第一段信息是我们将告诉我们用户的是已经检测到了多少个文本块。
+4. 最后，我们将 `resultView` 的文本设置为每个块的文本，在 `\n \n` 之间留出一个空格（2个新行）。
+
+测试一下！尝试输入不同字体和颜色的文本，我的结果表明，在打印的文本上表现完美，但在手写文本上还有很艰难。
+
+![]({{  site.url  }}/assets/screenshot/google-ml-kit/p23.png)
