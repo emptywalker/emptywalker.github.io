@@ -433,3 +433,11 @@ textDetector?.detect(in: visionImage, completion: { (features, error) in
 测试一下！尝试输入不同字体和颜色的文本，我的结果表明，在打印的文本上表现完美，但在手写文本上还有很艰难。
 
 ![]({{  site.url  }}/assets/screenshot/google-ml-kit/p23.png)
+
+### 地标识别
+
+现在，地标识别可以像其它4类一样被实现。不幸的是，ML Kit 到目前为止不支持设备上的地标识别。要执行地标识别，您需要将项目计划更改为 「Blaze」并激活Google Cloud Vision API。
+
+![]({{  site.url  }}/assets/screenshot/google-ml-kit/p24.png)
+
+然而，这已经超出本教程的范围了，如果你觉得你可以接受挑战，你可以在[**这里**](https://firebase.google.com/docs/ml-kit/ios/recognize-landmarks)找到文档并实现代码。最终的项目中也会包含这个代码。
