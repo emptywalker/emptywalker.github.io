@@ -234,3 +234,104 @@ barcodeDetector.detect(in: visionImage) { (barcodes, error) in
 编译和运行 app 。可能会非常地快！因为 `resultView` 是一个 UITextView 类型，因此你可以选择任何检测到的数据和它交互，比如数字、链接和邮件，这是非常的酷！
 
 ![]({{  site.url  }}/assets/screenshot/google-ml-kit/p19.png)
+
+
+### 面容识别
+
+接下来，我们将讨论一下面容识别。让我们更进一步，看看我们如何报告一个人是否在微笑，是否睁开眼睛等等，而不只是在脸上画个框。
+
+和之前一样，我们需要在开始之前定义一些常量。
+
+```swift
+import UIKit
+import Firebase
+...
+let options = VisionFaceDetectorOptions()
+lazy var vision = Vision.vision()
+```
+这里和之前唯一的不同就是我们调用了默认的 FaceDetectorOptions 。我们在类的 `viewDidLoad` 方法中配置的这些选项。
+
+```swift
+override func viewDidLoad() {
+    super.viewDidLoad()
+    imagePicker.delegate = self
+    
+    // 在视图加载后做的额外的事情
+    options.modeType = .accurate
+    options.landmarkType = .all
+    options.classificationType = .all
+    options.minFaceSize = CGFloat(0.1)
+}
+```
+在 `viewDidLoad` 中我们定义了检测器的特性。首先，我们选择了使用的模式，有两个模式：精度和速度。因为这只是一个示例 app ，我们将使用精度模式，但在一些情况中速度更重要， `options.modeType = .fast` 这样调用可能更聪明。
+
+接下来我们要求检测器去找出所有的地标和分类。这二者有什么不用？地标是面部的一个确定部分，比如右脸颊、左脸颊、鼻子底部、眉毛等等！分类有点像要检测的事件。当前， ML Kit Vision 只可以识别左/右眼是否睁开，人们是否在微笑。为了我们的目的，我们将处理分类会的事情（微笑和睁眼）。
+
+我们设置的最后一个选项是最小化面部大小。当我们设置 `options.minFaceSize = CGFloat(0.1)` 的时候，我们正在要求期待面部大小的最小值。尺寸是表示头部宽度与图像宽度的比例。值为0.1要求检测器搜索最小面部，该面部大约是被搜索图像宽度的 10％ 。
+
+![]({{  site.url  }}/assets/screenshot/google-ml-kit/p20.png)
+
+接下来，我们处理 `imagePickerController:didFinishPickingMediaWithInfo` 方法中的逻辑，在 `imageView.image = pickedImage` 下面，输入以下代码：
+
+```swift
+let faceDetector = vision.faceDetector(options: options)
+let visionImage = VisionImage(image: pickedImage)
+self.resultView.text = ""
+```
+
+这只是把 ML Kit Vision 服务根据我们之前配置的选项设置成一个面容检测器。我们也定义了一个 `visionImage` 去显示我们选择的那个图片。由于我们已经运行了好几次了，我们想要清空 `resultView` 因此我们在第三行清空它。接下来，我们调用 `faceDetector` 的检测函数。
+
+```swift
+//1
+faceDetector.detect(in: visionImage) { (faces, error) in
+    //2
+    guard error == nil, let faces = faces, !faces.isEmpty else {
+        self.dismiss(animated: true, completion: nil)
+        self.resultView.text = "No Face Detected"
+        return
+    }
+    //3
+    self.resultView.text = self.resultView.text + "I see \(faces.count) face(s).\n\n"
+    
+    for face in faces {
+        //4
+        if face.hasLeftEyeOpenProbability {
+            if face.leftEyeOpenProbability < 0.4 {
+                self.resultView.text = self.resultView.text + "The left eye is not open!\n"
+            } else {
+                self.resultView.text = self.resultView.text + "The left eye is open!\n"
+            }
+        }
+        
+        if face.hasRightEyeOpenProbability {
+            if face.rightEyeOpenProbability < 0.4 {
+                self.resultView.text = self.resultView.text + "The right eye is not open!\n"
+            } else {
+                self.resultView.text = self.resultView.text + "The right eye is open!\n"
+            }
+        }
+        
+        //5
+        if face.hasSmilingProbability {
+            if face.smilingProbability < 0.3 {
+                self.resultView.text = self.resultView.text + "This person is not smiling.\n\n"
+            } else {
+                self.resultView.text = self.resultView.text + "This person is smiling.\n\n"
+            }
+        }
+    }
+}
+```
+
+这和我们之前在条码检测函数中写的非常相似。下面是发生的一切：
+1. 我们在 `visionImage` 上调用 `detect` 函数来寻找 `faces` 和 `errors` .
+2. 万一有错误或者没有面容，我们把 `resultView` 的文本设置为「没有检测到面容」，并退出函数。
+3. 如果面容被检测到了，我们第一个表达式是在 `resultView` 上打印出我们看到的面容的数量。你将会在本篇教程中的很多字符串里发现 `\n` ，这标志着空行。
+4. 然后我们深入讨论细节。如果 `face` 对左眼睁开有一个概率，我们就检查看一下这个概率是多少。在本例中，我已经设置了，如果概率小于 0.4 左眼就是闭着的。你可以用同样的方式去设置右眼，你可以修改成你想的值。
+5. 同样的，我会检查微笑概率，如果小于 0.3 这个人就很可能没有笑，否则面容就是微笑的。
+
+> **注意：** 我选择的这些值是基于我感觉可能是识别出来的最好的值。由于微笑比睁眼更难去检测，我降低了它的概率值，因此猜对它的可能性更高。
+
+编译和运行 app ，看看它如何执行的！随意调试这些值并玩转他们！
+
+![]({{  site.url  }}/assets/screenshot/google-ml-kit/p21.png)
