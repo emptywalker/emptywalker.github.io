@@ -49,3 +49,12 @@ date: 2018-08-09 17:26:24.000000000 +09:00
 ![]({{  site.url  }}/assets/screenshot/google-ml-kit/p4.png)
 
 这是你的项目概览页面，并且你可以从这个控制台中操作各种各样的 Firebase 控件。恭喜！你刚刚创建了你第一个 Firebase 项目！保持这个项目不变，我们将切换到第二个来看看 iOS 项目。在[**这里**](https://github.com/appcoda/ML-Kit-Demo/raw/master/mlkit-starter.zip)下载启动项目.
+
+### 快速浏览启动项目
+
+打开启动项目，你会看到大部分的 UI 都已经为你设计好了。构建并运行 app ，你会看到一个 `UITableView` ，可以根据 ML Kit 的选项去到不同的页面。
+
+![]({{  site.url  }}/assets/screenshot/google-ml-kit/p5.png)
+
+如果你点击了 *Choose Image* 按钮， `UIImagePickerView` 会弹出，选择一张图片就会替换空的占位图。然而，如果没有反应，是因为我们集成了 ML Kit 并且 ML Kit 正在这张图片上执行它的机器学习任务。
+
