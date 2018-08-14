@@ -229,3 +229,81 @@ override func viewDidLoad() {
 
 OK 。现在是时候添加多个对象了。
 
+### 给 ARSCNView 添加多个对象
+
+现在我们的盒子是有点孤单的，让我们给盒子多一点盒子。我们要从特征点检测中添加对象。
+
+因此，什么是特征点？
+
+根据 Apple 的说法，下面是特征点的定义：
+
+> 由 ARKit 自动识别为连续曲面的一部分但没有相应锚点的点。
+
+它基本上是现实世界事物表面上的监测点。回到添加盒子的实现中来，开始之前，让我们在 `ViewController` 类的结尾处添加一个扩展：
+
+```swift
+extension float4x4 {
+    var translation: float3 {
+        let translation = self.columns.3
+        return float3(translation.x, translation.y, translation.z)
+    }
+}
+```
+这个扩展基本上将一个矩阵转成 `float3` 。它从矩阵中给了我们 x ， y 和 z 。
+
+同时，我们需要把 `addBox()` 修改成下面这样：
+
+```swift
+func addBox(x: Float = 0, y: Float = 0, z: Float = -0.2) {
+    let box = SCNBox(width: 0.1, height: 0.1, length: 0.1, chamferRadius: 0)
+    
+    let boxNode = SCNNode()
+    boxNode.geometry = box
+    boxNode.position = SCNVector3(x, y, z)
+    
+    sceneView.scene.rootNode.addChildNode(boxNode)
+}
+```
+我们主要在最初的 `addBox()` 函数中添加了参数。我们也给他一个默认参数值，这就意味着我们调用 `addBox()` 不需要传入 x ， y ， z 坐标，就像 `viewDidLoad()` 中一样。
+
+酷！
+
+现在，我们需要修改 `didTap(withGestureRecognizer:)` 方法。如果有一个特征点被检测到了我们就去添加一个物体。
+
+因此，在 `guard let` 语句里面， `return` 语句之前。添加以下代码：
+
+```swift
+let hitTestResultsWithFeaturePoints = sceneView.hitTest(tapLocation, types: .featurePoint)
+ 
+if let hitTestResultWithFeaturePoints = hitTestResultsWithFeaturePoints.first {
+    let translation = hitTestResultWithFeaturePoints.worldTransform.translation
+    addBox(x: translation.x, y: translation.y, z: translation.z)
+}
+```
+这就是我们正在做的事情。
+
+首先，我们执行了命中测试，类似于我们第一次执行的方式。除了，我们给 `types` 参数指定了一个 `.featurePoint` 结果类型。 `types` 要求点击测试搜寻一个真实世界的物体或者通过 AR 会话的相机图像处理检测到的平面。有很多结果类型的类型。然而，在本教程中我们只会聚焦在特征点。
+
+特征点点击测试之后，我们安全地解包了第一个点击测试的结果。这是很重要的因为并不总会有特征点的。 ARKit 可能不总是会检测到一个真实世界的物体或者在真实世界的平面。
+
+如果第一个点击测试的结果可以被安全的解包。然后，我们将类型为 `matrix_float4x4` 的矩阵转为 `float3` 。这是可以的，因为我们之前创建了一个扩展。
+
+我们然后在点击检测到的特征点之前使用 x ， y 和 z 添加一个新的盒子。
+
+你的 `didTap(withGestureRecognizer:)` 方法，看起来应该像这样：
+
+```swift
+@objc func didTap(withGestureRecognizer recognizer: UIGestureRecognizer) {
+    let tapLocation = recognizer.location(in: sceneView)
+    let hitTestResults = sceneView.hitTest(tapLocation)
+    guard let node = hitTestResults.first?.node else {
+        let hitTestResultsWithFeaturePoints = sceneView.hitTest(tapLocation, types: .featurePoint)
+        if let hitTestResultWithFeaturePoints = hitTestResultsWithFeaturePoints.first {
+            let translation = hitTestResultWithFeaturePoints.worldTransform.translation
+            addBox(x: translation.x, y: translation.y, z: translation.z)
+        }
+        return
+    }
+    node.removeFromParentNode()
+}
+```
