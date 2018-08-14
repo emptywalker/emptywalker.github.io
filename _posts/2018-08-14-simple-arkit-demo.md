@@ -44,3 +44,15 @@ date: 2018-08-09 17:26:24.000000000 +09:00
 ![]({{  site.url  }}/assets/screenshot/simple-arkit-demo/p1.png)
 
 你可以给你的项目命名成任何你想要的名字，我命名我的项目为 **ARKitDemo** ，然后按下 next 就创建了你的新项目。
+
+### 设置 ARKit SceneKit View
+
+现在打开 Main.storyboard 。在 Object Library 中找到 ARKit SceneKit View ，把 ARKit SceneKit View 拖到你的视图控制器中。
+
+![]({{  site.url  }}/assets/screenshot/simple-arkit-demo/p2.png)
+
+然后给你的 ARKit SceneKit View 设置约束，充满整个控制器，看起来应该像这样：
+
+![]({{  site.url  }}/assets/screenshot/simple-arkit-demo/p3.png)
+
+酷喔！这个 ARKit SceneKit View 将是我们使用增强现实展示 SceneKit 内容的地方。
