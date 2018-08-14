@@ -100,3 +100,19 @@ override func viewWillDisappear(_ animated: Bool) {
 }
 ```
 在 `viewWillDisappear(_:)` 方法中，我们只是告诉我们的 AR 会话停止跟踪动作和视图内容上的图片处理。
+
+### 允许使用相机
+
+现在，在我们运行我们的应用程序之前，我们需要告知用户我们将利用他们设备的相机来进行增强现实，自从 iOS 10 发布之后，这就是一个必要条件。因此，打开 Info.plist 。在空白区域点击右键，选择 *Add row* ，设置键为 *Privacy — Camera Usage Description* ，值为 *For Augmented Reality* 。
+
+![]({{  site.url  }}/assets/screenshot/simple-arkit-demo/p5.png)
+
+继续进行之前，让我们来确保在这点上你所有事情都设置正确了。
+
+拿出你的设备，把它链接到你的 Mac 上，在 Xcode 上编译并运行你的项目。 App 会提示你是否允许访问相机，点击 OK 。
+
+![]({{  site.url  }}/assets/screenshot/simple-arkit-demo/p6.png)
+
+现在，你应该可以看到你的相机视图了。
+
+我们已经配置了 sceneView 的会话去运行世界追踪配置。是时候退出这一部分了，增强现实！
