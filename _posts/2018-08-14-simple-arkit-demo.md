@@ -21,5 +21,20 @@ date: 2018-08-09 17:26:24.000000000 +09:00
 
 在太过奇幻之前，让我们先了解一下非常基础的东西，这也是本教程的目的所在。
 
+### 前提条件
+
+本教程建议你充分了解 iOS 开发的基础知识，这是一篇中级教程。你将需要 Xcode 9 或更高版本。
+
+为了测试你的 ARKit App ，你将需要一个部兼容 Apple ARKit 能力的设备，这些设备必须有 Apple A9 或更高版本的处理器。现在，所有东西你都准备好了，且你也适应。让我们开始研究吧！这里有一些我将要带你做的事情：
+* 创建针对 ARKit Apps 的项目
+* 设置  ARKit SceneKit 视图
+* 连接 ARSCNView 和控制器
+* 连接 IBOutlet
+* 配置 ARSCNView Session
+* 允许使用相机
+* 给 ARSCNView 添加一个 3D 模型
+* 给 ARSCNView 添加自定义手势
+* 从 ARSCNView 上移除对象
+* 给 ARSCNView 添加多个对象
 
 
