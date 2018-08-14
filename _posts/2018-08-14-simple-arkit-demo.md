@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 「译」在 Swift 4 和 Xcode 9 中使用 SceneKit 构建一个简单的 ARKit 应用
-date: 2018-08-09 17:26:24.000000000 +09:00
+date: 2018-08-14 10:26:24.000000000 +09:00
 ---
 
 > 本文是翻译于AppCoda社区，如有版权问题，请告知，会配合处理
@@ -116,3 +116,70 @@ override func viewWillDisappear(_ animated: Bool) {
 现在，你应该可以看到你的相机视图了。
 
 我们已经配置了 sceneView 的会话去运行世界追踪配置。是时候退出这一部分了，增强现实！
+
+### 给 ARSCNView 添加 3D 对象
+
+已经来到我们一直等待的那一刻了。
+
+不在废话了，让我们增强现实。我们首先添加一个盒子，在 `ViewController` 类中，插入以下代码：
+
+```swift
+func addBox() {
+    let box = SCNBox(width: 0.1, height: 0.1, length: 0.1, chamferRadius: 0)
+    
+    let boxNode = SCNNode()
+    boxNode.geometry = box
+    boxNode.position = SCNVector3(0, 0, -0.2)
+    
+    let scene = SCNScene()
+    scene.rootNode.addChildNode(boxNode)
+    sceneView.scene = scene
+}
+```
+
+这就是我们所做的。
+
+我们一开始创建一个 box 的外形，1 浮点 = 1 米。
+
+然后，我们创建了一个节点，一个节点代表这个对象在 3D 空间中的位置和坐标。节点本身没有可视内容。
+
+通过给节点一个外形，我们可以给节点一个可视化的内容。我们通过把节点的几何结构设置成盒子来实现这个。
+
+然后，我们给节点一个位置，这个位置是相对于摄像头的。正的 x 表示右边，负的 x 表示左边，正的 y 是上，负的 y 是下，正的 z 是向后，负的 z 是向前。
+
+然后我们创建了一个场景，这个 SceneKit 的场景是用来显示在视图上的。然后，我们把盒子节点添加到场景的根节点上。一个场景中的根节点，定义了通过 SceneKit 渲染的真实世界的坐标系。
+
+一般来说，我们的场景中现在已经有了一个盒子，这个盒子位于摄像头的中心位置，它相对于相机来说向前 0.2 米。
+
+最后，我们设置 sceneView 的场景来显示我们刚刚创建的场景。
+
+现在，在 `viewDidLoad()` 中调用 `addBox()` ：
+
+```swift
+override func viewDidLoad() {
+    super.viewDidLoad()
+    addBox()
+}
+```
+
+编译和运行 App ，你应该可以看到一个悬浮框！
+
+![]({{  site.url  }}/assets/screenshot/simple-arkit-demo/p7.png)
+
+你也可以简单的重构 `addBox()` ：
+
+```swift
+func addBox() {
+    let box = SCNBox(width: 0.05, height: 0.05, length: 0.05, chamferRadius: 0)
+    
+    let boxNode = SCNNode()
+    boxNode.geometry = box
+    boxNode.position = SCNVector3(0, 0, -0.2)
+    
+    sceneView.scene.rootNode.addChildNode(boxNode)
+}
+```
+
+单独地解释一些组件更容易点。
+
+好的，是时候来添加手势了。
