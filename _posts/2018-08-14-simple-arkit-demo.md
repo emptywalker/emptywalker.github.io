@@ -56,3 +56,16 @@ date: 2018-08-09 17:26:24.000000000 +09:00
 ![]({{  site.url  }}/assets/screenshot/simple-arkit-demo/p3.png)
 
 酷喔！这个 ARKit SceneKit View 将是我们使用增强现实展示 SceneKit 内容的地方。
+
+### 连接 IBOutlet
+
+我们仍在 Main.storyboard 文件里，去到工具栏然后打开编辑器助手。在 ViewController.swift 文件的顶部添加一条导入语句去导入 `ARKit` ：
+
+```swift
+import ARKit
+```
+
+然后按住 control 键，从 ARKit SceneKit View 拖拽到 ViewController.swift 文件中。当弹出弹框的时候，给 IBOutlet 命名为 `sceneView` ，也可以随意删除 `didReceiveMemoryWarning()` 方法，在这篇教程中我们不需要它。
+
+![]({{  site.url  }}/assets/screenshot/simple-arkit-demo/p4.png)
+
