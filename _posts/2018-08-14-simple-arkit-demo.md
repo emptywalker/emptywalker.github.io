@@ -197,3 +197,35 @@ func addTapGestureToSceneView() {
 
 现在，时候在轻击手势识别器的回调函数中做点事了。
 
+### 从 ARSCNView 中移除对象
+
+在 `ViewController.swift` 文件中插入一下代码：
+
+```swift
+@objc func didTap(withGestureRecognizer recognizer: UIGestureRecognizer) {
+    let tapLocation = recognizer.location(in: sceneView)
+    let hitTestResults = sceneView.hitTest(tapLocation)
+    guard let node = hitTestResults.first?.node else { return }
+    node.removeFromParentNode()
+}
+```
+这里，我们创建了一个 `didTap(withGestureRecognizer:)` 方法。我们检测用户相对于 sceneView 的点击位置，并点击测试看看我们是否击中任何节点。
+
+然后，我们从 `hitTestResults` 中安全解包第一个节点，如果结果中包含了至少一个节点，我们将从它的父节点中删除我们点中的第一个节点。
+
+在我们测试对象移除之前，更新一下 `viewDidLoad()` 方法，添加一个调用的 `addTapGestureToSceneView()` 的方法：
+
+```swift
+override func viewDidLoad() {
+    super.viewDidLoad()
+    
+    addBox()
+    addTapGestureToSceneView()
+}
+```
+现在，如果你的编译和运行你的项目，你应该可以点击盒子节点，然后它将会从场景视图中移除。
+
+看起来我们又回到了原地了。
+
+OK 。现在是时候添加多个对象了。
+
