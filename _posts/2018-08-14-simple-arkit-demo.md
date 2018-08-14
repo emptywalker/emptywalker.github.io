@@ -37,4 +37,10 @@ date: 2018-08-09 17:26:24.000000000 +09:00
 * 从 ARSCNView 上移除对象
 * 给 ARSCNView 添加多个对象
 
+### 创建一个新的项目
 
+继续，打开 Xcode ，在 Xcode 菜单栏中，选择  File > New > Project… ，选择 Single View App ，然后点击下一步。Xcode 有一个 ARKit 模板，但实际上，你只要使用单视图应用模板就可以构建一个 AR 应用。
+
+![]({{  site.url  }}/assets/screenshot/simple-arkit-demo/p1.png)
+
+你可以给你的项目命名成任何你想要的名字，我命名我的项目为 **ARKitDemo** ，然后按下 next 就创建了你的新项目。
