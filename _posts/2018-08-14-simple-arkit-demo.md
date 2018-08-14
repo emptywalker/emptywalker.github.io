@@ -183,3 +183,17 @@ func addBox() {
 单独地解释一些组件更容易点。
 
 好的，是时候来添加手势了。
+
+### 向 ARSCNView 添加手势识别器
+在 `addBox()` 方法正下面，添加以下代码：
+
+```swift
+func addTapGestureToSceneView() {
+    let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(ViewController.didTap(withGestureRecognizer:)))
+    sceneView.addGestureRecognizer(tapGestureRecognizer)
+}
+```
+这里，我们初始化了一个轻击手势识别器， target 设为 ViewController ，行为选择子设置为 `didTap(withGestureRecognizer:)` 作为回调函数。然后，我们把这个轻击手势识别器添加到 sceneView 上。
+
+现在，时候在轻击手势识别器的回调函数中做点事了。
+
