@@ -69,3 +69,34 @@ import ARKit
 
 ![]({{  site.url  }}/assets/screenshot/simple-arkit-demo/p4.png)
 
+### 配置 ARSCNView Session
+
+我们想 app 一打开就可以通过相机镜头看到世界，并开始检测我们周围的环境。如果你仔细想一想，这是一项非常了不起的技术。 Apple 使增强现实技术成为了可能，开发者不需要从头开发整套技术。感谢 Apple 用 ARKit 造福我们。
+
+好的，是时候来配置 ARKit SceneKit View ，在 ViewController 类中插入以下代码：
+
+```swift
+override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+    let configuration = ARWorldTrackingConfiguration()
+    sceneView.session.run(configuration)
+}
+```
+在 `viewWillAppear(_:)` 方法里，我们初始化了一个叫做 `ARWorldTrackingConfiguration` 的 AR 配置，这是一个运行世界追踪( world tracking )的配置。
+
+等等，什么是事物追踪？根据 Apple 的文档：
+> 「世界追踪提供了 6 个自由角度去跟踪设备。通过在场景中寻找特征点，世界追踪可以对 frame 执行碰撞测试。一旦会话暂停后，追踪无法再恢复。」
+> 
+> —— Apple 的文档
+
+世界追踪配置跟踪设备的方向和位置，它还可以检测通过设备摄像头看到的真实世界的表面。
+
+现在，我们设置 sceneView 的 AR 会话来运行我们刚刚初始化的配置。 AR 会话管理着运动追踪和视图内容上的相机图像处理。现在，我们在 `ViewController` 里添加另一个方法：
+
+```swift
+override func viewWillDisappear(_ animated: Bool) {
+    super.viewWillDisappear(animated)
+    sceneView.session.pause()
+}
+```
+在 `viewWillDisappear(_:)` 方法中，我们只是告诉我们的 AR 会话停止跟踪动作和视图内容上的图片处理。
