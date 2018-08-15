@@ -5,8 +5,6 @@ date: 2018-08-14 10:26:24.000000000 +09:00
 ---
 
 > 本文是翻译于AppCoda社区，如有版权问题，请告知，会配合处理
->  
-> 作者：[Jayven N](https://medium.com/@jayvenn)    /    [原文地址](https://www.appcoda.com/mlkit/)    /    原文日期：2017-09-19
 > 
 > 作者：[Jayven N](https://medium.com/@jayvenn)    -    [原文地址](https://www.appcoda.com/mlkit/)    -    原文日期：2017-09-19
 
