@@ -307,3 +307,16 @@ if let hitTestResultWithFeaturePoints = hitTestResultsWithFeaturePoints.first {
     node.removeFromParentNode()
 }
 ```
+
+### 试用最终 App
+编译然后运行你的项目。除了之前有的效果之外，你现在应该可以在特征点上添加一个盒子。
+
+![]({{  site.url  }}/assets/screenshot/simple-arkit-demo/p8.png)
+
+### 总结
+
+恭喜你可以看到这里。 ARKit 自身是一个巨大的话题，我们已经学习了很多的基本原理。然而，我们只是接触了一点 ARKit 的表面，我希望你能够从这篇 ARKit 的介绍中获益。我已经迫不及待的想看看像你们这样的开发者将去构建疯狂的 ARKit App 想法了。
+
+对于完整的项目，你可以在 [**GitHub**](https://github.com/appcoda/SimpleARKitDemo) 中找到它。
+
+如果你愿意学习更多的关于 ARKit 的知识，通过把这篇教程分享给你的朋友们，来让我们知道。
