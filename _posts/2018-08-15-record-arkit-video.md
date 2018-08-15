@@ -218,3 +218,98 @@ recorder ?.prepare(configuration)
 ```swift
 recorder?.rest()
 ```
+
+### 开发录制/停止和暂停/继续函数
+现在， `RecordAR` 变量已经准备好了，让我们转到实现录制和停止的功能上。
+
+对于录制行为方法，更新方法想下面这样：
+
+```swift
+@objc func recorderAction(sender:UIButton) {
+    
+    if recorder?.status == .readyToRecord {
+        // 开始录制
+        recorder?.record()
+        
+        // 修改按钮标题
+        sender.setTitle("Stop", for: .normal)
+        sender.setTitleColor(.red, for: .normal)
+        
+        // 暂停按钮可用
+        pauseButton.alpha = 1
+        pauseButton.isEnabled = true
+        
+        // 是 GIF 按钮不可用
+        gifButton.alpha = 0.3
+        gifButton.isEnabled = false
+    }else if recorder?.status == .recording || recorder?.status == .paused {
+        // 停止录制并从相机卷中导出视频
+        recorder?.stopAndExport()
+        
+        // 改变按钮标题
+        sender.setTitle("Record", for: .normal)
+        sender.setTitleColor(.black, for: .normal)
+        
+        // 使 GIF 按钮可用
+        gifButton.alpha = 1
+        gifButton.isEnabled = true
+        
+        // 使暂停按钮不可用
+        pauseButton.alpha = 0.3
+        pauseButton.isEnabled = false
+    }
+}
+```
+在上面这段代码中，我们会检查视频录制器的状态如果是*准备录制*，应用程序就会把你的 ARKit 场景录制成一个视频。否则，如果录制器当前的状态是*录制中*或*已暂停*，应用程序就会停止视频录制器，并从相机卷中导出全部渲染后的视频。
+
+接下来，我们将会在 `pauseAction(sender:UIButton)` 方法中实现暂停/继续功能，更新 `pauseAction` 方法，向下面这样：
+
+```swift
+@objc func pauseAction(sender:UIButton) {
+    if recorder?.status == .recording {
+        // 暂停录制
+        recorder?.pause()
+        
+        // 改变按钮标题
+        sender.setTitle("Resume", for: .normal)
+        sender.setTitleColor(.blue, for: .normal)
+    } else if recorder?.status == .paused {
+        // 继续录制
+        recorder?.record()
+        
+        // 改变按钮标题
+        sender.setTitle("Pause", for: .normal)
+        sender.setTitleColor(.black, for: .normal)
+    }
+}
+```
+上面一段代码非常直接。我们首先检查如果录制器当前处于*录制中*状态，当用户点击暂停按钮时应用程序就会暂停视频录制。否则，就继续录制。
+
+现在，我们需要测试一下！在你的 iOS 设置运行应用程序之前，我们需要确保已经在 app 的 `Info.plist` 文件中添加了 `camera` 、 `microphone` 和 `photo library` 的使用描述。
+
+为了完成这个，把下面的代码添加到 plist 源码中：
+
+```
+<key>NSCameraUsageDescription</key>
+<string>AR Camera</string>
+<key>NSPhotoLibraryAddUsageDescription</key>
+<string>Export AR Media</string>
+<key>NSPhotoLibraryUsageDescription</key>
+<string>Export AR Media</string>
+<key>NSMicrophoneUsageDescription</key>
+<string>Audiovisual Recording</string>
+```
+
+或者，你可以选择 Property Editor 添加这些属性：
+
+![]({{  site.url  }}/assets/screenshot/record-arkit-video/p7.png)
+
+现在让我们来运行它！📲🎊 点击录制按钮，开始录制你的 AR 视频。
+
+<iframe 
+    width="800" 
+    height="450" 
+    src="https://youtu.be/PHziPwFtdyo"
+    frameborder="0" 
+    allowfullscreen>
+</iframe>
