@@ -308,6 +308,14 @@ recorder?.rest()
 
 [**示例视频**](https://youtu.be/PHziPwFtdyo)
 
+<iframe 
+    width="800" 
+    height="450" 
+    src="https://youtu.be/PHziPwFtdyo"
+    frameborder="0" 
+    allowfullscreen>
+</iframe>
+
 ### 捕获 GIFs
 
 最后，让我们实现 GIFs 函数，以便你可以捕获动画的  GIFs 。更新 `gifAction` 方法，像这样：
