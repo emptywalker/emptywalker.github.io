@@ -6,7 +6,7 @@ date: 2018-08-14 10:26:24.000000000 +09:00
 
 > 本文是翻译于AppCoda社区，如有版权问题，请告知，会配合处理
 > 
-> 作者：[Jayven N](https://medium.com/@jayvenn)    -    [原文地址](https://www.appcoda.com/mlkit/)    -    原文日期：2017-09-19
+> 作者：[Jayven N](https://medium.com/@jayvenn)    -    [原文地址](https://www.appcoda.com/arkit-introduction-scenekit/)    -    原文日期：2017-09-19
 
 增强现实( Augmented Reality  )已经来了，它以一种宏大的方式到来。还记得 Pokemon Go 吗？好的，那只是增强现实的一种口味。从 iOS 11 开始，Apple 正在把增强现实带向大众。随着 iOS 11 的到来，数以亿计的 iPhone 和 iPad 设备具备增强现实的功能。一夜之间， 就打造成了世界上最大的 [**ARKit**](https://developer.apple.com/arkit/) 平台，是的 —— 一夜之间。如果你对在 iOS 11 上构建增强现实的 Apps 感兴趣的话，那么你就来对地方了。
 
