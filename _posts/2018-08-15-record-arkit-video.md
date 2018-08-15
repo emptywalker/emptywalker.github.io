@@ -313,3 +313,27 @@ recorder?.rest()
     frameborder="0" 
     allowfullscreen>
 </iframe>
+
+### 捕获 GIFs
+
+最后，让我们实现 GIFs 函数，以便你可以捕获动画的  GIFs 。更新 `gifAction` 方法，像这样：
+
+```swift
+@objc func gifAction(sender:UIButton) {
+        self.gifButton.isEnabled = false
+        self.gifButton.alpha = 0.3
+        self.recorderButton.isEnabled = false
+        self.recorderButton.alpha = 0.3
+ 
+        recorder?.gif(forDuration: 1.5, export: true) { _, _, _ , exported in
+            if exported {
+                DispatchQueue.main.sync {
+                    self.gifButton.isEnabled = true
+                    self.gifButton.alpha = 1.0
+                    self.recorderButton.isEnabled = true
+                    self.recorderButton.alpha = 1.0
+                }
+            }
+        }
+    }
+```
