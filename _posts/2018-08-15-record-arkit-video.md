@@ -104,8 +104,117 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 }
 ```
 
+### 添加 UI
 
+我们将以编程的形式构建 UI ，而不是使用 Interface Builder 。为了保持简单，我们将创建 3 个简单的按钮：录制/停止、暂停/继续、和捕获 GIFs 。
 
+为了完成这些，在 `ViewController` 类中声明以下属性：
 
+```swift
+// Recorder UIButton. 这个按钮将会开始和停止视频的录制。
+var recorderButton:UIButton = {
+    let btn = UIButton(type: .system)
+    btn.setTitle("Record", for: .normal)
+    btn.setTitleColor(.black, for: .normal)
+    btn.backgroundColor = .white
+    btn.frame = CGRect(x: 0, y: 0, width: 110, height: 60)
+    btn.center = CGPoint(x: UIScreen.main.bounds.width/2, y: UIScreen.main.bounds.height*0.90)
+    btn.layer.cornerRadius = btn.bounds.height/2
+    btn.tag = 0
+    return btn
+}()
+ 
+// Pause UIButton. 这个按钮将会暂停一个视频的录制。
+var pauseButton:UIButton = {
+    let btn = UIButton(type: .system)
+    btn.setTitle("Pause", for: .normal)
+    btn.setTitleColor(.black, for: .normal)
+    btn.backgroundColor = .white
+    btn.frame = CGRect(x: 0, y: 0, width: 60, height: 60)
+    btn.center = CGPoint(x: UIScreen.main.bounds.width*0.15, y: UIScreen.main.bounds.height*0.90)
+    btn.layer.cornerRadius = btn.bounds.height/2
+    btn.alpha = 0.3
+    btn.isEnabled = false
+    return btn
+}()
+ 
+// GIF UIButton. 这个按钮将会捕获 GIF 图片。
+var gifButton:UIButton = {
+    let btn = UIButton(type: .system)
+    btn.setTitle("GIF", for: .normal)
+    btn.setTitleColor(.black, for: .normal)
+    btn.backgroundColor = .white
+    btn.frame = CGRect(x: 0, y: 0, width: 60, height: 60)
+    btn.center = CGPoint(x: UIScreen.main.bounds.width*0.85, y: UIScreen.main.bounds.height*0.90)
+    btn.layer.cornerRadius = btn.bounds.height/2
+    return btn
+}()
+```
+接下来，把这些按钮添加到  View Controller 的子视图上。在 `viewDidLoad()` 方法中插入下面几行代码：
 
+```swift
+self.view.addSubview(recorderButton)
+self.view.addSubview(pauseButton)
+self.view.addSubview(gifButton)
+```
+为了处理按钮的行为，我们会创建 3 行为方法：
 
+```swift
+// 录制和停止方法
+@objc func recorderAction(sender:UIButton) {
+        
+}
+// 暂停和继续方法
+@objc func pauseAction(sender:UIButton) {
+    
+}
+// 捕获 GIF 方法
+@objc func gifAction(sender:UIButton) {
+ 
+}
+```
+现在，回到 `viewDidLoad()` ，添加按钮的目标，并把他们和上面创建的方法连接起来：
+
+```swift
+recorderButton.addTarget(self, action: #selector(recorderAction(sender:)), for: .touchUpInside)
+pauseButton.addTarget(self, action: #selector(pauseAction(sender:)), for: .touchUpInside)
+gifButton.addTarget(self, action: #selector(gifAction(sender:)), for: .touchUpInside)
+```
+在我们开始下一部分之前，让我们运行这个应用看看到目前为止我们已经构建了什么。如果你跟着我做的没有出错地话，你将会有一个简单的在屏幕上有三个按钮的 ARKit app 。记住你必须在真实设备上测试 app 而不是在模拟器上。
+
+![]({{  site.url  }}/assets/screenshot/record-arkit-video/p6.jpg)
+
+### 实现 ARVideoKit 框架
+
+现在，是时候开启录制功能了！我们将会在 `ViewController.swift` 中实现 `ARVideoKit` 框架。每个第一步都是导入框架：
+
+```swift
+import ARVideoKit
+```
+
+接下来，创建一个 RecordAR 类型的变量。 `RecordAR` 是 ARView 的一个子类，使用设备相机流渲染一个 ARSCNView 或 ARSKView 的内容，去生成一个视频，图片， live 图片 或者 GIF 。
+
+```swift
+var  recorder: RecordAR?
+```
+
+在 `viewDidLoad()` 方法中，用 ARSKView 初始化 RecordAR ，并指定支持的方向：
+
+```swift
+// 用 SpriteKit 场景初始化
+recorder = RecordAR(ARSpriteKit: sceneView)
+ 
+// 指定支持的方向
+recorder?.inputViewOrientations = [.portrait, .landscapeLeft, .landscapeRight]
+```
+
+为了准备录制，在 `viewWillAppear(_ animated: Bool)` 方法中插入以下语句：
+
+```swift
+recorder ?.prepare(configuration)
+```
+最后，当视图消失的时候，去「休息」录制器。在 `viewWillDisappear(_ animated: Bool)` 方法中插入下面一行代码：
+
+```swift
+recorder?.rest()
+```
