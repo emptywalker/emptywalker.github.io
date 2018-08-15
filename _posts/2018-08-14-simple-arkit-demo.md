@@ -9,7 +9,7 @@ date: 2018-08-14 10:26:24.000000000 +09:00
 > 作者：[Jayven N](https://medium.com/@jayvenn)    /    [原文地址](https://www.appcoda.com/mlkit/)    /    原文日期：2017-09-19
 > 
 
-增强现实( Augmented Reality  )已经来了，它以一种宏大的方式到来。还记得 Pokemon Go 吗？好的，那只是增加现实的一种口味。从 iOS 11 开始，Apple 正在把增强现实带向大众。随着 iOS 11 的到来，数以亿计的 iPhone 和 iPad 设备具备增强现实的功能。一夜之间， 就打造成了世界上最大的 [**ARKit**](https://developer.apple.com/arkit/) 平台，是的 —— 一夜之间。如果你对在 iOS 11 上构建增强现实的 Apps 感兴趣的话，那么你是来对了地方了。
+增强现实( Augmented Reality  )已经来了，它以一种宏大的方式到来。还记得 Pokemon Go 吗？好的，那只是增强现实的一种口味。从 iOS 11 开始，Apple 正在把增强现实带向大众。随着 iOS 11 的到来，数以亿计的 iPhone 和 iPad 设备具备增强现实的功能。一夜之间， 就打造成了世界上最大的 [**ARKit**](https://developer.apple.com/arkit/) 平台，是的 —— 一夜之间。如果你对在 iOS 11 上构建增强现实的 Apps 感兴趣的话，那么你就来对地方了。
 
 ### 目标
 
@@ -23,11 +23,11 @@ date: 2018-08-14 10:26:24.000000000 +09:00
 
 ### 前提条件
 
-本教程建议你充分了解 iOS 开发的基础知识，这是一篇中级教程。你将需要 Xcode 9 或更高版本。
+本教程建议你对iOS 开发的基础知识有充分的了解，这是一篇中级教程。你将需要 Xcode 9 或更高版本。
 
-为了测试你的 ARKit App ，你将需要一个部兼容 Apple ARKit 能力的设备，这些设备必须有 Apple A9 或更高版本的处理器。现在，所有东西你都准备好了，且你也适应。让我们开始研究吧！这里有一些我将要带你做的事情：
-* 创建针对 ARKit Apps 的项目
-* 设置  ARKit SceneKit 视图
+为了测试你的 ARKit App ，你将需要一个部兼容 Apple ARKit 能力的设备，这些设备必须有 Apple A9 或更高版本的处理器。现在，所有东西你都准备好了，且你也合适。让我们开始研究吧！这里有一些我将要带你做的事情：
+* 创建一个新的 ARKit Apps 的项目
+* 设置  ARKit SceneKit View
 * 连接 ARSCNView 和控制器
 * 连接 IBOutlet
 * 配置 ARSCNView Session
@@ -84,7 +84,7 @@ override func viewWillAppear(_ animated: Bool) {
 ```
 在 `viewWillAppear(_:)` 方法里，我们初始化了一个叫做 `ARWorldTrackingConfiguration` 的 AR 配置，这是一个运行世界追踪( world tracking )的配置。
 
-等等，什么是事物追踪？根据 Apple 的文档：
+等等，什么是世界追踪？根据 Apple 的文档：
 > 「世界追踪提供了 6 个自由角度去跟踪设备。通过在场景中寻找特征点，世界追踪可以对 frame 执行碰撞测试。一旦会话暂停后，追踪无法再恢复。」
 > 
 > —— Apple 的文档
@@ -109,7 +109,7 @@ override func viewWillDisappear(_ animated: Bool) {
 
 继续进行之前，让我们来确保在这点上你所有事情都设置正确了。
 
-拿出你的设备，把它链接到你的 Mac 上，在 Xcode 上编译并运行你的项目。 App 会提示你是否允许访问相机，点击 OK 。
+拿出你的设备，把它连接到你的 Mac 上，在 Xcode 上编译并运行你的项目。 App 会提示你是否允许访问相机，点击 OK 。
 
 ![]({{  site.url  }}/assets/screenshot/simple-arkit-demo/p6.png)
 
@@ -143,7 +143,7 @@ func addBox() {
 
 然后，我们创建了一个节点，一个节点代表这个对象在 3D 空间中的位置和坐标。节点本身没有可视内容。
 
-通过给节点一个外形，我们可以给节点一个可视化的内容。我们通过把节点的几何结构设置成盒子来实现这个。
+通过给节点一个外形，我们就可以给节点一个可视化的内容。我们通过把节点的几何结构设置成盒子来实现这个。
 
 然后，我们给节点一个位置，这个位置是相对于摄像头的。正的 x 表示右边，负的 x 表示左边，正的 y 是上，负的 y 是下，正的 z 是向后，负的 z 是向前。
 
@@ -195,7 +195,7 @@ func addTapGestureToSceneView() {
 ```
 这里，我们初始化了一个轻击手势识别器， target 设为 ViewController ，行为选择子设置为 `didTap(withGestureRecognizer:)` 作为回调函数。然后，我们把这个轻击手势识别器添加到 sceneView 上。
 
-现在，时候在轻击手势识别器的回调函数中做点事了。
+现在，是时候在轻击手势识别器的回调函数中做点事了。
 
 ### 从 ARSCNView 中移除对象
 
@@ -282,7 +282,7 @@ if let hitTestResultWithFeaturePoints = hitTestResultsWithFeaturePoints.first {
 ```
 这就是我们正在做的事情。
 
-首先，我们执行了命中测试，类似于我们第一次执行的方式。除了，我们给 `types` 参数指定了一个 `.featurePoint` 结果类型。 `types` 要求点击测试搜寻一个真实世界的物体或者通过 AR 会话的相机图像处理检测到的平面。有很多结果类型的类型。然而，在本教程中我们只会聚焦在特征点。
+首先，我们执行了命中测试，类似于我们第一次执行的方式。除了，我们给 `types` 参数指定了一个 `.featurePoint` 结果类型。 `types` 要求点击测试搜寻一个真实世界的物体或者通过 AR 会话的相机图像处理检测到的平面，结果类型的类型有很多。然而，在本教程中我们只会聚焦在特征点。
 
 特征点点击测试之后，我们安全地解包了第一个点击测试的结果。这是很重要的因为并不总会有特征点的。 ARKit 可能不总是会检测到一个真实世界的物体或者在真实世界的平面。
 
