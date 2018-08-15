@@ -337,3 +337,32 @@ recorder?.rest()
         }
     }
 ```
+
+### 修改 SpriteKit 内容
+
+在这最后的一部分，我们将会修改 SpriteKit 的内容去在 AR 空间中展示一些不同的 emojis 🤗🤓🧐🔥 。
+
+首先我们创建一个变量，可以从*一个 emojis 的数组*中返回一个*随机的 emoji* 。通过使用基于 C 语言的函数 [**`arc4random_uniform()`**](https://developer.apple.com/library/archive/documentation/Darwin/Reference/ManPages/man3/arc4random_uniform.3.html) ，我们可以检索到一个在 0 至数组个数之间的随机数。
+
+为了完成这个，我们在 `ViewController` 类中创建以下变量作为全局变量（在 `gifButton` 之后替换它）：
+
+```swift
+var randoMoji: String {
+    let emojis = ["👾", "🤓", "🔥", "😜", "😇", "🤣", "🤗", "🧐", "🛰", "🚀"]
+    return emojis[Int(arc4random_uniform(UInt32(emojis.count)))]
+}
+```
+
+接下来把 `view(_ view: ARSKView, nodeFor anchor: ARAnchor) -> SKNode?` 方法编辑成这样：
+
+```swift
+func view(_ view: ARSKView, nodeFor anchor: ARAnchor) -> SKNode? {
+    // 为添加到视图会话的锚点创建和添加一个配置
+    let labelNode = SKLabelNode(text: randoMoji)
+    labelNode.horizontalAlignmentMode = .center
+    labelNode.verticalAlignmentMode = .center
+    return labelNode;
+}
+```
+
+我们只是使用了新创建的 `randoMoji` 替换了 `SKLabelNode` 的静态文本。
