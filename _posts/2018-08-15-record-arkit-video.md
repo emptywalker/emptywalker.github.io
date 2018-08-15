@@ -366,3 +366,11 @@ func view(_ view: ARSKView, nodeFor anchor: ARAnchor) -> SKNode? {
 ```
 
 我们只是使用了新创建的 `randoMoji` 替换了 `SKLabelNode` 的静态文本。
+
+### 就这样！玩的开心
+
+你现在可以在你的设备中运行你的应用程序，然后使用它去录制 ARKit 视频和GIFs!想要下载完整的项目，你可以在 [**GitHub 中下载**](https://github.com/AFathi/record-arkit-demo)。
+
+![]({{  site.url  }}/assets/screenshot/record-arkit-video/p8.gif)
+
+你认为这篇教程怎么样？请在下面给我留言并分享你的想法。
