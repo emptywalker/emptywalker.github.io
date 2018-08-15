@@ -26,3 +26,86 @@ date: 2018-08-09 17:26:24.000000000 +09:00
 ![]({{  site.url  }}/assets/screenshot/record-arkit-video/p2.png)
 
 当项目创建好之后， Xcode 将会自动生成一份 SpriteKit 的示例代码给我们使用。尽管，这样对 demo 很有用，但我们将会对它进行一点修改，添加我们自己的用户界面，视频录制器， GIF 制作器，然后显示更多不同的 emojis 😇 ！
+
+### 添加框架
+
+我们将从把 `ARVideoKit` 添加到项目中开始！为了正确地添加框架，需要做以下几步：
+
+1. 在你的项目文件夹中创建一个 Frameworks 文件夹。
+
+![]({{  site.url  }}/assets/screenshot/record-arkit-video/p3.png)
+
+2. 把下载的 ARVideoKit.framework 拷贝到 *Frameworks* 文件夹中
+
+![]({{  site.url  }}/assets/screenshot/record-arkit-video/p4.gif)
+
+3. 把 ARVideoKit.framework 拖入项目目标的 Embedded Binaries ，确保 「Copy items if needed」勾选上了。
+
+![]({{  site.url  }}/assets/screenshot/record-arkit-video/p5.png)
+
+现在，让我们在 application delegate 中配置框架，采取以下步骤：
+1. 通过添加下面的语句在 `AppDelegate.swift` 中导入 `ARVideoKit`
+
+```swift
+import ARVideoKit
+```
+2. 在 `AppDelegate.swift` 类中添加下面的方法，去允许在不同的方向录制视频 & GIFs 。
+
+```swift
+func application(_ application: UIApplication, supportedInterfaceOrientationsFor window: UIWindow?) -> UIInterfaceOrientationMask {
+    return ViewAR.orientation
+}
+```
+
+你的应用程序代理文件看起来应该像这样：
+
+```swift
+import UIKit
+import ARVideoKit
+ 
+@UIApplicationMain
+class AppDelegate: UIResponder, UIApplicationDelegate {
+ 
+    var window: UIWindow?
+ 
+ 
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+        // Override point for customization after application launch.
+        return true
+    }
+ 
+    func applicationWillResignActive(_ application: UIApplication) {
+        // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
+        // Use this method to pause ongoing tasks, disable timers, and invalidate graphics rendering callbacks. Games should use this method to pause the game.
+    }
+ 
+    func applicationDidEnterBackground(_ application: UIApplication) {
+        // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
+        // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
+    }
+ 
+    func applicationWillEnterForeground(_ application: UIApplication) {
+        // Called as part of the transition from the background to the active state; here you can undo many of the changes made on entering the background.
+    }
+ 
+    func applicationDidBecomeActive(_ application: UIApplication) {
+        // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+    }
+ 
+    func applicationWillTerminate(_ application: UIApplication) {
+        // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+    }
+ 
+    
+    func application(_ application: UIApplication, supportedInterfaceOrientationsFor window: UIWindow?) -> UIInterfaceOrientationMask {
+        return ViewAR.orientation
+    }
+ 
+}
+```
+
+
+
+
+
+
