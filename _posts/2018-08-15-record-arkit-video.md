@@ -306,13 +306,7 @@ recorder?.rest()
 
 现在让我们来运行它！📲🎊 点击录制按钮，开始录制你的 AR 视频。
 
-<iframe 
-    width="800" 
-    height="450" 
-    src="https://youtu.be/PHziPwFtdyo"
-    frameborder="0" 
-    allowfullscreen>
-</iframe>
+[**示例视频**](https://youtu.be/PHziPwFtdyo)
 
 ### 捕获 GIFs
 
