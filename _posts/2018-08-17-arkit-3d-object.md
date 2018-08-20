@@ -47,7 +47,13 @@ date: 2018-08-17 17:26:24.000000000 +09:00
 
 
 ### SceneKit 支持的格式
+我们将会使用 SceneKit 去构建 ARKit App ，为了把 3D 对象加载到 ARKit App 上， Xcode 需要以 SceneKit 支持的格式读取你的 3D 对象文件。这样才能制作场景。
 
+> SceneKit 可以从一个已支持格式的文件中读取场景内容，或者从持有此类内容的 NSData 对象读取。
+>  —— Apple 文档
+>
+
+在本篇教程中，我们稍等会提到的两种 SceneKit 支持的格式是 *SceneKit Scene (.scn)* 和 *Digital Asset Exchange (.dae)* 。
 
 
 
