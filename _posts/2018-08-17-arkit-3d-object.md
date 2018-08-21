@@ -143,6 +143,53 @@ override func viewDidLoad() {
 ```
 非常棒！在你的设备上编译运行，你会看到一个有漂亮的形状、曲线和边缘的纸飞机！
  
- ![]({{  site.url  }}/assets/screenshot/arkit-3d-objects/p7.png)
+![]({{  site.url  }}/assets/screenshot/arkit-3d-objects/p7.png)
  
- 让我们安静一会儿，爱上纸飞机美丽形状、曲线和边缘。
+让我们安静一会儿，爱上纸飞机美丽形状、曲线和边缘。
+ 
+ 
+### 实现一个多节点的 3D 对象
+现在你有一些 3D 模型文件可能包含多个节点。在这样的情况下，让我们看一下如何添加一个多节点的 3D 对象到我们的 ARSCNView 上。
+ 
+在 3D Objects 文件夹下，有一个 *car.dae* 文件，如果你点击它，你将会在 Xcode Scene Editor 中打开这个文件，你可以高亮显示所有节点来查看 3D 汽车对象的轮廓。
+
+![]({{  site.url  }}/assets/screenshot/arkit-3d-objects/p8.png)
+
+酷！打开 `ViewController.swift` ，在 `addPaperPlane(x:y:z:)` 方法下面插入以下代码：
+
+```swift
+func addCar(x: Float = 0, y: Float = 0, z: Float = -0.5) {
+    guard let carScene = SCNScene(named: "car.dae") else { return }
+    let carNode = SCNNode()
+    let carSceneChildNodes = carScene.rootNode.childNodes
+        
+    for childNode in carSceneChildNodes {
+        carNode.addChildNode(childNode)
+    }
+        
+    carNode.position = SCNVector3(x, y, z)
+    carNode.scale = SCNVector3(0.5, 0.5, 0.5)
+    sceneView.scene.rootNode.addChildNode(carNode)
+}
+```
+这就是我们做的：
+* 首先，我们使用 `guard let` 语句给 `car.dae` 文件安全地创建了一个 SCNScene 对象。然后我们为汽车节点初始化了一个 SCNNode 对象。
+* 接下来，我们保存了 carScene 根节点的子节点。然后，我们遍历 car scene 的每个子节点，并添加到 car node 上。
+* 然后我们简单地将汽车节点的位置设置为给定的参数值，并将汽车节点的 x ， y 和 z 比例值转换为 0.5 以移动其位置。
+* 最后，我们把汽车节点添加到 sceneView 场景的根节点上。
+
+现在，在 `viewDidLoad()` 方法中注释 `addPaperPlane()` 方法并调用 `addCar()` 方法：
+
+```swift
+override func viewDidLoad() {
+    super.viewDidLoad()
+    configureLighting()
+    //addPaperPlane()
+    addCar()
+}
+```
+
+在你的项目中编译和运行 Xcode 项目，在你们的前面应该会有一辆非常酷的悬浮汽车。
+
+![]({{  site.url  }}/assets/screenshot/arkit-3d-objects/p9.png)
+ 
