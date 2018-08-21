@@ -49,5 +49,53 @@ date: 2018-08-17 17:26:24.000000000 +09:00
 确保你点击 OK 同意访问相机，然后你会看到你的相机视图。
 
 
+### 水平面检测
+
+检测一个水平面很简单，感谢 「appley」 Apple 工程师。
+
+简单的在 `ViewController` 的 `setUpSceneView()` 方法里面添加下面的代码：
+
+```swift
+configuration.planeDetection = .horizontal
+```
+
+通过把 `ARWorldTrackingConfiguration` 的 `planeDetection` 属性设置成 `.horizontal`，告诉 ARKit 去寻找任意的水平面。一旦 ARKit 检测到了一个水平面，那个水平面将会被添加到 `sceneView` 的会话上。
+
+为了检测水平面，我们不得不采用 `ARSCNViewDelegate` 协议。在 `ViewController` 类的下面，创建一个 `ViewController` 类的扩展去实现协议：
+
+```swift
+extension ViewController: ARSCNViewDelegate {
+ 
+}
+```
+现在，在类的扩展中，实现 `renderer(_:didAdd:for:)` 方法：
+
+```swift
+func renderer(_ renderer: SCNSceneRenderer, didAdd node: SCNNode, for anchor: ARAnchor) {
+ 
+}
+```
+
+每次场景视图的会话有一个新的 ARAnchor 添加后这个协议方法就会被调用，ARAnchor 是在 3D 空间表示一个物理位置和方向的对象。我们稍后将使用 ARAnchor 去检测一个水平面。
+
+接下来，回到 `setUpSceneView()` ，在 `setUpSceneView()` 里面，把 `sceneView` 的代理设为你的 `ViewController` 。
+
+如果你愿意，你也可以设置 `sceneView` 的调试选项去在世界中显示特征点。这可以帮助你找到一个有足够特征点的地方，去检测水平面。一个水平面是由很多个特征点组成。一旦检测到了足够多的特征点识别到了一个水平平面， `renderer(_:didAdd:for:)` 方法将会被调用。
+
+你的 `setUpSceneView()` 方法现在看起来应该像这样：
+
+```swift
+func setUpSceneView() {
+    let configuration = ARWorldTrackingConfiguration()
+    configuration.planeDetection = .horizontal
+    
+    sceneView.session.run(configuration)
+    
+    sceneView.delegate = self
+    sceneView.debugOptions = [ARSCNDebugOptions.showFeaturePoints]
+}
+```
+
+
 
 
