@@ -113,3 +113,36 @@ override func viewDidLoad() {
 ![]({{  site.url  }}/assets/screenshot/arkit-3d-objects/p6.png)
 
 因此，让我们在纸飞机上添加一些光线！
+
+### 添加基础光线
+
+添加光线不止一种方式，对于本教程，我们将关注自动照明和自动更新照明。
+
+在 `ViewController` 类，添加以下方法：
+
+```swift
+func configureLighting() {
+    sceneView.autoenablesDefaultLighting = true
+    sceneView.automaticallyUpdatesLighting = true
+}
+```
+酷！这就是我们刚刚做的：
+
+* 我们创建了一个 `configureLighting()` 方法。
+* 在方法里面，我们设置了 `sceneView` 的 `autoenablesDefaultLighting` 属性为 `true` 。如果 `autoenablesDefaultLighting` 属性被设为 true ，SceneKit 会自动给 scene 添加光线。专业上说，当渲染包含无光线或只包含周围光线的场景的时候， SceneKit 会自动添加和摆放一个全方位的光线资源。
+* 接下来，我们设置 `sceneView` 的 `automaticallyUpdatesLighting` 属性也为 `true` 。当 `automaticallyUpdatesLighting` 属性被设为 true ，视图会创建一个或多个 SCNLight 对象，添加到 scene 上，并更新它们的属性，去表现相机场景的预计光线信息。如果你想直接控制 SceneKit 场景中的所有光线，你可以把它设为 false 。
+
+现在，在 `viewDidLoad()` 方法中调用 `configureLighting()` 方法：
+
+```swift
+override func viewDidLoad() {
+    super.viewDidLoad()
+    configureLighting()
+    addPaperPlane()
+}
+```
+非常棒！在你的设备上编译运行，你会看到一个有漂亮的形状、曲线和边缘的纸飞机！
+ 
+ ![]({{  site.url  }}/assets/screenshot/arkit-3d-objects/p7.png)
+ 
+ 让我们安静一会儿，爱上纸飞机美丽形状、曲线和边缘。
