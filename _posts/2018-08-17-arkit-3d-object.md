@@ -40,6 +40,9 @@ date: 2018-08-17 17:26:24.000000000 +09:00
 
 
 #### 3D 对象的在线资源
+
+![]({{  site.url  }}/assets/screenshot/arkit-3d-objects/p2.png)
+
 相对于创建自己的 3D 对象，你可能更喜欢为你的 ARKit app 获得按需的 3D 模型，下面是一些你可能会发现有用的在线资源：
 * [**SketchFab**](https://sketchfab.com/)
 * [**TurboSquid**](https://www.turbosquid.com/)
@@ -55,5 +58,58 @@ date: 2018-08-17 17:26:24.000000000 +09:00
 
 在本篇教程中，我们稍等会提到的两种 SceneKit 支持的格式是 *SceneKit Scene (.scn)* 和 *Digital Asset Exchange (.dae)* 。
 
+### 从启动项目开始
+
+为了开始，首先[**下载启动项目**](https://github.com/appcoda/ARKit3DDemo/raw/master/ARKit3DDemoStarter.zip)。我已经搭建了 App 的框架和打包了两个 3D 文件，因为我们可以专注于 ARKit 的实现。一旦下载了，用 Xcode 打开它，并运行它，快速测试一下。
+
+你应该可以在你的 iOS 设备上看到以下效果：
+![]({{  site.url  }}/assets/screenshot/arkit-3d-objects/p3.png)
+
+点击 OK ，你应该可以看到你的摄像头的场景。如果你正好在 Apple Store 写代码，就会像下面这样：
+
+![]({{  site.url  }}/assets/screenshot/arkit-3d-objects/p4.png)
+
+### 实现一个单节点的 3D 对象
+
+非常棒！现在，是时候在我们的 ARSCNView 上添加一个单节点的 3D 对象了，在 `ViewController` 类中插入下面的方法：
+
+```swift
+func addPaperPlane(x: Float = 0, y: Float = 0, z: Float = -0.5) {
+    guard let paperPlaneScene = SCNScene(named: "paperPlane.scn"), let paperPlaneNode = paperPlaneScene.rootNode.childNode(withName: "paperPlane", recursively: true) else { return }
+    paperPlaneNode.position = SCNVector3(x, y, z)
+    sceneView.scene.rootNode.addChildNode(paperPlaneNode)
+}
+```
+在上面的代码中，我们首先初始化和安全解包了 **paperPlane.scn** 文件的 **SCNScene** 对象，这是打包在启动项目中的 3D 对象。
+
+接下来，我们使用名为 **paperPlane** 的节点初始化和安全解包一个 **SCNNode** 对象。同事我们把 `recursively` 参数设置为 `true`
+， `recursively` 参数决定 SceneKit 是否使用前序遍历来搜索子节点子树。
+
+> 所有节点内容 —— 节点，几何体及其材质，光线，相机，相关对象都组织在具有单个公共根节点的节点层次结果中。
+> Apple 文档
 
 
+一旦节点被初始化了，我们设置 `paperPlaneNode` 的位置为参数 `x` 、 `y` 和 `z` 。默认位置是 0 向量，意味着这个节点位置父节点坐标系中的原点。在这个方法中，我们把 `z` 的默认值设为 `-0.5` ，意味着该对象被放在相机之前。
+
+最后，我们把 `paperPlaneNode` 添加到 `sceneView` 的 `sceneView` 上。
+
+现在，在 `viewDidLoad()` 方法中调用 `addPaperPlane(x:y:z:)` ：
+
+```swift
+override func viewDidLoad() {
+    super.viewDidLoad()
+    addPaperPlane()
+}
+```
+
+在你的设备上编译和运行，你可以看到一个立体的白纸飞机。
+
+![]({{  site.url  }}/assets/screenshot/arkit-3d-objects/p5.png)
+
+当前，这个纸飞机有点难以显现，这是因为缺少光线和阴影。在真实世界中，我们看到的物体都是有光线和阴影的。光线和阴影帮我们显示 3D 对象。
+
+如果你打开 3D Objects 文件夹下的 **paperPlane.scn** 文件，你可以看到纸飞机是立体白色的。因此它没有视觉深度。
+
+![]({{  site.url  }}/assets/screenshot/arkit-3d-objects/p6.png)
+
+因此，让我们在纸飞机上添加一些光线！
