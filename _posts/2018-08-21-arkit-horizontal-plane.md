@@ -140,7 +140,18 @@ func renderer(_ renderer: SCNSceneRenderer, didAdd node: SCNNode, for anchor: AR
 编译和运行你的项目，你现在应该可以检测和展示检测到的水平面了。
 ![]({{  site.url  }}/assets/screenshot/arkit-horizontal-plane/p5.jpg)
 
+### 水平面扩张
+随着 ARKit 收到额外的关于我们周围环境的信息，我们可能会想去扩张我们之前检测到的平面，去制作一个更大的表面或者用新的信息可以获取更准确的表示。
 
+于是，实现 `renderer(_:didUpdate:for:)` ：
+
+```swift
+func renderer(_ renderer: SCNSceneRenderer, didUpdate node: SCNNode, for anchor: ARAnchor) {
+ 
+}
+```
+
+每次更新 SceneKit 节点属性去匹配它对应的锚点时，都会调用此方法。这就是 ARKit 改进其对水平面位置和范围估计的地方。
 
 
 
