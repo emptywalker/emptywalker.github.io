@@ -37,5 +37,17 @@ date: 2018-08-17 17:26:24.000000000 +09:00
 > 关于在一个世界追踪 AR 会话中检测到一个真实世界平面位置和方向的信息。
 > —— Apple 文档
 
+### 开始构建一个 App
+我们将从一个[**启动项目**](https://github.com/appcoda/ARKitHorizontalPlaneDemo/raw/master/ARKitHorizontalPlaneDemoStarter.zip)开始，因此我们可以专注于 ARKit 的实现。用 Xcode 打开启动项目，并浏览一下。我已经在
+故事板中创建了一个 ARSCNView 。
+
+![]({{  site.url  }}/assets/screenshot/arkit-horizontal-plane/p3.png)
+
+编译和运行启动项目进行一个快速测试。你应该会在你的设备中看到以下提示：
+![]({{  site.url  }}/assets/screenshot/arkit-horizontal-plane/p4.png)
+
+确保你点击 OK 同意访问相机，然后你会看到你的相机视图。
+
+
 
 
