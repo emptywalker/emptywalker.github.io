@@ -192,4 +192,11 @@ override func viewDidLoad() {
 在你的项目中编译和运行 Xcode 项目，在你们的前面应该会有一辆非常酷的悬浮汽车。
 
 ![]({{  site.url  }}/assets/screenshot/arkit-3d-objects/p9.png)
+
+### 结语
+恭喜你看完本教程！希望你很享受它。
+
+为了参考，你可以在 [**GitHub 上下载完整的项目**](https://github.com/appcoda/ARKit3DDemo)。
+
+如果你想学习更多关于 ARKit 的知识，可以通过把本教程分享给你的朋友来让我知道。
  
