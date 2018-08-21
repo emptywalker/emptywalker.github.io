@@ -96,6 +96,53 @@ func setUpSceneView() {
 }
 ```
 
+### 水平面展示
+现在，每次一个新的 ARAnchor 被添加到 `sceneView` 上 app 就会得到一个通知，我们可能对看看新添加的 ARAnchor 是什么样子比较感兴趣。
+
+于是，更新 `renderer(_:didAdd:for:)` 方法像下面这样：
+
+```swift
+func renderer(_ renderer: SCNSceneRenderer, didAdd node: SCNNode, for anchor: ARAnchor) {
+    // 1
+    guard let planeAnchor = anchor as? ARPlaneAnchor else { return }
+    
+    // 2
+    let width = CGFloat(planeAnchor.extent.x)
+    let height = CGFloat(planeAnchor.extent.z)
+    let plane = SCNPlane(width: width, height: height)
+    
+    // 3
+    plane.materials.first?.diffuse.contents = UIColor.transparentLightBlue
+    
+    // 4
+    let planeNode = SCNNode(geometry: plane)
+    
+    // 5
+    let x = CGFloat(planeAnchor.center.x)
+    let y = CGFloat(planeAnchor.center.y)
+    let z = CGFloat(planeAnchor.center.z)
+    planeNode.position = SCNVector3(x,y,z)
+    planeNode.eulerAngles.x = -.pi / 2
+    
+    // 6
+    node.addChildNode(planeNode)
+}
+```
+
+让我带你一行一行的看看代码：
+
+1. 我们安全地解包了 anchor 参数成为一个 ARPlaneAnchor ，以确保我们掌握到了有关检测到的真实世界平面的信息。
+2. 于是，我们创建了一个 SCNPlane 去显示 ARPlaneAnchor ， SCNPlane 就是一个单面的矩形平面几何体，我们解包了 ARPlaneAnchor  extent 的 x 和 z 属性，使用它们创建了一个 SCNPlane 。一个 ARPlaneAnchor 的 extent 是在真实世界中检测到的平面的估算大小。我们提取 extent 的 x 和 z 作为我们 SCNPlane 的高和宽。然后我们给平面一个透明的浅蓝色去模拟水。
+3. 我们使用刚刚创建的 SCNPlane 几何体创建一个 SCNNode 。
+4. 我们初始化 x ， y 和 z 常量表示 `planeAnchor` 的中心 x ， y 和 z 的位置。这就是我们 planeNode 的位置。我们在逆时针方向将 planeNode 的 x 的 euler 角度旋转 90 度，否则 `planeNode` 将会垂直于桌面。如果顺时针， David Blaine 将会表现出一种神奇的错觉，因为 SceneKit 默认使用一边的材料渲染 SCNPlane 表面。
+5. 最后，我们把 planeNode 作为子节点添加到新添加的 SceneKit 节点上。
+
+编译和运行你的项目，你现在应该可以检测和展示检测到的水平面了。
+![]({{  site.url  }}/assets/screenshot/arkit-horizontal-plane/p5.jpg)
+
+
+
+
 
 
 
