@@ -185,4 +185,61 @@ planeNode.position = SCNVector3(x, y, z)
 
 ![]({{  site.url  }}/assets/screenshot/arkit-horizontal-plane/p6.gif)
 
+### 添加对象到水平面上
 
+现在，让我们在水平面上添加一条船，在启动项目中，我已经打包了一个 3D 船对象给你使用。
+
+在 `ViewController` 类中插入下面的方法在水平面上放一艘船。
+
+```swift
+@objc func addShipToSceneView(withGestureRecognizer recognizer: UIGestureRecognizer) {
+    let tapLocation = recognizer.location(in: sceneView)
+    let hitTestResults = sceneView.hitTest(tapLocation, types: .existingPlaneUsingExtent)
+    
+    guard let hitTestResult = hitTestResults.first else { return }
+    let translation = hitTestResult.worldTransform.translation
+    let x = translation.x
+    let y = translation.y
+    let z = translation.z
+    
+    guard let shipScene = SCNScene(named: "ship.scn"),
+        let shipNode = shipScene.rootNode.childNode(withName: "ship", recursively: false)
+        else { return }
+    
+    
+    shipNode.position = SCNVector3(x,y,z)
+    sceneView.scene.rootNode.addChildNode(shipNode)
+}
+```
+
+这里有很多熟悉的面孔，如前一篇教程所述，因此我不会一行一行的带你仔细阅读代码。如果你想学习这个可以[**查看前一篇教程**](https://emptywalker.github.io/2018/08/arkit-3d-object/)。现在唯一不同的是我们给 `types` 参数传入了不同的值，去在 `sceneView` 里检测已经存在的平面锚点。
+
+锦上添花之前，我们添加下面的代码：
+
+```swift
+func addTapGestureToSceneView() {
+    let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(ViewController.addShipToSceneView(withGestureRecognizer:)))
+    sceneView.addGestureRecognizer(tapGestureRecognizer)
+}
+```
+这个方法会给 `sceneView` 添加一个点击手势识别器。
+
+为了锦上添花，在 `viewDidLoad()` 方法里面调用以下方法在 `sceneView` 上添加一个点击手势识别器：
+
+```swift
+addTapGestureToSceneView()
+```
+现在如果你编译运行，你应该可以检测到一个水平面，可视化它，并把一艘贼帅的船放在上面。
+![]({{  site.url  }}/assets/screenshot/arkit-horizontal-plane/p7.gif)
+
+或者一个舰队（有光线）。
+![]({{  site.url  }}/assets/screenshot/arkit-horizontal-plane/p8.jpg)
+
+在可以通过解注释 `viewDidLoad()` 方法中的 `configureLighting()` 来启用光线。
+
+启用光线的方法很简单只需要 2 行代码：
+
+```swift
+sceneView.autoenablesDefaultLighting = true
+sceneView.automaticallyUpdatesLighting = true
+```
