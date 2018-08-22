@@ -243,3 +243,10 @@ addTapGestureToSceneView()
 sceneView.autoenablesDefaultLighting = true
 sceneView.automaticallyUpdatesLighting = true
 ```
+
+### 结语
+我希望你可以享受并能从这篇教程中学到一些有价值的东西。如果你有，请通过分析这篇教程来让我知道。最后，如果你有任何意见，问题或建议，随意在下面留下它们。
+
+我不确定一个人是否能够做到这个，但你可以使用图片评论，我很想知道你们把船放在了哪里！
+
+为了参考，你可以在 [**GitHub 上下载最终的项目**](https://github.com/appcoda/ARKitHorizontalPlaneDemo)。
