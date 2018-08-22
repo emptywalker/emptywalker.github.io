@@ -151,9 +151,38 @@ func renderer(_ renderer: SCNSceneRenderer, didUpdate node: SCNNode, for anchor:
 }
 ```
 
-每次更新 SceneKit 节点属性去匹配它对应的锚点时，都会调用此方法。这就是 ARKit 改进其对水平面位置和范围估计的地方。
+每次更新 SceneKit 节点属性去匹配它对应的锚点时，都会调用此方法。这就是 ARKit 改进其对水平面位置和范围预估的地方。
 
+参数 `node` 可以让我们去更新锚点的位置。 参数 `anchor` 可以让我们更新锚点的宽和高。用这两个参数，我们可以更新之前实现的 SCNPlane ，以使用更新后的宽和高反映更新后的位置。
 
+接下来，我们在 `renderer(_:didUpdate:for:)` 里面添加以下代码：
 
+```swift
+// 1
+guard let planeAnchor = anchor as?  ARPlaneAnchor,
+    let planeNode = node.childNodes.first,
+    let plane = planeNode.geometry as? SCNPlane
+    else { return }
+ 
+// 2
+let width = CGFloat(planeAnchor.extent.x)
+let height = CGFloat(planeAnchor.extent.z)
+plane.width = width
+plane.height = height
+ 
+// 3
+let x = CGFloat(planeAnchor.center.x)
+let y = CGFloat(planeAnchor.center.y)
+let z = CGFloat(planeAnchor.center.z)
+planeNode.position = SCNVector3(x, y, z)
+```
+同样的，让我带你看看上面的代码做了什么：
+1. 首先，我们把 anchor 安全解包成 `ARPlaneAnchor` 类型，接着我们安全解包了 `node` 的第一个子节点，最后，我们将 `planeNode` 的 geometry 安全解包为 `SCNPlane` 类型。我们仅仅获取前面实现的 `ARPlaneAnchor` ， `SCNNode` 和 `SCNplaneand` ，并用对应的参数更新它们的属性。
+2. 这里，我们使用 `planeAnchor` 的 extent 的 x 和 z 属性去更新了 `plane` 的宽度和高度。
+3. 最后，我们把 `planeNode` 的位置更新成 `planeAnchor` 的 center 的 x ， y 和 z 坐标。
+
+编译运行检查一下水平面扩展的实现效果。
+
+![]({{  site.url  }}/assets/screenshot/arkit-horizontal-plane/p6.gif)
 
 
