@@ -22,7 +22,7 @@ date: 2018-08-21 17:26:24.000000000 +09:00
 
 ![]({{  site.url  }}/assets/screenshot/arkit-horizontal-plane/p1.jpg)
 
-或者创建一个有光线的舰队。
+或者创建一个有光照的舰队。
 
 ![]({{  site.url  }}/assets/screenshot/arkit-horizontal-plane/p2.jpg)
 
@@ -232,12 +232,12 @@ addTapGestureToSceneView()
 现在如果你编译运行，你应该可以检测到一个水平面，可视化它，并把一艘贼帅的船放在上面。
 ![]({{  site.url  }}/assets/screenshot/arkit-horizontal-plane/p7.gif)
 
-或者一个舰队（有光线）。
+或者一个舰队（有光照）。
 ![]({{  site.url  }}/assets/screenshot/arkit-horizontal-plane/p8.jpg)
 
-在可以通过解注释 `viewDidLoad()` 方法中的 `configureLighting()` 来启用光线。
+在可以通过解注释 `viewDidLoad()` 方法中的 `configureLighting()` 来启用光照。
 
-启用光线的方法很简单只需要 2 行代码：
+启用光照的方法很简单只需要 2 行代码：
 
 ```swift
 sceneView.autoenablesDefaultLighting = true
