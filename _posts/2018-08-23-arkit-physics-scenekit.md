@@ -142,3 +142,50 @@ rocketshipNode.name = rocketshipNodeName
 
 ![]({{  site.url  }}/assets/screenshot/arkit-physics-scenekit/p2.gif)
 
+### 施力
+
+我们现在去给火箭施加外力。
+
+在开始之前，我们需要一个触发这个行为的方式，我们可以使用 `UISwipeGestureRecognizer` 来帮助实现。首先，在 `addRocketshipToSceneView(withGestureRecognizer:)` 方法下面添加以下方法：
+
+```swift
+func getRocketshipNode(from swipeLocation: CGPoint) -> SCNNode? {
+    let hitTestResults = sceneView.hitTest(swipeLocation)
+        
+    guard let parentNode = hitTestResults.first?.node.parent,
+        parentNode.name == rocketshipNodeName
+        else { return nil }
+                
+    return parentNode
+}
+```
+以上方法将会帮助我们从轻扫手势的轻扫位置获取火箭节点。你可能会想为什么我们要安全解包父节点，原始是返回的节点是来自己碰撞测试的结果，这个结果可能是组成火箭的五个节点之一。
+![]({{  site.url  }}/assets/screenshot/arkit-physics-scenekit/p3.png)
+
+在之前方法的正下方，添加以下方法：
+
+```swift
+@objc func applyForceToRocketship(withGestureRecognizer recognizer: UIGestureRecognizer) {
+    // 1
+    guard recognizer.state == .ended else { return }
+    // 2
+    let swipeLocation = recognizer.location(in: sceneView)
+    // 3
+    guard let rocketshipNode = getRocketshipNode(from: swipeLocation),
+        let physicsBody = rocketshipNode.physicsBody
+        else { return }
+    // 4
+    let direction = SCNVector3(0, 3, 0)
+    physicsBody.applyForce(direction, asImpulse: true)
+}
+```
+从上面的代码中，我们可以得到：
+
+1. 确保轻扫手势的状态是 ended 。
+2. 从轻扫位置获取碰撞测试结果。
+3. 看看轻扫手势是否扫在火箭上。
+4. 我们给父节点的 physics body 在 y 轴方向上施加一个力。如果你注意一下，会发现我们也设置了 impulse 参数为 true 。这适用于力量瞬间变化并立即加速 physics body 。通常，当它设为 true 的时候，这个选项允许你去仿真一个瞬时效果，就像发射一个抛射物。
+
+非常棒！编译运行，在火箭上轻扫，你应该会施加一个力在火箭上。
+
+
