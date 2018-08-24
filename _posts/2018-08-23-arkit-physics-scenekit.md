@@ -187,5 +187,72 @@ func getRocketshipNode(from swipeLocation: CGPoint) -> SCNNode? {
 4. 我们给父节点的 physics body 在 y 轴方向上施加一个力。如果你注意一下，会发现我们也设置了 impulse 参数为 true 。这适用于力量瞬间变化并立即加速 physics body 。通常，当它设为 true 的时候，这个选项允许你去仿真一个瞬时效果，就像发射一个抛射物。
 
 非常棒！编译运行，在火箭上轻扫，你应该会施加一个力在火箭上。
+![]({{  site.url  }}/assets/screenshot/arkit-physics-scenekit/p4.gif)
 
+### 添加 SceneKit 的粒子系统并修改 Physics 属性
 
+启动项目中的 「Particles」 文件夹下有一个反应堆 SceneKit 粒子系统。
+![]({{  site.url  }}/assets/screenshot/arkit-physics-scenekit/p5.png)
+在本教程中，我们不会研究如何去创建一个 SceneKit 粒子系统。我们将会研究如何添加一个 SceneKit 粒子系统到节点上和一些它们的 physics 属性。
+
+打开 `ViewController.swift` 。在 `ViewController` 类中声明以下变量：
+
+```swift
+var planeNodes = [SCNNode]()
+```
+
+在 `renderer(_:didAdd:for:)` 方法中，把下面的代码作为该方法的最后一行代码：
+
+```swift
+planeNodes.append(planeNode)
+```
+
+简单的说，当一个新的平面被检测到，我们把它加到我们的平面节点数组中。我们稍后将会为反应堆 SceneKit 粒子系统的对撞机节点属性引用平面节点数组。
+
+在 `renderer(_:didAdd:for:)` 方法正下方，添加实现以下代理方法：
+
+```swift
+func renderer(_ renderer: SCNSceneRenderer, didRemove node: SCNNode, for anchor: ARAnchor) {
+    guard anchor is ARPlaneAnchor,
+        let planeNode = node.childNodes.first
+        else { return }
+    planeNodes = planeNodes.filter { $0 != planeNode }
+}
+```
+
+当一个 SceneKit 节点对应的移除 AR 锚已经从场景中移除的时候，这个代理方法就会被调用。这时候，我们只会从平面节点数组中过滤出和被移除的平面节点不相等那些节点。
+
+接下来，在 `applyForceToRocketship(withGestureRecognizer:)` 方法下面添加以下方法：
+
+```swift
+@objc func launchRocketship(withGestureRecognizer recognizer: UIGestureRecognizer) {
+    // 1
+    guard recognizer.state == .ended else { return }
+    // 2
+    let swipeLocation = recognizer.location(in: sceneView)
+    guard let rocketshipNode = getRocketshipNode(from: swipeLocation),
+        let physicsBody = rocketshipNode.physicsBody,
+        let reactorParticleSystem = SCNParticleSystem(named: "reactor", inDirectory: nil),
+        let engineNode = rocketshipNode.childNode(withName: "node2", recursively: false)
+        else { return }
+    // 3
+    physicsBody.isAffectedByGravity = false
+    physicsBody.damping = 0
+    // 4
+    reactorParticleSystem.colliderNodes = planeNodes
+    // 5
+    engineNode.addParticleSystem(reactorParticleSystem)
+    // 6
+    let action = SCNAction.moveBy(x: 0, y: 0.3, z: 0, duration: 3)
+    action.timingMode = .easeInEaseOut
+    rocketshipNode.runAction(action)
+}
+```
+
+在上面的代码中，我们做了：
+1. 确保轻扫手势的状态为 ended 。
+2. 像之前一样，安全解包火箭节点和它的 physics body 。同时，我们安全解包了反应堆 SceneKit 粒子系统和引擎节点。我们想把反应堆 SceneKit 粒子系统添加到火箭的引擎上。于是，在引擎节点上就会有有趣的事情了。
+3. 设置 physics body 的 *isAffectedByGravity* 属性为 false ，它的效果就像名字一样。引力将不会再影响火箭节点。我们也设置了 damping 属性为 0 ，damping 属性会在 body 上模拟出流体摩擦和空气阻力的效果。设为 0 将会导致在火箭节点的  physics body 上流体摩擦或空气阻力没有效果。
+4. 设置反应堆粒子系统去和平面节点碰撞。当它们交互的时候，这将会使粒子系统中的粒子会从已检测到的水平上反弹，，而不是穿过平面节点。
+5. 在引擎节点上添加反应堆粒子系统。
+6. 我们向上移动火箭节点 0.3 米，伴随着满进慢出的动画效果。
