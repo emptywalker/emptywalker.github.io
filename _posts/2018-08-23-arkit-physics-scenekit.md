@@ -256,3 +256,29 @@ func renderer(_ renderer: SCNSceneRenderer, didRemove node: SCNNode, for anchor:
 4. 设置反应堆粒子系统去和平面节点碰撞。当它们交互的时候，这将会使粒子系统中的粒子会从已检测到的水平上反弹，，而不是穿过平面节点。
 5. 在引擎节点上添加反应堆粒子系统。
 6. 我们向上移动火箭节点 0.3 米，伴随着满进慢出的动画效果。
+
+
+### 添加轻扫手势
+
+在我们可以施力发射火箭之前，我们需要在 scene view 上添加一个轻扫手势，在 `addTapGestureToSceneView()` 下面添加以下代码：
+
+```swift
+func addSwipeGesturesToSceneView() {
+    let swipeUpGestureRecognizer = UISwipeGestureRecognizer(target: self, action: #selector(ViewController.applyForceToRocketship(withGestureRecognizer:)))
+    swipeUpGestureRecognizer.direction = .up
+    sceneView.addGestureRecognizer(swipeUpGestureRecognizer)
+    
+    let swipeDownGestureRecognizer = UISwipeGestureRecognizer(target: self, action: #selector(ViewController.launchRocketship(withGestureRecognizer:)))
+    swipeDownGestureRecognizer.direction = .down
+    sceneView.addGestureRecognizer(swipeDownGestureRecognizer)
+}
+```
+
+一个向上轻扫手势将会在火箭节点上施加力量，一个向下的轻扫手势将会发射火箭。漂亮！
+
+最后，但并非最不重要的，在 `viewDidLoad()` 中调用这个方法：
+
+```swift
+addSwipeGesturesToSceneView()
+```
+就这样。
