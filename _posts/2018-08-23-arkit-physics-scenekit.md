@@ -41,3 +41,22 @@ SceneKit 在渲染一个画面之前会在场景中使用附带的 physics bodie
 你可能想使用一个运动的 physics body 表示当你创建一个游戏的时候，你可以使用你的手指去推动一个方块。因此，你创建了一个「无形的」方块推进器，可以通过你手指移动来触发。这个「无形的」方块不会被其它的方块影响，然后，「无形的」方块会移动其它方块，当它们接触时。运动的 physics body 是一个不受外力和碰撞影响的 physics body ，但当它移动的时候回早晨其它 bodies 的碰撞影响，可以移动其它 bodies ，但不会被其它 bodies 移动。
 
 
+### 创建一个 Physics Body
+
+让我们从给已检测到的水平面一个静态 physics body 开始。在这条路上，我们得有一个坚固的地面，来让我们的火箭站在上面。
+
+在 `ViewController.swift` 的 `renderer(_:didUpdate:for:)` 中添加以下方法：
+
+```swift
+func update(_ node: inout SCNNode, withGeometry geometry: SCNGeometry, type: SCNPhysicsBodyType) {
+    let shape = SCNPhysicsShape(geometry: geometry, options: nil)
+    let physicsBody = SCNPhysicsBody(type: type, shape: shape)
+    node.physicsBody = physicsBody
+}
+```
+
+在这个方法里，我们创建了一个 `SCNPhysicsShape` 对象。 `SCNPhysicsShape` 对象表示 physics body 的外形。当 SceneKit 检测到你的场景中的 `SCNPhysicsBody` 对象相互接触的时候，就会使用你创建的 physics shapes 替换渲染的可视对象的几何体。
+
+接下来，我们创建一个 `SCNPhysicsBody` 对象，给 type 参数传入一个 `.static` 和 把我们的 `SCNPhysicsShape` 对象传给 shape 对象。
+
+然后，我们把 node 的 physics body 设置成我们一起创建的 physics body 。
