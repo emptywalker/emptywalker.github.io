@@ -123,3 +123,22 @@ func renderer(_ renderer: SCNSceneRenderer, didUpdate node: SCNNode, for anchor:
 ```
 
 做的漂亮！
+
+### 附带一个动态的 Physics Body
+
+现在，让我们给火箭节点一个动态的 physics body ，因为我们想这个节点可以被外力和碰撞影响。在 `ViewController` 类中声明一个火箭节点名字的常量：
+
+```swift
+let rocketshipNodeName = "rocketship"
+```
+然后在 `addRocketshipToSceneView(withGestureRecognizer:)` 方法里，调整火箭节点的位置之后添加下面的代码：
+
+```swift
+let physicsBody = SCNPhysicsBody(type: .dynamic, shape: nil)
+rocketshipNode.physicsBody = physicsBody
+rocketshipNode.name = rocketshipNodeName
+```
+我们设置了 `rocketshipNode` 的静态 physics body 和 name 。我们稍等将会看到用 name 去分辨 `rocketshipNode` 。编译运行，你可以看到下面这样的场景：
+
+![]({{  site.url  }}/assets/screenshot/arkit-physics-scenekit/p2.gif)
+
