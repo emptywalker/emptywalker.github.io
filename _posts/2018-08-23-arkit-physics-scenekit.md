@@ -282,3 +282,12 @@ func addSwipeGesturesToSceneView() {
 addSwipeGesturesToSceneView()
 ```
 就这样。
+
+
+###  Showtime !
+恭喜，这是它的表演时间。试试向下轻扫，看看你会得到什么！
+![]({{  site.url  }}/assets/screenshot/arkit-physics-scenekit/p6.gif)
+
+继续，试试向下扫然后向上扫，火箭就会发射了！
+
+![]({{  site.url  }}/assets/screenshot/arkit-physics-scenekit/p7.gif)
