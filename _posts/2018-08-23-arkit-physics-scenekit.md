@@ -26,3 +26,18 @@ SceneKit 在渲染一个画面之前会在场景中使用附带的 physics bodie
 
 通常，在每个渲染画面之前，都会进行物理计算。
 
+### Physics Body 类型
+
+为了构建一个 physics body ，你首先需要指定一个 **physics body 类型**。一个 physics body 类型决定了一个 physics body 如何与其它 bodies 的交互动力。三个  physics body 类型分别是静态，动态，和运动。
+
+#### 静态
+
+你可能想给 SceneKit 对象使用一个静态类型的 physics body ，比如地板，墙面，和地形。一个静态类型的 physics body 是不会受外力或者碰撞所影响的，并且不能移动。
+
+#### 动态
+你可能想给 SceneKit 对象使用一个动态类型的 physics body ，比如飞行的喷着火的龙，Steph Curry 正在投篮，或发射一艘火箭。动态 physics body 类型是一个会受外力和碰撞影响的 physics body 。
+
+#### 运动的
+你可能想使用一个运动的 physics body 表示当你创建一个游戏的时候，你可以使用你的手指去推动一个方块。因此，你创建了一个「无形的」方块推进器，可以通过你手指移动来触发。这个「无形的」方块不会被其它的方块影响，然后，「无形的」方块会移动其它方块，当它们接触时。运动的 physics body 是一个不受外力和碰撞影响的 physics body ，但当它移动的时候回早晨其它 bodies 的碰撞影响，可以移动其它 bodies ，但不会被其它 bodies 移动。
+
+
