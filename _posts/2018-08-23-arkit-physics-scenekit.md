@@ -17,3 +17,12 @@ date: 2018-08-23 17:26:24.000000000 +09:00
 点击 OK 。如果你一切顺利的话，你应该可以看到你的相机视图。
 
 提醒一下，这篇教程是建立在[**上一篇教程**](https://emptywalker.github.io/2018/08/arkit-horizontal-plane/)知识之上的。如果你有很多困惑，你可以随时查看 [**ARKit 系列教程**](https://www.appcoda.com/tag/arkit/)，以便可以在需要时帮助到你。
+
+
+### Physics Body 解释
+首先要做的事情就是解释 physics body 。这是基本知识之一，为了让 SceneKit 知道如何在 app 中模拟一个 SceneKit 节点。我们需要附带上一个 `SCNPhysicsBody` ， `SCNPhysicsBody` 是一个给节点添加物理仿真的对象。
+
+SceneKit 在渲染一个画面之前会在场景中使用附带的 physics bodies 给节点执行**物理计算**。这些计算包括重力、摩擦力和与其它 bodies 的碰撞。你也可以施力去推动一个 body 。这些计算之后，它会更新节点的位置和方向，然后渲染画面。
+
+通常，在每个渲染画面之前，都会进行物理计算。
+
