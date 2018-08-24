@@ -60,3 +60,66 @@ func update(_ node: inout SCNNode, withGeometry geometry: SCNGeometry, type: SCN
 接下来，我们创建一个 `SCNPhysicsBody` 对象，给 type 参数传入一个 `.static` 和 把我们的 `SCNPhysicsShape` 对象传给 shape 对象。
 
 然后，我们把 node 的 physics body 设置成我们一起创建的 physics body 。
+
+### 附带一个静态 Physics Body
+
+我们现在去给检测到的平面附带一个静态的 physics body 在 `renderer(_:didAdd:for:)` 方法里面。在添加 `planeNode` 为子节点之前调用下面的方法：
+
+```swift
+update(&planeNode, withGeometry: plane, type: .static)
+```
+添加之后，你的 `renderer(_:didAdd:for:)` 方法，现在看起来应该像这样：
+
+```swift
+ func renderer(_ renderer: SCNSceneRenderer, didAdd node: SCNNode, for anchor: ARAnchor) {
+        guard let planeAnchor = anchor as? ARPlaneAnchor else { return }
+        
+        let width = CGFloat(planeAnchor.extent.x)
+        let height = CGFloat(planeAnchor.extent.z)
+        let plane = SCNPlane(width: width, height: height)
+        
+        plane.materials.first?.diffuse.contents = UIColor.transparentWhite
+        
+        var planeNode = SCNNode(geometry: plane)
+        
+        let x = CGFloat(planeAnchor.center.x)
+        let y = CGFloat(planeAnchor.center.y)
+        let z = CGFloat(planeAnchor.center.z)
+        planeNode.position = SCNVector3(x,y,z)
+        planeNode.eulerAngles.x = -.pi / 2
+        
+        update(&planeNode, withGeometry: plane, type: .static)
+        
+        node.addChildNode(planeNode)
+    }
+```
+当我们检测到的平面被新的信息更新的时候，它可能会改变几何形状。于是，我们需要在 `render(_:didUpdate:for:)` 中调用相同的方法：
+
+```swift
+update(&planeNode, withGeometry: plane, type: .static)
+```
+`render(_:didUpdate:for:)` 方法在修改后现在看起来应该像这样：
+
+```swift
+func renderer(_ renderer: SCNSceneRenderer, didUpdate node: SCNNode, for anchor: ARAnchor) {
+    guard let planeAnchor = anchor as?  ARPlaneAnchor,
+        var planeNode = node.childNodes.first,
+        let plane = planeNode.geometry as? SCNPlane
+        else { return }
+    
+    let width = CGFloat(planeAnchor.extent.x)
+    let height = CGFloat(planeAnchor.extent.z)
+    plane.width = width
+    plane.height = height
+    
+    let x = CGFloat(planeAnchor.center.x)
+    let y = CGFloat(planeAnchor.center.y)
+    let z = CGFloat(planeAnchor.center.z)
+    
+    planeNode.position = SCNVector3(x, y, z)
+    
+    update(&planeNode, withGeometry: plane, type: .static)
+}
+```
+
+做的漂亮！
