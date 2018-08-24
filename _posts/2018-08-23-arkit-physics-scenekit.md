@@ -291,3 +291,4 @@ addSwipeGesturesToSceneView()
 继续，试试向下扫然后向上扫，火箭就会发射了！
 
 ![]({{  site.url  }}/assets/screenshot/arkit-physics-scenekit/p7.gif)
+
