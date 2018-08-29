@@ -10,7 +10,7 @@ date: 2018-08-23 17:26:24.000000000 +09:00
 
 只要那样做就可以移动？这是真的吗？那就是增强现实。欢迎回来 ARKit 系列教程的第四部分。在本教程中，我们将会学习一个 ARKit 里面的物理学基础。我们会在教程结尾发射一艘火箭，然后就像 7 月 4 号一样庆祝一下，因为我们可以做到！我们开始吧！
 
-首先，让我们从[**下载启动项目**](downloading the starter project here)开始。编译并运行，你应该会收到一个弹框，提示许在 App 内访问相机。
+首先，让我们从[**下载启动项目**](downloading the starter project here)开始。编译并运行，你应该会收到一个弹框，提示允许在 App 内访问相机。
 
 ![]({{  site.url  }}/assets/screenshot/arkit-physics-scenekit/p1.png)
 
