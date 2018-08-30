@@ -28,7 +28,7 @@ SceneKit 在渲染一个画面之前会在场景中使用附带的 physics bodie
 
 ### Physics Body 类型
 
-为了构建一个 physics body ，你首先需要指定一个 **physics body 类型**。一个 physics body 类型决定了一个 physics body 如何与其它 bodies 的交互动力。三个  physics body 类型分别是静态，动态，和运动。
+为了构建一个 physics body ，你首先需要指定一个 **physics body 类型**。一个 physics body 类型决定了一个 physics body 如何与其它 bodies 的交互作用力。三个  physics body 类型分别是静态，动态，和运动。
 
 #### 静态
 
