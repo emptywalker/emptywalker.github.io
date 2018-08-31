@@ -32,3 +32,21 @@ date: 2018-08-30 17:26:24.000000000 +09:00
 * 测试光照强度和温度属性
 * 更新和实现 UI
 * 最后，在一个 SceneKit 的场景渲染方法中实现光照估计。
+
+
+### 开始
+
+首先，[**下载启动项目**](https://github.com/appcoda/ARKitLightEstimationDemo/raw/master/ARKitLightEstimationStarter.zip)。我已经构建了应用的 UI 和创建的按钮的行为方法。
+
+
+![]({{  site.url  }}/assets/screenshot/arkit-light-estimation/p1.png)
+
+编译运行。你应该被提示是否允许在 App 里面访问相机。点击 OK 允许在你的 App 中访问相机。
+
+![]({{  site.url  }}/assets/screenshot/arkit-light-estimation/p2.png)
+
+
+
+
+
+
