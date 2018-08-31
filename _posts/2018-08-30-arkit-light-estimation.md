@@ -17,3 +17,7 @@ date: 2018-08-30 17:26:24.000000000 +09:00
 
 
 现在，让我们开始。
+
+### 前提条件
+
+这篇 ARKit 教程是建立在[**前一篇 ARKit 教程**](https://emptywalker.github.io/2018/08/arkit-physics-scenekit/)的基础上。如果你有任何困惑，你可以随时查看 [**ARKit 系列教程**](https://www.appcoda.com/tag/arkit/)，以便可以在需要时帮助到你。
