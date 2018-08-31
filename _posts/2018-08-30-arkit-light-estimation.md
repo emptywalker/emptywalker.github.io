@@ -45,6 +45,28 @@ date: 2018-08-30 17:26:24.000000000 +09:00
 
 ![]({{  site.url  }}/assets/screenshot/arkit-light-estimation/p2.png)
 
+### 创建一个球体节点
+
+首先，我们将通过在增强现实中创建一个球开始。在 Xcode 中打开 `ViewController.swift` 文件。在 `ViewController` 类中添加以下代码：
+
+```swift
+func getSphereNode(withPosition position: SCNVector3) -> SCNNode {
+    let sphere = SCNSphere(radius: 0.1)
+    
+    let sphereNode = SCNNode(geometry: sphere)
+    sphereNode.position = position
+    sphereNode.position.y += Float(sphere.radius) + 1
+    
+    return sphereNode
+}
+```
+`getSphereNode(withPosition:)` 方法做了以下事情：
+
+* 传入一个 position 参数
+* 创建一个半径为 0.1 CGFloat 的球形几何体
+* 使用我们前面创建的球形几何体创建一个球形节点
+* 将球型节点的 position 设置成 position 参数的值
+* 给球型节点的 y 位置的值加上球体半径值的值，使用球体在检测到的水平面的正上方
 
 
 
