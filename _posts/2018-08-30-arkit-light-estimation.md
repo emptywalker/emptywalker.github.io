@@ -72,7 +72,7 @@ func getSphereNode(withPosition position: SCNVector3) -> SCNNode {
 
 简而言之，这个方法创建了一个球型节点，并把它放到一个检测到的平面的上方。
 
-
+### 添加一个光照节点
 
 
 
