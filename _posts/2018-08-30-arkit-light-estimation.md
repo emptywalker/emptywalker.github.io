@@ -182,6 +182,16 @@ var detectedHorizontalPlane = false {
 ```
 这个 lightEstimationStackView 包含了一个 UISwitch 对象和一个 UILabel 对象。当设置 `detectedHorizontalPlane` 被设置为 `true` 的时候，我们显示 lightEstimationStackView 。
 
+### 实现光照估计开关
+
+现在我们将去实现光照估计开关。在 `lightEstimationSwitchValueDidChange(_:)` 方法里添加以下代码：
+
+```swift
+ambientIntensitySliderValueDidChange(ambientIntensitySlider)
+ambientColorTemperatureSliderValueDidChange(ambientColorTemperatureSlider)
+```
+
+一旦光照估计开关值改变了，我们就更新光照节点 light 的 intensity 和 temperature 属性成它们各自 slider 的值。
 
 
 
