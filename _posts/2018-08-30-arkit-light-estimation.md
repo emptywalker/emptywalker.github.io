@@ -246,6 +246,11 @@ updateLightNodesLightEstimation()
 你可以试试打开/关闭光照估计。
 ![]({{  site.url  }}/assets/screenshot/arkit-light-estimation/p5.jpg)
 
+### 结语
+
+我希望你能享受本教程并能学习到一些有价值的东西。随意在你的社交网络上分享这篇教程，你周围的人也可以因此获得一些知识！
+
+对于完整的 Xcode 项目，你可以在 [**GitHub 上下载它**](https://github.com/appcoda/ARKitLightEstimationDemo)。如果你有任何问题想反馈，请在下面给我留言。
 
 
 
