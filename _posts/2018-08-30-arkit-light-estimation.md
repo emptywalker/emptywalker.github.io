@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 「译」ARKit 教程：具有环境强度和色温的关照估计
+title: 「译」ARKit 教程：具有环境亮度和色温的关照估计
 date: 2018-08-30 17:26:24.000000000 +09:00
 ---
 
@@ -29,7 +29,7 @@ date: 2018-08-30 17:26:24.000000000 +09:00
 
 * 在一个已检测的水平面上放一个球体节点
 * 使用一个光照节点演示球体节点
-* 测试光照强度和温度属性
+* 测试光照亮度和温度属性
 * 更新和实现 UI
 * 最后，在一个 SceneKit 的场景渲染方法中实现光照估计。
 
@@ -126,7 +126,7 @@ detectedHorizontalPlane = true
 
 ### 测试光照属性
 
-现在，让我测试一下环境强度和色温对已渲染的图像的影响。开始之前，像这样更新一下 `ambientIntensitySliderValueDidChange(_:)` 方法：
+现在，让我测试一下环境亮度和色温对已渲染的图像的影响。开始之前，像这样更新一下 `ambientIntensitySliderValueDidChange(_:)` 方法：
 
 ```swift
 @IBAction func ambientIntensitySliderValueDidChange(_ sender: UISlider) {
@@ -142,7 +142,7 @@ detectedHorizontalPlane = true
     }
 }
 ```
-上面的代码运行在主线程，并把光照节点的光照强度属性值设为 slider 的值，像这样更新 `ambientColorTemperatureSliderValueDidChange(_:)`
+上面的代码运行在主线程，并把光照节点的光照亮度属性值设为 slider 的值，像这样更新 `ambientColorTemperatureSliderValueDidChange(_:)`
  方法：
  
 ```swift
@@ -161,13 +161,13 @@ detectedHorizontalPlane = true
 ```
 上面的代码运行在主线程，并把光照节点的温度属性值设为 slider 的值，
 
-库！我们编译运行这个项目。把设备的相机对着一个水平面。根据水平面检测，你应该会看到一个悬浮球。随意滑动 sliders 去修改光照强度和色温属性。
+库！我们编译运行这个项目。把设备的相机对着一个水平面。根据水平面检测，你应该会看到一个悬浮球。随意滑动 sliders 去修改光照亮度和色温属性。
 
 ![]({{  site.url  }}/assets/screenshot/arkit-light-estimation/p3.gif)
 
 ### 显示/隐藏光照估计开关
 
-现在， 环境强度和色温控制都是显示的。但对于光照估计开关，默认是隐藏的。我想在检测到一个水平面之后再显示控制器。因此，像这样更新 `detectedHorizontalPlane` 属性的 `didSet` 方法：
+现在， 环境亮度和色温控制都是显示的。但对于光照估计开关，默认是隐藏的。我想在检测到一个水平面之后再显示控制器。因此，像这样更新 `detectedHorizontalPlane` 属性的 `didSet` 方法：
 
 ```swift
 var detectedHorizontalPlane = false {
@@ -193,6 +193,49 @@ ambientColorTemperatureSliderValueDidChange(ambientColorTemperatureSlider)
 
 一旦光照估计开关值改变了，我们就更新光照节点 light 的 intensity 和 temperature 属性成它们各自 slider 的值。
 
+
+### 实现光照估计
+
+好的，只剩下了光照估计的实现了。首先，为什么要光照估计？就像我在这篇教程很早起提到的那也，光照估计在 AR 中加强了你的图像和真实世界的融合。你想使得这些图像匹配真实世界的光照环境。例如，如果你让你房间的光照变暗，你想的是让这个关照变化影响到虚拟对象，使得虚拟对象更真实。
+
+从捕获到的适配画面中，你可以获得预估的场景光照信息。现在，在 `ViewController` 类里添加下面的方法：
+
+```swift
+func updateLightNodesLightEstimation() {
+    DispatchQueue.main.async {
+        guard self.lightEstimationSwitch.isOn,
+            let lightEstimate = self.sceneView.session.currentFrame?.lightEstimate
+            else { return }
+        
+        let ambientIntensity = lightEstimate.ambientIntensity
+        let ambientColorTemperature = lightEstimate.ambientColorTemperature
+        
+        for lightNode in self.lightNodes {
+            guard let light = lightNode.light else { continue }
+            light.intensity = ambientIntensity
+            light.temperature = ambientColorTemperature
+        }
+    }
+}
+```
+`updateLightNodesLightEstimation()` 方法是运行在主线程上，做的事情如下：
+* 确保光照估计开关状态是打开着的
+* 安全解包当前场景视图 session 的画面的光照估计
+* 提取解包后光照估计的周围亮度和周围色温属性值
+* 遍历 lightNodes
+* 安全解包光照节点的 light 属性
+* 设置 light 的亮度属性为 ambientIntensity 常量
+* 设置 light 的色温属性为 ambientColorTemperature 常量
+
+接下来，在 `renderer(_:updateAtTime:)` 方法中调用下面的方法：
+
+```swift
+updateLightNodesLightEstimation()
+```
+刚刚好在 SceneKit 的每一帧动画，行为评估，或物理模拟之前 `renderer(_:updateAtTime:)` 方法会被调用。光照估计会被经常应用到我们的场景中。于是，`renderer(_:updateAtTime:)` 方法里面的 `updateLightNodesLightEstimation()` 方法就会被调用。
+
+
+和所有 UI 更新一样，在主线程更新 UI 是最好的实践。我们调用 `updateLightNodesLightEstimation()` 方法里面是异步的。
 
 
 
