@@ -165,6 +165,22 @@ detectedHorizontalPlane = true
 
 ![]({{  site.url  }}/assets/screenshot/arkit-light-estimation/p3.gif)
 
+### 显示/隐藏光照估计开关
+
+现在， 环境强度和色温控制都是显示的。但对于光照估计开关，默认是隐藏的。我想在检测到一个水平面之后再显示控制器。因此，像这样更新 `detectedHorizontalPlane` 属性的 `didSet` 方法：
+
+```swift
+var detectedHorizontalPlane = false {
+    didSet {
+        DispatchQueue.main.async {
+            self.mainStackView.isHidden = !self.detectedHorizontalPlane
+            self.instructionLabel.isHidden = self.detectedHorizontalPlane
+            self.lightEstimationStackView.isHidden = !self.detectedHorizontalPlane
+        }
+    }
+}
+```
+这个 lightEstimationStackView 包含了一个 UISwitch 对象和一个 UILabel 对象。当设置 `detectedHorizontalPlane` 被设置为 `true` 的时候，我们显示 lightEstimationStackView 。
 
 
 
