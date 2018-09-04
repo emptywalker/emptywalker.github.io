@@ -237,7 +237,14 @@ updateLightNodesLightEstimation()
 
 和所有 UI 更新一样，在主线程更新 UI 是最好的实践。我们调用 `updateLightNodesLightEstimation()` 方法里面是异步的。
 
+### 测试一下效果
 
+就这样！现在是时候测试一下完整的 demo 了。编译运行项目。根据水平面检测，你可以打开光照估计开关，看看光照估计的影响。
+
+![]({{  site.url  }}/assets/screenshot/arkit-light-estimation/p4.gif)
+
+你可以试试打开/关闭光照估计。
+![]({{  site.url  }}/assets/screenshot/arkit-light-estimation/p5.jpg)
 
 
 
