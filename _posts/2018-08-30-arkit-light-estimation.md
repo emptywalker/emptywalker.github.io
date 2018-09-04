@@ -74,6 +74,55 @@ func getSphereNode(withPosition position: SCNVector3) -> SCNNode {
 
 ### 添加一个光照节点
 
+接下来，我们将添加一个光照源去照亮场景。在 `ViewController` 类中创建下面的方法：
+
+```swift
+func getLightNode() -> SCNNode {
+    let light = SCNLight()
+    light.type = .omni
+    light.intensity = 0
+    light.temperature = 0
+    
+    let lightNode = SCNNode()
+    lightNode.light = light
+    lightNode.position = SCNVector3(0,1,0)
+    
+    return lightNode
+}
+```
+照亮场景的方法是使用 light 属性将灯光附加到 SCNNode 对象上。这就是上面方法做的事情。让我来仔细说解释一下 `getLightNode()` 方法做了什么：
+* 首先，我们创建了一个 SceneKit 光照对象（例如：`SCNLight` ），并把它的 type 属性设为 omni 。一个全方位的光照类型是从一个点到所有方向照亮一个场景。其它的光照类型包括定向，点和周围。
+* 接下来，我们把 light 对象的 intensity 和 temperature 属性值设为 0 。
+* 为了使 light 对象可以照亮场景，我们创建了一个光照节点并设置节点的光源属性为 `light` 。
+* 我们也设置光照节点对象的 y 位置在它的父节点正上方一米处。
+
+现在，让我们在 `ViewController` 类里面添加另一个方法：
+
+```swift
+func addLightNodeTo(_ node: SCNNode) {
+    let lightNode = getLightNode()
+    node.addChildNode(lightNode)
+    lightNodes.append(lightNode)
+}
+```
+这个方法调用 `getLightNode()` 方法获取一个光照节点，并把光照节点添加到给定的节点上。同时，我们把光照节点添加到光照节点数组中。
+
+
+接下来，在 `planeAnchorCenter` 常量正下方的 `renderer(_:didAdd:for:)` 方法里面添加以下内容：
+
+```swift
+let sphereNode = getSphereNode(withPosition: planeAnchorCenter)
+addLightNodeTo(sphereNode)
+node.addChildNode(sphereNode)
+detectedHorizontalPlane = true
+```
+
+上面的代码做的事情：
+* 用平面锚点中心位置获取一个球型节点
+* 在球型节点上添加一个光照节点
+* 设置映射锚节点作为球型节点的父节点
+* 设置检测到的水平面的可视化为 ture 
+
 
 
 
