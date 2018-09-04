@@ -29,3 +29,17 @@ date: 2018-09-03 17:26:24.000000000 +09:00
 我们将构建一个 ARKit 图片识别 App 。在任何时候，App 检测到一个可识别的图像，它将会运行一个动画去在真实世界中展示检测到的图片的位置和大小。在动画的上面， App 将会有一个 label ，显示检测到的图片的名字。如果你不明白我的意思，下面的图片将会让你更好理解。
 
 ![]({{  site.url  }}/assets/screenshot/arkit-image-recognition/p1.gif)
+
+
+### 开始
+
+首先，通过在[**这里**](https://raw.githubusercontent.com/appcoda/ARKitImageRecognition/master/StarterProject.zip)下面启动项目来开始。启动项目已经提前构建了 UI 元素和行为方法。这样，我们就可以关注在 ARKit 图片识别核心元素上了。
+
+> **提示：**如果你想学习更多关于如何创建专业 UI 元素，请随意查看 [**Beginner iOS Programming with Swift Book**](https://www.appcoda.com/swift/) 和 看看更高级的 [** Intermediate iOS Programming with Swift Book**](https://www.appcoda.com/intermediate-swift-programming-book/) 。
+> 
+
+![]({{  site.url  }}/assets/screenshot/arkit-image-recognition/p2.png)
+
+一旦你下载了启动项目，在你的 iOS 设备上编译运行它。你应该被提示去允许在你的 App 中访问相机。点击 OK 运行在你的 App 访问相机。
+
+漂亮。现在，让我们进入 ARKit 图片识别的准备图片阶段。
