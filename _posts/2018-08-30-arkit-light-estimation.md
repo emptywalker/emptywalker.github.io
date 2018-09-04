@@ -124,6 +124,52 @@ detectedHorizontalPlane = true
 * 设置检测到的水平面的可视化为 ture 
 
 
+### 测试光照属性
+
+现在，让我测试一下环境强度和色温对已渲染的图像的影响。开始之前，像这样更新一下 `ambientIntensitySliderValueDidChange(_:)` 方法：
+
+```swift
+@IBAction func ambientIntensitySliderValueDidChange(_ sender: UISlider) {
+    DispatchQueue.main.async {
+        let ambientIntensity = sender.value
+        self.ambientIntensityLabel.text = "Ambient Intensity: \(ambientIntensity)"
+        
+        guard !self.lightEstimationSwitch.isOn else { return }
+        for lightNode in self.lightNodes {
+            guard let light = lightNode.light else { continue }
+            light.intensity = CGFloat(ambientIntensity)
+        }
+    }
+}
+```
+上面的代码运行在主线程，并把光照节点的光照强度属性值设为 slider 的值，像这样更新 `ambientColorTemperatureSliderValueDidChange(_:)`
+ 方法：
+ 
+```swift
+@IBAction func ambientColorTemperatureSliderValueDidChange(_ sender: UISlider) {
+    DispatchQueue.main.async {
+        let ambientColorTemperature = self.ambientColorTemperatureSlider.value
+        self.ambientColorTemperatureLabel.text = "Ambient Color Temperature: \(ambientColorTemperature)"
+        
+        guard !self.lightEstimationSwitch.isOn else { return }
+        for lightNode in self.lightNodes {
+            guard let light = lightNode.light else { continue }
+            light.temperature = CGFloat(ambientColorTemperature)
+        }
+    }
+}
+```
+上面的代码运行在主线程，并把光照节点的温度属性值设为 slider 的值，
+
+库！我们编译运行这个项目。把设备的相机对着一个水平面。根据水平面检测，你应该会看到一个悬浮球。随意滑动 sliders 去修改光照强度和色温属性。
+
+![]({{  site.url  }}/assets/screenshot/arkit-light-estimation/p3.gif)
+
+
+
+
+
+
 
 
 
