@@ -62,12 +62,19 @@ date: 2018-09-03 17:26:24.000000000 +09:00
 ARKit 需要知道在世界里的物理图片大小去决定从图片到相机的距离。输入一个错误的物理图像代销会导致一个到相机错误距离的 `ARImageAnchor` 。
 
 记住每次添加一个新的图像给 ARKit 识别的时候都提供一个物理图片大小。这个值会在测量世界的时候影响图像大小。例如，「书」图像的物理大小如下：
-![]({{  site.url  }}/assets/screenshot/arkit-image-recognition/p3.png)
+![]({{  site.url  }}/assets/screenshot/arkit-image-recognition/p4.png)
 
 这是当图像文件在 15.4 寸 MacBook Pro 显示器被打开预览的物理图像大小属性。你可以在图像的属性检查器中相应地设置物理图像大小属性。
 
+### 图像属性
 
+ARKit 的图像识别能力可能会随便图像属性而变化。看一下 **AR Resources** 文件夹里面的图像。你将会看到 「书」 图像有两个质量评估警告。添加参考图片时请注意这一点。当图像具有高识别度的时候，图像检测效果最好。
+![]({{  site.url  }}/assets/screenshot/arkit-image-recognition/p5.png)
 
+「 Snow Mountain 」和「 Trees In The Dark 」图像没有黄色警告。这就意味着 ARKit 认为这些图像时容易识别的。
+![]({{  site.url  }}/assets/screenshot/arkit-image-recognition/p6.png)
 
+不管是否有黄色警告，最好还是测试一下你计划在世界上使用的图像。然后，你自己就可以看到哪些图像时容易辨认的。
 
+接下来，我们将着手写一些代码。
 
