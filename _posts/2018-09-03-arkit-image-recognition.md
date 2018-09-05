@@ -94,3 +94,25 @@ func resetTrackingConfiguration() {
 }
 ```
 接下来，在 `viewWillAppear(_:)` 和 `resetButtonDidTouch(_:)` 方法里调用 `resetTrackingConfiguration()` 方法。
+
+### 使用 ARImageAnchor 识别图片
+我们将会在新检测到的图像上面盖一层白色透明的平面。这个平面将会映射出新检测的参考图像的形状和大小，以及图像到设备相机的距离。当一个新节点被映射到给定锚点的时候，平面挡板 UI 就会出现。
+
+> **提示：** 锚点是 ARImageAnchor 类型，在 *renderer(_:didAdd:for:)* 方法里面。
+>
+像这样更新 `renderer(_:didAdd:for:)` 方法：
+
+```swift
+func renderer(_ renderer: SCNSceneRenderer, didAdd node: SCNNode, for anchor: ARAnchor) {
+    guard let imageAnchor = anchor as? ARImageAnchor else { return }
+    let referenceImage = imageAnchor.referenceImage
+        let imageName = referenceImage.name ?? "no name"
+        
+    let plane = SCNPlane(width: referenceImage.physicalSize.width, height: referenceImage.physicalSize.height)
+    let planeNode = SCNNode(geometry: plane)
+    planeNode.opacity = 0.20
+    planeNode.eulerAngles.x = -.pi / 2
+    
+    planeNode.runAction(imageHighlightAction)
+}
+```
