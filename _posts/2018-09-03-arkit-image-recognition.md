@@ -78,3 +78,19 @@ ARKit 的图像识别能力可能会随便图像属性而变化。看一下 **AR
 
 接下来，我们将着手写一些代码。
 
+### 图像识别的配置
+我们来设置场景视图的配置去检测 **AR Resources** 文件夹里面引用的图像。配置将会重置追踪和移除存在的锚点运行选项。在运行配置的场景视图会话之后，我们使用 App 使用说明更新标签文本。
+
+打开 `ViewController.swift` 文件，在 `ViewController` 类中插入下面的方法：
+
+```swift
+func resetTrackingConfiguration() {
+    guard let referenceImages = ARReferenceImage.referenceImages(inGroupNamed: "AR Resources", bundle: nil) else { return }
+    let configuration = ARWorldTrackingConfiguration()
+    configuration.detectionImages = referenceImages
+    let options: ARSession.RunOptions = [.resetTracking, .removeExistingAnchors]
+    sceneView.session.run(configuration, options: options)
+    label.text = "Move camera around to detect images"
+}
+```
+接下来，在 `viewWillAppear(_:)` 和 `resetButtonDidTouch(_:)` 方法里调用 `resetTrackingConfiguration()` 方法。
