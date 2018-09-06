@@ -128,3 +128,9 @@ DispatchQueue.main.async {
 
 非常棒！ 你已经得到自己新创建的 ARKit 图像识别 App 。
 
+### 测试 App 
+为了演示，你可以将 **AR Resources** 文件夹中的每个图像打印出一个复印件，或者，你可以通过打开图像文件预览来测试它。
+![]({{  site.url  }}/assets/screenshot/arkit-image-recognition/p7.gif)
+
+让我们转到下一轮，盖一个 3D 对象在检测到的图像上。
+
