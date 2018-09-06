@@ -125,3 +125,6 @@ DispatchQueue.main.async {
     self.label.text = "Image detected: \"\(imageName)\""
 }
 ```
+
+非常棒！ 你已经得到自己新创建的 ARKit 图像识别 App 。
+
