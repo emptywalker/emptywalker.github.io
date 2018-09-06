@@ -132,5 +132,34 @@ DispatchQueue.main.async {
 为了演示，你可以将 **AR Resources** 文件夹中的每个图像打印出一个复印件，或者，你可以通过打开图像文件预览来测试它。
 ![]({{  site.url  }}/assets/screenshot/arkit-image-recognition/p7.gif)
 
-让我们转到下一轮，盖一个 3D 对象在检测到的图像上。
+让我们转到下一轮，在检测到的图像上放 3D 对象。
 
+### 在检测到的图像上叠加 3D 对象
+
+现在，我们已经在真实世界里可视化了检测到的图像的大小和位置，让我们在检测到图像叠加 3D 对象。
+
+首先，注释下面代码把注意力放到在检测到的图像上叠加 3D 对象。
+
+```swift
+let planeNode = self.getPlaneNode(withReferenceImage: imageAnchor.referenceImage)
+planeNode.opacity = 0.0
+planeNode.eulerAngles.x = -.pi / 2
+planeNode.runAction(self.fadeAction)
+ 
+node.addChildNode(planeNode)
+```
+
+接下来，替换 TODO ：叠加 3D 对象，用以下代码覆盖掉注释的代码。
+
+```swift
+let overlayNode = self.getNode(withImageName: imageName)
+overlayNode.opacity = 0
+overlayNode.position.y = 0.2
+overlayNode.runAction(self.fadeAndSpinAction)
+ 
+node.addChildNode(overlayNode)
+```
+
+根据图像检测，你现在应该可以从检测到的图像到朝向你的地方看到一个 SceneKit 节点，伴随着一个淡出和旋转的动画序列。
+
+![]({{  site.url  }}/assets/screenshot/arkit-image-recognition/p8.gif)
