@@ -116,3 +116,12 @@ func renderer(_ renderer: SCNSceneRenderer, didAdd node: SCNNode, for anchor: AR
     planeNode.runAction(imageHighlightAction)
 }
 ```
+平面节点设置运行一个带有淡入淡出动画的 `SCNAction` 序列。
+现在，我们有平面节点和检测图像的名字，我们将要把平面节点添加到节点参数上，并把标签文本设置成识别到的图像的名字。在 `planeNode.runAction(imageHighlightAction)` 后面插入以下代码：
+
+```swift
+node.addChildNode(planeNode)
+DispatchQueue.main.async {
+    self.label.text = "Image detected: \"\(imageName)\""
+}
+```
