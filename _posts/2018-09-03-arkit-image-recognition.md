@@ -163,3 +163,9 @@ node.addChildNode(overlayNode)
 根据图像检测，你现在应该可以从检测到的图像到朝向你的地方看到一个 SceneKit 节点，伴随着一个淡出和旋转的动画序列。
 
 ![]({{  site.url  }}/assets/screenshot/arkit-image-recognition/p8.gif)
+
+### 结语
+
+恭喜你在教程中走了这么远！我希望你能够享受和从这篇教程中学习到一些有价值的东西。随意去把本教程分享到你的社交网络，让你周围的人也可以获得一些知识！
+
+为了参考，你可以在 GitHub 上[**下载完成的 Xcode 项目**](https://github.com/appcoda/ARKitImageRecognition)。
