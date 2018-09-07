@@ -31,3 +31,10 @@ date: 2018-09-03 17:26:24.000000000 +09:00
 ![]({{  site.url  }}/assets/screenshot/arkit-persistence/p2.png)
 
 漂亮。现在，我们来讨论一下什么是 `ARWorldMap` ，我们如何使用它实现 ARKit 的world-mapping 数据。
+
+### 使用 ARWorldMap
+> 一个 ARWorldMap 对象包含了 ARKit 用于定位用户设备在真实世界的所有空间映射信息的一个快照
+> 
+ ARWorldMap 对象做的事情和它的名字很像。它是表示在物理世界的一个映射空间。当你使用一个 `ARWorldMap` 的时候，你就有能力去把一个 `ARWorldMap` 对象归档成一个 `Data` 对象，并把它保存到你设备的本地目录下。于是，你就去到你设备中保存世界映射 `Data` 对象的本地目录下解档它。为了恢复映射，你需要将世界跟踪配置的初始世界映射设置为已保存的 `ARWorldMap` 对象。
+ 
+ 这就是我们使用 `ARWorldMap` 对象的情况。现在，我们开始实现 demo 。
