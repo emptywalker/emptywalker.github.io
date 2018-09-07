@@ -16,3 +16,11 @@ date: 2018-09-03 17:26:24.000000000 +09:00
 ![]({{  site.url  }}/assets/screenshot/arkit-persistence/p1.jpg)
 
 就像你从视频上看到的那样，持久化 world-mapping 数据的意思就是你可以保存 world-mapping 数据并在之后又能恢复 world-mapping 数据，即使 App 被终止。这在 iOS 11 中已经成为一个缺陷了。现在，你可以允许用户通过保存 world-mapping 数据来返回之前的 AR 经历。
+
+### 前提条件
+
+这篇教程需要你对[**我们上一篇讨论的 ARKit 教程里的话题**](https://emptywalker.github.io/2018/09/arkit-image-recognition/)有个深入的理解。如果你是一个 ARKit 新手，请在这里查看[**我们的 ARKit 教程系列**](https://www.appcoda.com/tag/arkit/)。
+
+为了跟着这篇教程，你将需要一个 Xcode 10 测试或更高的版本和跑着 iOS 12 测试或更高版本的 Apple 设备。
+
+不多说了，我们开始。
