@@ -24,3 +24,10 @@ date: 2018-09-03 17:26:24.000000000 +09:00
 为了跟着这篇教程，你将需要一个 Xcode 10 测试或更高的版本和跑着 iOS 12 测试或更高版本的 Apple 设备。
 
 不多说了，我们开始。
+
+### 开始
+首先，通过在[**这里**](https://github.com/appcoda/ARKit-Persistence-Demo/raw/master/starter.zip)下面启动项目来开始。启动项目已经提前构建了 UI 元素和行为方法。这样，我们就可以关注在 ARKit 的 world-mapping 持久化上了。一旦你下载了启动项目，在你的 iOS 设备上编译运行它。你应该被提示去允许在你的 App 中访问相机。点击 OK 运行在你的 App 访问相机。
+
+![]({{  site.url  }}/assets/screenshot/arkit-persistence/p2.png)
+
+漂亮。现在，我们来讨论一下什么是 `ARWorldMap` ，我们如何使用它实现 ARKit 的world-mapping 数据。
