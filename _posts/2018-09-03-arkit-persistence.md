@@ -38,3 +38,19 @@ date: 2018-09-03 17:26:24.000000000 +09:00
  ARWorldMap 对象做的事情和它的名字很像。它是表示在物理世界的一个映射空间。当你使用一个 `ARWorldMap` 的时候，你就有能力去把一个 `ARWorldMap` 对象归档成一个 `Data` 对象，并把它保存到你设备的本地目录下。于是，你就去到你设备中保存世界映射 `Data` 对象的本地目录下解档它。为了恢复映射，你需要将世界跟踪配置的初始世界映射设置为已保存的 `ARWorldMap` 对象。
  
  这就是我们使用 `ARWorldMap` 对象的情况。现在，我们开始实现 demo 。
+ 
+ ### 设置世界映射本地文件目录
+ 
+ 首先，声明一个 `URL` 类型的变量，给我们一个可以写入和读取世界映射数据的文件目录路径。在 `ViewController` 类中添加属性：
+ 
+```swift
+var worldMapURL: URL = {
+    do {
+        return try FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
+            .appendingPathComponent("worldMapURL")
+    } catch {
+        fatalError("Error getting world map URL from document directory.")
+    }
+}()
+```
+将 worldMapURL 放在适当的位置，我们来创建一个世界映射数据归档方法，并把它写入到我们本地文件目录下。
