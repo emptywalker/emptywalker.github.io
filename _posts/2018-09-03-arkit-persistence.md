@@ -68,4 +68,4 @@ func archive(worldMap: ARWorldMap) throws {
 }
 ```
 
-
+将 world map 归档成一个 `Data` 对象后，我们把 `data` 对象写入到本地目录下。我们使用 `.atomic` 选项，这是为了保证文件可以在你的设备中完成写入。该方法的签名中有 `throws` 语句，这是由于把数据写入设备文件目录时可能会抛出一个错误，无论是超出存储空间还是其它错误
