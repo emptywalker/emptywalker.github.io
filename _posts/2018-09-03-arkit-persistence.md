@@ -59,4 +59,13 @@ var worldMapURL: URL = {
 
 ### 将 ARWorldMap 归档成 Data
 
+你现在将去创建一个归档方式用来保存你的 ARWorldMap 对象。在 `ViewController` 类中插入以下代码：
+
+```swift
+func archive(worldMap: ARWorldMap) throws {
+    let data = try NSKeyedArchiver.archivedData(withRootObject: worldMap, requiringSecureCoding: true)
+    try data.write(to: self.worldMapURL, options: [.atomic])
+}
+```
+
 
