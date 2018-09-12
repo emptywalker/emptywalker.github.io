@@ -71,3 +71,28 @@ func archive(worldMap: ARWorldMap) throws {
 将 world map 归档成一个 `Data` 对象后，我们把 `data` 对象写入到本地目录下。我们使用 `.atomic` 选项，这是为了保证文件可以在你的设备中完成写入。该方法的签名中有 `throws` 语句，这是由于把数据写入设备文件目录时可能会抛出一个错误，无论是超出存储空间还是其它错误。
 
 随着世界地图归档方法的完成，让我们来归档场景视图中的世界地图。
+
+
+### 把 AR 世界地图数据保存到你的文档目录中
+
+为了获得当前场景的世界地图， Apple 给了我们一个便利方法去获取。想下面这样更新 `saveBarButtonItemDidTouch(_:)` 方法：
+
+```swift
+@IBAction func saveBarButtonItemDidTouch(_ sender: UIBarButtonItem) {
+    
+    sceneView.session.getCurrentWorldMap { (worldMap, error) in
+        guard let worldMap = worldMap else {
+            return self.setLabel(text: "Error getting current world map.")
+        }
+        
+        do {
+            try self.archive(worldMap: worldMap)
+            DispatchQueue.main.async {
+                self.setLabel(text: "World map is saved.")
+            }
+        } catch {
+            fatalError("Error saving world map: \(error.localizedDescription)")
+        }
+    }
+}
+```
