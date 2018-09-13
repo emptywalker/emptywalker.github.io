@@ -102,3 +102,24 @@ func archive(worldMap: ARWorldMap) throws {
 在我们安全地解包了 `ARWorldMap` 对象之后，我们声明了一个 `do-catch` 语句。如果执行 `do` 子句中的代码抛出一个错误，我们将会在 `catch 子句`中处理这个错误。到了这一步，我们停止代码执行，打印出一个错误信息给调试问题用。
 
 编译运行 App 。 扫描你的周围，并点一下你的设备在你的场景中添加一个球。点击 *保存* 按钮，确保你的标签显示 「世界地图已被保存」。现在你当前的 AR 世界地图就被保存了。
+
+### 从你的文件目录中加载 AR 世界地图
+
+随着保存一个 `ARWorldMap` 对象完成了，我们是时候创建一个方法去从文件目录中解档 `ARWorldMap` 数据并把它加载我们的场景中来。
+
+在我们解档世界地图数据之前，我们需要成功的从之前保存的文件目录中获取世界地图数据。
+
+在你的 `ViewController` 类中添加以下方法：
+
+```swift
+func retrieveWorldMapData(from url: URL) -> Data? {
+    do {
+        return try Data(contentsOf: self.worldMapURL)
+    } catch {
+        self.setLabel(text: "Error retrieving world map data.")
+        return nil
+    }
+}
+```
+
+上面的代码声明了一个 do-catch 语句去试图从世界地图的 URL 中检索一个 `Data` 对象。万一代码执行到了 `catch` 子句中，我们就简单地设置一个有错误文本信息的标签。
