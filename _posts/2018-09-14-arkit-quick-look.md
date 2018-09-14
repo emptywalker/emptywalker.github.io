@@ -50,3 +50,18 @@ xcrun usdz_converter /Users/You/PATH/TO/egg.obj /Users/You/CHOOSE/A/PATH/TO/SAVE
 
 就这样！现在我们有了自己的 `USDZ` 文件，让我们开始把它集成到我们的项目中。
 
+### 在你的 Apps 中添加 AR Quick Look
+
+我们通过在[**这里**](https://github.com/appcoda/AR-Quick-Look-Demo/raw/master/ARQuickLookStarter.zip)下载启动项目来开始。看一下项目，你会看到已经放了一个 collection view 。
+![]({{  site.url  }}/assets/screenshot/arkit-quick-look/p4.png)
+
+运行 App 。你将会看到一个有一群模型的列表，但当你点击它们的时候，没有任何反应。这是由我们决定的，确保用户可以快速查看模型！
+![]({{  site.url  }}/assets/screenshot/arkit-quick-look/p5.png)
+
+首先，让我们把 Egg 模型添加到 `Models` 文件夹。把 `egg.usdz` 拖到 models 文件夹。确保当你把它拖进文件里的时候，你像下面一样选中 target box。
+![]({{  site.url  }}/assets/screenshot/arkit-quick-look/p6.png)
+
+接下来，打开 `ViewController.swift` ，把 `egg` 添加到 `models` 数组。这样当我们运行 App 时，model 将会展现在列表中。为了确定，再运行一次 App 。
+![]({{  site.url  }}/assets/screenshot/arkit-quick-look/p7.png)
+
+
