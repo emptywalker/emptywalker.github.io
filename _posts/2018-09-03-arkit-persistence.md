@@ -150,3 +150,19 @@ func unarchive(worldMapData data: Data) -> ARWorldMap? {
 ```
 
 现在，无论何时我们点击 *加载* 按钮，我们都会调用 `retrieveWorldMapData` 方法去从给定的 URL 中检测世界地图数据。如果检索成功，我们接着就会把世界地图数据解档成一个 `ARWorldMap` 对象。然后，我们带着加载到的数据调用 `resetTrackingConfiguration` 方法去恢复 AR 世界地图。
+
+### 设置场景视图配置的 initialWorldMap 属性
+
+在声明 `options` 常量之后， 把下面的代码添加到 `resetTrackingConfiguration(with:)` ：
+
+```swift
+if let worldMap = worldMap {
+        configuration.initialWorldMap = worldMap
+        setLabel(text: "Found saved world map.")
+    } else {
+        setLabel(text: "Move camera around to map your surrounding space.")
+    }
+```
+上面的代码设置了场景视图配置的 initialWorldMap 属性为 worldMap 参数。我们然后更新标签的文本表示世界地图被找到。否则，我们就设置标签文本来提醒用户，向周围移动他们的相机去绘制周围空间。
+
+欢聚和演示的时间。
