@@ -123,3 +123,30 @@ func retrieveWorldMapData(from url: URL) -> Data? {
 ```
 
 上面的代码声明了一个 do-catch 语句去试图从世界地图的 URL 中检索一个 `Data` 对象。万一代码执行到了 `catch` 子句中，我们就简单地设置一个有错误文本信息的标签。
+
+
+现在我们有了帮助我们用一个世界地图 URL 从文件目录中获取数据的方法，时候去尝试并将返回的 `Data` 对象解档成一个 `ARWorldMap` 对象。
+
+首先，在你的 `ViewController` 类中添加以下方法：
+
+```swift
+func unarchive(worldMapData data: Data) -> ARWorldMap? {
+    guard let unarchievedObject = try? NSKeyedUnarchiver.unarchivedObject(ofClass: ARWorldMap.self, from: data),
+        let worldMap = unarchievedObject else { return nil }
+    return worldMap
+}
+```
+
+我们在`unarchive(worldMapData:)` 方法里使用 `NSKeyedUnarchiver` 去尝试解档传入的 data 对象。如果解档过程成功并解档的 `ARWorldMap` 对象不为 nil ，我们就返回安全解包的 `ARWorldMap` 对象。
+
+现在我们有了解档方法，我们来用下面的代码更新 `loadBarButtonItemDidTouch(_:)` 方法：
+
+```swift
+@IBAction func loadBarButtonItemDidTouch(_ sender: UIBarButtonItem) {
+    guard let worldMapData = retrieveWorldMapData(from: worldMapURL),
+        let worldMap = unarchive(worldMapData: worldMapData) else { return }
+    resetTrackingConfiguration(with: worldMap)
+}
+```
+
+现在，无论何时我们点击 *加载* 按钮，我们都会调用 `retrieveWorldMapData` 方法去从给定的 URL 中检测世界地图数据。如果检索成功，我们接着就会把世界地图数据解档成一个 `ARWorldMap` 对象。然后，我们带着加载到的数据调用 `resetTrackingConfiguration` 方法去恢复 AR 世界地图。
