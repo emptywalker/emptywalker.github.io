@@ -10,7 +10,9 @@ date: 2018-09-14 11:06:24.000000000 +09:00
 
 在 WWDC 2018 上， Apple 发布了 ARKit 2.0 ，给增强现实开发带来了一系列全新的 APIs 和功能。其中一个功能就是对他们的 Quick Look APIs 的补充。如果你不熟悉 Quick Look 是什么，它是一个基础框架，允许用户预览整个文件，格式如 PDFs ， 图片等！例如 iOS 中的邮件应用使用 Quick Look 来预览附件。
 
+在你的应用中使用 Quick Look 的一个优点就是你只需要声明你可能会快速浏览的是什么文件。框架会处理显示的 UI 和 UX 使得它很容易集成。在继续之前，我建议你看一下[**这篇**](https://www.appcoda.com/quick-look-framework/)关于使用 Quick Look 框架预览文档的教程。
 
+今年，对于 iOS 12 ， Apple 已经介绍了针对增强现实对象的 Quick Look 。这意味着你可以用 Mail ， Messages 或其它支持这种类型的 Quick Look 的应用程序来分享 `.usdz` （稍后详细介绍）文件。接受器不需要下载额外的 App 就可以打开它并查看对象。
 
 
 
