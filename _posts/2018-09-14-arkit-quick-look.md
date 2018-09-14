@@ -34,4 +34,19 @@ date: 2018-09-14 11:06:24.000000000 +09:00
 ### 把 3D 模型转换成 USDZ 文件格式
 一个模型转换成 USDZ 非常简单，只需要一行代码！我们将转换我创建的一颗蛋的 3D 对象模型。你可以在[**这里**](https://github.com/appcoda/AR-Quick-Look-Demo/raw/master/egg.obj)下载这个模型。
 
-当你下载模型，你
+当你下载模型，你会看到它仅仅是一个蛋。现在，我们尝试将模型转换成一个 USDZ 文件格式。打开终端，输入下面一行：
+
+```swift
+xcrun usdz_converter /Users/You/PATH/TO/egg.obj /Users/You/CHOOSE/A/PATH/TO/SAVE/egg.usdz
+```
+
+就这样！下面就是我的终端的样子：
+![]({{  site.url  }}/assets/screenshot/arkit-quick-look/p2.png)
+
+按下回车键，等待几秒，你将会看到 `.usdz` 文件保存你想保存的路径下。按下空格键快速查看一下文件。
+![]({{  site.url  }}/assets/screenshot/arkit-quick-look/p3.png)
+
+如果是黑的不用担心。我不确定这是否是 Apple 那边的问题或者是否他们的意思就是这样。无论如何，当你预览它的时候，所有的颜色都会被恢复。
+
+就这样！现在我们有了自己的 `USDZ` 文件，让我们开始把它集成到我们的项目中。
+
