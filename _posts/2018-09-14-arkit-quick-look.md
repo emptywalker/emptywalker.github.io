@@ -85,3 +85,24 @@ func previewController(_ controller: QLPreviewController, previewItemAt index: I
     return url as QLPreviewItem
 }
 ```
+
+1. 在第一个方法中，我们确定同时能有多少个 items 可以被允许预览。由于我们一次只想预览一个 3D 模型，我们就在代码中返回 1 。
+2. 第二个方法确定当一个 item 在特定的 `index` 上被点击的时候，哪一个文件应该被预览。我们定义了一个叫做 `url` 的常量用来存放 `.usdz` 文件的路径。然后，我们返回 `QLPreviewItem` 类型的文件。
+
+> **注意：** 注意我们是如何使用 *thumbnailIndex* 去指定我们使用的模型。当用户点击 collectionView cell 的时候，我们在 *collectionView(didSelectItemAt)* 方法中设置 *thumbnailIndex* 的数字作为处理依据。
+> 
+![]({{  site.url  }}/assets/screenshot/arkit-quick-look/p8.png)
+
+如果你现在运行代码，什么都不会发生。为什么呢？这是因为我们还没有添加逻辑代码去展示 `QLPreviewController` 。回到 `collectionView(didSelectItemAt)` 方法，并像下面这样修改代码：
+
+```swift
+func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+    thumbnailIndex = indexPath.item
+ 
+    let previewController = QLPreviewController()
+    previewController.dataSource = self
+    previewController.delegate = self
+    present(previewController, animated: true)
+}
+```
+就像前面提到的一样，我们把 `thumbnailIndex` 的值设为用户点击的 `index`，这会帮助 Quick Look Data Source 方法知道我们使用的模型是什么。如果你在你的 apps 里面使用 Quick Look 支持所有文件类型，你将总会在 `QLPreviewController` 中展示。
