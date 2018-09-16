@@ -64,6 +64,24 @@ xcrun usdz_converter /Users/You/PATH/TO/egg.obj /Users/You/CHOOSE/A/PATH/TO/SAVE
 接下来，打开 `ViewController.swift` ，把 `egg` 添加到 `models` 数组。这样当我们运行 App 时，model 将会展现在列表中。为了确定，再运行一次 App 。
 ![]({{  site.url  }}/assets/screenshot/arkit-quick-look/p7.png)
 
+这就 OK 了！现在就剩下添加代码来快速浏览这些模型了。首先，从导入 `QuickLook` 包开始。当我们创建 `UICollectionView` 的时候，我们也添加了 DataSource 和 Delegate 协议，为了给我们需要给 collectionView 添加数据的时候访问这些方法。同样的，我们也为 Quick Look 做同样的事情。像下面这样修改你的代码：
 
+```swift
+import UIKit
+import Foundation
+import QuickLook
+ 
+class ViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, QLPreviewControllerDelegate, QLPreviewControllerDataSource
+```
+有两个方法需要我们添加为了配置我们添加的协议：`numberOfPreviewItems()` 和 ` previewController(previewItemAt)` 。如果你用过 `UITableView` 或者 `UICollectionViewx` 那你对这个应该会比较熟悉。在 `collectionView(didSelectItemAt)` 下面的类的底部添加以下代码：
 
-
+```swift
+func numberOfPreviewItems(in controller: QLPreviewController) -> Int {
+    return 1
+}
+    
+func previewController(_ controller: QLPreviewController, previewItemAt index: Int) -> QLPreviewItem {
+    let url = Bundle.main.url(forResource: models[thumbnailIndex], withExtension: "usdz")!
+    return url as QLPreviewItem
+}
+```
