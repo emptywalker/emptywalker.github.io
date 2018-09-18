@@ -106,4 +106,3 @@ func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPat
 }
 ```
 就像前面提到的一样，我们把 `thumbnailIndex` 的值设为用户点击的 `index`，这会帮助 Quick Look Data Source 方法知道我们使用的模型是什么。如果你在你的 apps 里面使用 Quick Look 支持所有文件类型，你将总会在 `QLPreviewController` 中展示。
-
