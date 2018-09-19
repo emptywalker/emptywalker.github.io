@@ -105,4 +105,14 @@ func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPat
     present(previewController, animated: true)
 }
 ```
-就像前面提到的一样，我们把 `thumbnailIndex` 的值设为用户点击的 `index`，这会帮助 Quick Look Data Source 方法知道我们使用的模型是什么。如果你在你的 apps 里面使用 Quick Look 支持所有文件类型，你将总会在 `QLPreviewController` 中展示。
+就像前面提到的一样，我们把 `thumbnailIndex` 的值设为用户点击的 `index`，这会帮助 Quick Look Data Source 方法知道我们使用的模型是什么。如果你在你的 apps 里面使用 Quick Look 支持所有文件类型，你将总会在 `QLPreviewController` 中展示。不论将要展示的是一个文件，一张图片，或者在本例中，一个 3D 模型， `QuickLook` 框架都需要你用一个 `QLPreviewController` 来展示它们。我们把 `previewController` 的 data source 和 delegate 都设置成 `self` 并展示它！
+
+ Quick Look 的所有代码，应该像这样：
+ 
+ ![]({{  site.url  }}/assets/screenshot/arkit-quick-look/p9.png)
+ 
+ 编译运行你的 App 。确保 App 运行在一个运行 iOS 12 的真实设备上。运行在模拟器上将不会展示出 Quick Look 预览。
+ 
+  ![]({{  site.url  }}/assets/screenshot/arkit-quick-look/p10.png)
+ 
+ 它到达了预期的效果了！你现在应该知道如何在你的 Apps 中去集成 AR Quick Look 。但这并不是全部，因为 AR Quick Look 还提供了网页支持！在下一部分，我将会指导你使用 HTML 和 AR Quick Look 构建一个网站。
