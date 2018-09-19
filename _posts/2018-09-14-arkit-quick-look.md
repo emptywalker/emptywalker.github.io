@@ -116,3 +116,34 @@ func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPat
   ![]({{  site.url  }}/assets/screenshot/arkit-quick-look/p10.png)
  
  它到达了预期的效果了！你现在应该知道如何在你的 Apps 中去集成 AR Quick Look 。但这并不是全部，因为 AR Quick Look 还提供了网页支持！在下一部分，我将会指导你使用 HTML 和 AR Quick Look 构建一个网站。
+ 
+### 用 HTML 把 AR Quick Look 添加到网站上
+> **编辑提示：**如果你熟悉 HTML 和 web 开发，你可以直接跳到本教程的结尾看看 demo 。 然而，如果你没有使用过 GitHub Page 构建过网站，不要错过这部分来学习构建你的第一个网站！
+> 
+现在，我们有了一个 iOS App 了，让我们来使用 HTML 构建一个相同功能的网站。如果你之前没有用过 HTML ，不用担心！我将会带你构建一个非常简单的网站。开始吧！
+
+首先，在你的 Mac 上打开任意的文本编辑器。可以是 TextEdit 或任何其它相同的应用程序。我将使用 [**TextMate**](https://macromates.com/download) 。输入下面的代码：
+
+```html
+<!DOCTYPE html>
+<html>
+ 
+</html>
+```
+这是你开始所有 HTML 网站的方式。 `<!DOCTYPE html>` 是一个 `指令` 告诉网页浏览器关于在这个页面被写入的 HTML 的版本。我们使用的是 HTML 5 。
+
+尖括号别成为**标签**。和我们在 Swift 中的一个 `class` 里声明所有的代码一样，所有的 HTML 代码必须声明在 `<html>` 和 `</html>` 标签中间。`<html>` 标签表示 HTML 代码的开始， `</html>` 标签是结束的标志。
+
+![]({{  site.url  }}/assets/screenshot/arkit-quick-look/p11.png)
+
+每次你访问一个网站的时候，你都会在标签栏中看到这个网站的名字。
+
+![]({{  site.url  }}/assets/screenshot/arkit-quick-look/p12.png)  
+我们看看如何在 HTML 实现这个！ 在 HTML 标签中间，输入以下代码：
+
+```html
+<head>
+    <title>AR Library</title>
+</head>
+```
+
