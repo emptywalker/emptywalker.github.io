@@ -146,4 +146,33 @@ func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPat
     <title>AR Library</title>
 </head>
 ```
+`<head>` 标签是一个所有元数据被存储的地方。一些元数据的例子包括内置的链接，脚本，图标，或是本例中的标题。
 
+由于我们是要定义网站的标题，因此我们把标题放在 `<title>` 和 `</title>` 之间。
+
+> **你将会注意到关于 HTML 的一点就是 strings 不在需要放一对引号包裹着了。这是最喜欢 HTML 的一点。**
+>
+你的文本文件应该像下面这样：
+
+![]({{  site.url  }}/assets/screenshot/arkit-quick-look/p13.png) 
+
+现在，我们不得不定义我们网站的 body 。这代表这你在一个网站上看到的所有文本，按钮，和图像。和之前一样，我们会在 `<body>` 标签中声明这些。在 `</head>` 下面，我们将添加以下代码：
+
+```html
+<body>
+    <h1>Welcome to the AR Library</h1>
+    <p>Welcome to the AR Library website. I created this website in order to view AR objects from the web on any device running iOS 12. Conincidentally, this is the first time I made a website with HTML! It's a lot of fun!</p>
+</body>
+```
+在 `<body>` 标签里，你可以看到两个新的标签： `<h1>` 和 `<p>` 。 `H1` 代表 **Header 1** ，这通常是用于一段内容的标题。 `P` 代表这 `段落` ，这个标签被用于当你向写一些长文本的时候，你可以重命名标题和段落成你想的内容！
+![]({{  site.url  }}/assets/screenshot/arkit-quick-look/p14.png) 
+
+保存文件。确保当你保存的时候，使用 `.html` 作为后缀。
+![]({{  site.url  }}/assets/screenshot/arkit-quick-look/p15.png) 
+
+点击保存的文件，它就会用 Safari (或你的默认浏览器)打开。
+![]({{  site.url  }}/assets/screenshot/arkit-quick-look/p16.png) 
+恭喜！ 你已经用 HTML 构建了你的第一个网站！
+
+> **你可能会思考是否可以修改字体和字体大小。这是可以用 CSS 实现。当前来说，这已经超出了本教程的范围，但你可以在[**这里**](https://www.w3schools.com/html/html_css.asp)找到很棒的文章。**
+> 
