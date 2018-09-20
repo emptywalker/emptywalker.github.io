@@ -176,3 +176,29 @@ func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPat
 
 > **你可能会思考是否可以修改字体和字体大小。这是可以用 CSS 实现。当前来说，这已经超出了本教程的范围，但你可以在[**这里**](https://www.w3schools.com/html/html_css.asp)找到很棒的文章。**
 > 
+
+### 添加 AR 按钮
+
+现在我们的网站有一些文本，让我们来在网站里添加一些按钮去启动 AR Quick Look 视图。由于我们准备制作一个按钮，这仍然会在 `<body>` 标签里面添加代码。在 `<p>` 标签下面，输入以下内容。
+
+```html
+<a href="egg.usdz" rel="ar">
+    <img src="egg.png" width=200>
+</a>
+```
+这是定义一个超链接的 `<a>` 标签。我们上面的定义中，自定义的了几个  `<a>` 标签的属性。
+
+1. 第一个属性是 `href` 。这是当我们的按钮被点击的时候，一个我们想要去的文件的基本路径。「文件」 是我们的 3D 模型，因此我放了一个名为 `.usdz` 的文件在那儿。
+2. 第二个是 `rel` 。这指定了当前页面与链接到的页面之间的关系。我设置成 `ar` 是因为 `egg.usdz` 的关系是一个 AR 模型。
+3. 现在，我们定义好按钮，但没有定义按钮的样子。通过使用 `<img src>` 标签，我定义了我们的按钮为一张图片。这样当我们的用户点击图片的时候，他们就会被导航到 AR Quick Look 视图里。我还设置了图片的 `width` 防止它太大。我使用的图片是我们已经在 Xcode 项目准备好的一张。
+
+就这些！你可以用同样的方式添加其它按钮。
+> **当你引用你的图片和 USDZ 文件时，确保这些文件和你的 HTML 文件在同一文件夹中。**
+
+![]({{  site.url  }}/assets/screenshot/arkit-quick-look/p17.png) 
+
+在 web 浏览器中打开文件。看一下你的第一个 HTML 网站具有一个强大的 AR 功能！
+
+![]({{  site.url  }}/assets/screenshot/arkit-quick-look/p18.png) 
+
+然而，当你点击一个图片时，它只会把你带到你设备中实际的文件夹。并且，没有办法在一部 iPhone 或 iPad 上查看它。这里 GitHub Pages 就来了！
