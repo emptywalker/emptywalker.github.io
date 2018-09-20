@@ -202,3 +202,22 @@ func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPat
 ![]({{  site.url  }}/assets/screenshot/arkit-quick-look/p18.png) 
 
 然而，当你点击一个图片时，它只会把你带到你设备中实际的文件夹。并且，没有办法在一部 iPhone 或 iPad 上查看它。这里 GitHub Pages 就来了！
+
+### 上传到 GitHub Pages 
+GitHub Pages 是一个非常棒的方式去托管静态网页。很多人使用 GitHub Pages 作为一种方式去展示个人简介或一个项目/组织的关于页面。
+
+关于 GitHub Pages 的一个优点就是它可以在你账号下的一个仓库中编辑。通过这个，它就是一个很棒的方式去存储文件（比如图片和 AR 模型）并在你的网站中引用它们！让我们来研究一下这是如何实现的！如果你没有一点准备，在[**这儿**](https://github.com/)创建一个 GitHub 账号。
+一旦你有了账号，打开主页，点击右上角的加号按钮。选中 `New repository` 。
+![]({{  site.url  }}/assets/screenshot/arkit-quick-look/p19.png) 
+
+GitHub Pages 实现的方式是仅仅给定一个域名：*username*.github.io 。你创建的任何页面都是这个 URL 下面的子域名。因此，命名你的仓库为 *username*.github.io 。在下面的图片，你可以看到我命名我的仓库为 `aidev1065.github.io` ，因为 `aidev1065` 是我的用户名。你可以空着剩余的信息，点击 `Create Repository` 。
+![]({{  site.url  }}/assets/screenshot/arkit-quick-look/p20.png)
+
+当你看到仓库页面时，打开设置选项，并向下滚到 GitHub Pages 部分。
+
+![]({{  site.url  }}/assets/screenshot/arkit-quick-look/p21.png)
+
+在 「Theme Chooser」 下面点击 `Choose a theme` 。这是为我们的页面创建一个主题。有各种各样的主题。你可以选择一个适合你的，但我打算选择 Cayman ！
+
+![]({{  site.url  }}/assets/screenshot/arkit-quick-look/p22.png)
+
