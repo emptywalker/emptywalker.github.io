@@ -254,3 +254,17 @@ This is a website for an AR Library! You can view it [here](Website.html)!
 当你点击任何图片，你得到了与 iOS 应用程序相同的视图器!
 
 ![]({{  site.url  }}/assets/screenshot/arkit-quick-look/p28.png)
+
+### 结语
+
+恭喜你看到了这里！我希望你可以享受并能从这篇教程中学到一些有价值的东西。你现在应该理解如何把 3D 模型转换成 USDZ 文件，使用 `QLPreviewController` 把它们集成到你的 App 里面， 使用 HTML 去创建一个基本的网页，使用 GitHub Pages 去托管你的文件。请随意将这篇教程分享到你的社交网络，这样也可以让你的朋友们学习一下！
+
+下面是一些关于帮助你扩展本项目的资源：
+* [**Integrating Apps and Content with AR Quick Look – WWDC 2018**](https://developer.apple.com/videos/play/wwdc2018/603/)
+* [**Quick Look Framework Documentation**](https://developer.apple.com/documentation/quicklook)
+* [**HTML Tutorial**](https://www.w3schools.com/htmL/)
+* [**CSS Tutorial**](https://www.w3schools.com/Css/)
+* [**Official GitHub Pages Page**](https://pages.github.com/)
+
+
+为了参考，你可以在 GitHub 上的[**这里**](https://emptywalker.github.io/2018/09/arkit-quick-look/)下载完整的 Xcode 项目，并[**在这里**](https://github.com/aidev1065/aidev1065.github.io)访问我在这篇教程创建的仓库
