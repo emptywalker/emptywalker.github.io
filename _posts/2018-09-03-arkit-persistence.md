@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 「译」ARKit 教程：保存和恢复 World-mapping 数据来创建持久化的 AR 体验
+title: 「译」ARKit 教程：通过保存和恢复 World-mapping 数据来创建持久化的 AR 体验
 date: 2018-09-03 17:26:24.000000000 +09:00
 ---
 
