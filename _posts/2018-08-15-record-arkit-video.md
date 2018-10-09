@@ -285,7 +285,7 @@ recorder?.rest()
 ```
 上面这段代码很简单。我们首先检查录制器当前是否处于*录制中*状态，如果是，当用户点击暂停按钮时应用程序就会暂停视频录制。否则，就重新开始录制。
 
-现在，我们来测试一些东西！在你的 iOS 设备运行应用程序之前，我们需要确保已经在 app 的 `Info.plist` 文件中添加了 `camera` 、 `microphone` 和 `photo library` 的使用描述。
+现在，我们来测试一下！在你的 iOS 设备运行应用程序之前，我们需要确保已经在 app 的 `Info.plist` 文件中添加了 `camera` 、 `microphone` 和 `photo library` 的使用描述。
 
 为了完成这个，把下面的代码添加到 plist 源码中：
 
