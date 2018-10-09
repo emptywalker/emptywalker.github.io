@@ -9,13 +9,13 @@ date: 2018-08-09 17:26:24.000000000 +09:00
 >  作者：[Ahmed Fathi Bekhit](https://github.com/AFathi)    -    [原文地址](https://www.appcoda.com/record-arkit-video/)    -    原文日期：2017-11-29
 
 
-最近，移动增强现实已经成为一种趋势，它已经应用在很多应用程序中，用于给人们提供更丰富的交互，分享有趣的体验。因此，主流的增强现实框架可以让开发者很简单地在他们的 apps 中实现复杂的计算机视觉功能，并在移动端上制造一个 **AR** 现实 😉 ，比如 [**ARKit**](https://emptywalker.github.io/2018/08/simple-arkit-demo/) 。
+最近，移动增强现实已经成为一种趋势，它已经应用在很多应用程序中，为与人分享提供了更丰富的交互，有趣的体验。于是，主流的增强现实框架，比如 [**ARKit**](https://emptywalker.github.io/2018/08/simple-arkit-demo/) ，可以让开发者很简单地在他们的 apps 中实现复杂的计算机视觉功能，使 **AR** 在移动设备上成为了现实 😉 。
 
-然后， ARKit和类似的框架，并没有简化使用增强现实组件录制视频的过程，尽管用户**热衷**于在使用增强现实时分享他们的有趣体验（参考面部过滤和像 AR 热狗这样的趋势），这导致了开发者去使用录屏或截图等替代解决方案。
+然而， ARKit和类似的框架，并没有简化使用增强现实组件录制视频的过程，尽管用户**热衷**于在使用增强现实时分享他们的有趣体验（参考面部过滤和像 AR 热狗这样的趋势），这导致了开发者去使用替代解决方案，比如 *录屏或截图* 。
 
-在本教程中，我们将演示不使用*录屏或截图*如何去录制包含增强现实组件的**视频**和**GIFs**。为了实现这个，我们使用一个特别构建的框架去简化渲染和录制 ARKit 视频的过程，叫做 [**ARVideoKit**](https://github.com/AFathi/ARVideoKit) 。这个框架是使用 Apple 的 [**ARKit**](https://developer.apple.com/documentation/arkit) ， [**AVFoundation**](https://developer.apple.com/documentation/avfoundation) ， [**Metal**](https://developer.apple.com/documentation/metal) 和 [**CoreMedia**](https://developer.apple.com/documentation/coremedia) 构建的，用于减掉使用相机流渲染一个 [**ARSCNView**](https://developer.apple.com/documentation/arkit/arscnview) 或 [**ARSKView**](https://developer.apple.com/documentation/arkit/arskview) 内容过程中复杂的部分。
+在本教程中，我们将演示不使用*录屏或截图*如何去录制包含增强现实组件的**视频**和**GIFs**。为了实现这个，我们使用一个特别构建的框架去简化渲染和录制 ARKit 视频的过程，这个框架叫做 [**ARVideoKit**](https://github.com/AFathi/ARVideoKit) 。这个框架是使用 Apple 的 [**ARKit**](https://developer.apple.com/documentation/arkit) ， [**AVFoundation**](https://developer.apple.com/documentation/avfoundation) ， [**Metal**](https://developer.apple.com/documentation/metal) 和 [**CoreMedia**](https://developer.apple.com/documentation/coremedia) 构建的，用于减掉使用相机流渲染一个 [**ARSCNView**](https://developer.apple.com/documentation/arkit/arscnview) 或 [**ARSKView**](https://developer.apple.com/documentation/arkit/arskview) 内容过程中复杂的部分。
 
-### 开始！
+### 我们开始！
 
 开始，我们首先打开[**仓库的 release 页面**](https://github.com/AFathi/ARVideoKit/releases)，下载最近发布的 [**ARVideoKit**](https://github.com/AFathi/ARVideoKit/releases) ，然后下载 `Framework.zip` 文件。
 
@@ -25,7 +25,7 @@ date: 2018-08-09 17:26:24.000000000 +09:00
 
 ![]({{  site.url  }}/assets/screenshot/record-arkit-video/p2.png)
 
-当项目创建好之后， Xcode 将会自动生成一份 SpriteKit 的示例代码给我们使用。尽管，这样对 demo 很有用，但我们将会对它进行一点修改，添加我们自己的用户界面，视频录制器， GIF 制作器，然后显示更多不同的 emojis 😇 ！
+当项目创建好之后， Xcode 将会自动生成一份 SpriteKit 的示例代码给我们使用。尽管，这样对演示很有用，但我们将会对它进行一点修改，添加我们自己的用户界面，视频录制器， GIF 制作器，然后显示更多不同的 emojis 😇 ！
 
 ### 添加框架
 
@@ -39,17 +39,17 @@ date: 2018-08-09 17:26:24.000000000 +09:00
 
 ![]({{  site.url  }}/assets/screenshot/record-arkit-video/p4.gif)
 
-3. 把 ARVideoKit.framework 拖入项目目标的 Embedded Binaries ，确保 「Copy items if needed」勾选上了。
+3. 把 ARVideoKit.framework 拖入项目 target 的 Embedded Binaries ，确保 「Copy items if needed」勾选上了。
 
 ![]({{  site.url  }}/assets/screenshot/record-arkit-video/p5.png)
 
-现在，让我们在 application delegate 中配置框架，采取以下步骤：
+现在，让我们在 application delegate 中配置框架，通过以下步骤：
 1. 通过添加下面的语句在 `AppDelegate.swift` 中导入 `ARVideoKit`
 
 ```swift
 import ARVideoKit
 ```
-2. 在 `AppDelegate.swift` 类中添加下面的方法，去允许在不同的方向录制视频 & GIFs 。
+2. 在 `AppDelegate.swift` 类中添加下面的方法，允许在不同的方向录制视频 & GIFs 。
 
 ```swift
 func application(_ application: UIApplication, supportedInterfaceOrientationsFor window: UIWindow?) -> UIInterfaceOrientationMask {
@@ -57,7 +57,7 @@ func application(_ application: UIApplication, supportedInterfaceOrientationsFor
 }
 ```
 
-你的应用程序代理文件看起来应该像这样：
+你的 AppDelegate 文件看起来应该像这样：
 
 ```swift
 import UIKit
@@ -150,7 +150,7 @@ var gifButton:UIButton = {
     return btn
 }()
 ```
-接下来，把这些按钮添加到  View Controller 的子视图上。在 `viewDidLoad()` 方法中插入下面几行代码：
+接下来，添加按钮作为 View Controller 的子视图。在 `viewDidLoad()` 方法中插入下面几行代码：
 
 ```swift
 self.view.addSubview(recorderButton)
@@ -173,20 +173,20 @@ self.view.addSubview(gifButton)
  
 }
 ```
-现在，回到 `viewDidLoad()` ，添加按钮的目标，并把他们和上面创建的方法连接起来：
+现在，回到 `viewDidLoad()` ，添加按钮的 targets ，并把他们和上面创建的方法连接起来：
 
 ```swift
 recorderButton.addTarget(self, action: #selector(recorderAction(sender:)), for: .touchUpInside)
 pauseButton.addTarget(self, action: #selector(pauseAction(sender:)), for: .touchUpInside)
 gifButton.addTarget(self, action: #selector(gifAction(sender:)), for: .touchUpInside)
 ```
-在我们开始下一部分之前，让我们运行这个应用看看到目前为止我们已经构建了什么。如果你跟着我做的没有出错地话，你将会有一个简单的在屏幕上有三个按钮的 ARKit app 。记住你必须在真实设备上测试 app 而不是在模拟器上。
+在我们开始下一部分之前，让我们运行这个应用看看到目前为止我们已经构建的效果。如果你跟着我做的没有出错地话，你将会有一个简单的在屏幕上有三个按钮的 ARKit app 。记住你必须在真实设备上测试 app 而不是在模拟器上。
 
 ![]({{  site.url  }}/assets/screenshot/record-arkit-video/p6.jpg)
 
 ### 实现 ARVideoKit 框架
 
-现在，是时候开启录制功能了！我们将会在 `ViewController.swift` 中实现 `ARVideoKit` 框架。每个第一步都是导入框架：
+现在，是时候实现录制功能了！我们将会在 `ViewController.swift` 中实现 `ARVideoKit` 框架。每个第一步都是导入框架：
 
 ```swift
 import ARVideoKit
@@ -213,16 +213,16 @@ recorder?.inputViewOrientations = [.portrait, .landscapeLeft, .landscapeRight]
 ```swift
 recorder ?.prepare(configuration)
 ```
-最后，当视图消失的时候，去「休息」录制器。在 `viewWillDisappear(_ animated: Bool)` 方法中插入下面一行代码：
+最后，当视图消失的时候，为了让录制器「休息」。在 `viewWillDisappear(_ animated: Bool)` 方法中插入下面一行代码：
 
 ```swift
 recorder?.rest()
 ```
 
-### 开发录制/停止和暂停/继续函数
+### 实现 录制/停止 和 暂停/继续 函数
 现在， `RecordAR` 变量已经准备好了，让我们转到实现录制和停止的功能上。
 
-对于录制行为方法，更新方法想下面这样：
+对于录制行为方法，把方法更新成下面这样：
 
 ```swift
 @objc func recorderAction(sender:UIButton) {
@@ -260,9 +260,9 @@ recorder?.rest()
     }
 }
 ```
-在上面这段代码中，我们会检查视频录制器的状态如果是*准备录制*，应用程序就会把你的 ARKit 场景录制成一个视频。否则，如果录制器当前的状态是*录制中*或*已暂停*，应用程序就会停止视频录制器，并从相机卷中导出全部渲染后的视频。
+在上面这段代码中，我们正在检查视频录制器的状态如果是*准备录制*，应用程序就会开始录制 ARKit 视频。否则，如果录制器当前的状态是*录制中*或*已暂停*，应用程序就会停止视频录制器，并把全部渲染后的视频导入到相册中。
 
-接下来，我们将会在 `pauseAction(sender:UIButton)` 方法中实现暂停/继续功能，更新 `pauseAction` 方法，向下面这样：
+接下来，我们将会在 `pauseAction(sender:UIButton)` 方法中实现暂停/继续功能，更新 `pauseAction` 方法，像下面这样：
 
 ```swift
 @objc func pauseAction(sender:UIButton) {
@@ -283,9 +283,9 @@ recorder?.rest()
     }
 }
 ```
-上面一段代码非常直接。我们首先检查如果录制器当前处于*录制中*状态，当用户点击暂停按钮时应用程序就会暂停视频录制。否则，就继续录制。
+上面这段代码很简单。我们首先检查录制器当前是否处于*录制中*状态，如果是，当用户点击暂停按钮时应用程序就会暂停视频录制。否则，就重新开始录制。
 
-现在，我们需要测试一下！在你的 iOS 设置运行应用程序之前，我们需要确保已经在 app 的 `Info.plist` 文件中添加了 `camera` 、 `microphone` 和 `photo library` 的使用描述。
+现在，我们来测试一些东西！在你的 iOS 设备运行应用程序之前，我们需要确保已经在 app 的 `Info.plist` 文件中添加了 `camera` 、 `microphone` 和 `photo library` 的使用描述。
 
 为了完成这个，把下面的代码添加到 plist 源码中：
 
@@ -334,9 +334,9 @@ recorder?.rest()
 
 ### 修改 SpriteKit 内容
 
-在这最后的一部分，我们将会修改 SpriteKit 的内容去在 AR 空间中展示一些不同的 emojis 🤗🤓🧐🔥 。
+在这最后的一部分，我们将会修改 SpriteKit 的内容去在 AR 世界中展示一些不同的 emojis 🤗🤓🧐🔥 。
 
-首先我们创建一个变量，可以从*一个 emojis 的数组*中返回一个*随机的 emoji* 。通过使用基于 C 语言的函数 [**`arc4random_uniform()`**](https://developer.apple.com/library/archive/documentation/Darwin/Reference/ManPages/man3/arc4random_uniform.3.html) ，我们可以检索到一个在 0 至数组个数之间的随机数。
+首先我们创建一个变量，可以从*一个 emojis 的数组*中返回一个*随机的 emoji* 。通过使用基于 C 语言的函数 [**`arc4random_uniform()`**](https://developer.apple.com/library/archive/documentation/Darwin/Reference/ManPages/man3/arc4random_uniform.3.html) ，我们可以检索到一个在 0 到数组个数之间的随机数。
 
 为了完成这个，我们在 `ViewController` 类中创建以下变量作为全局变量（在 `gifButton` 之后替换它）：
 
