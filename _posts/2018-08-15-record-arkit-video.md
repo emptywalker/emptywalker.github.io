@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 「译」使用 ARVideoKit 记录视频 & 动画 GIFs
+title: 「译」使用 ARVideoKit 录制 ARKit 视频 & GIFs 动画
 date: 2018-08-09 17:26:24.000000000 +09:00
 ---
 
