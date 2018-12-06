@@ -19,5 +19,5 @@
 * Git
 * Cocoapods
 
-我也准备发起自己的 ARTS 挑战，看看能坚持多久。
+我也准备发起自己的 [ARTS](https://www.zhihu.com/question/301150832/answer/529809529) 挑战，看看能坚持多久。
 
